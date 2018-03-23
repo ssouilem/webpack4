@@ -1,0 +1,19 @@
+# dependencies
+node_modules
+
+# testing
+coverage
+
+# production
+dist
+docs-dist
+lib
+
+
+# editors
+.idea
+.vscode
+.history
+
+# Editorconfig (for now)
+.editorconfig
