@@ -1,0 +1,10 @@
+.portalHeader {
+  background: #E6EAED none;
+
+  .ui.DropdownOnMobile.item {
+    padding: 5px;
+    & > .avatar {
+      margin-right: 0 !important;
+    }
+  }
+}

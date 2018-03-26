@@ -1,0 +1,71 @@
+[
+  {
+    "name": "dashboard",
+    "title": "Dashboard",
+    "route": "/",
+    "icon": "dashboard"
+  },
+  {
+    "name": "reporting",
+    "title": "Reporting",
+    "icon": "line chart",
+    "submenus": [
+      {
+        "name": "finantial_reporting",
+        "title": "Reporting financier",
+        "route": "/financial_reporing"
+      },
+      {
+        "name": "finantial reporting",
+        "title": "Reporting operationnel",
+        "route": "/financial_reporing"
+      }
+    ]
+  },
+  {
+    "name": "members",
+    "title": "Membres",
+    "route": "users",
+    "icon": "users"
+  },
+  {
+    "name": "projects",
+    "title": "Projets",
+    "route": "projetcs",
+    "icon": "file code outline"
+  },
+  {
+    "name": "documentation",
+    "title": "Documentaion",
+    "route": "documentation",
+    "icon": "file text outline"
+  },
+  {
+    "name": "help",
+    "title": "Aide",
+    "route": "help",
+    "icon": "help circle outline"
+  },
+  {
+    "name": "settings",
+    "title": "Paramètres",
+    "icon": "settings",
+    "submenus": [
+      {
+        "name": "profile",
+        "title": "Profil",
+        "route": "/settings/profile"
+      },
+      {
+        "name": "password",
+        "title": "Mot de passe",
+        "route": "/settings/password"
+      },
+      {
+        "name": "dashboard_settings",
+        "title": "Dashboard",
+        "route": "/settings/dashboard"
+      }
+    ]
+  }
+]
