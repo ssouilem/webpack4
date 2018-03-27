@@ -1,12 +1,16 @@
-import { Link } from 'react-router'
 import React from 'react'
+import { Link } from 'react-router'
 import { Accordion, Icon } from 'semantic-ui-react'
 import MenuArray from './Menu.json'
 
-class AccordionMenu extends React.Component {
+export default class AccordionMenu extends React.Component {
+  constructor (props) {
+    console.log('AccordionMenu')
+    super(props)
+  }
   state = { activeIndex: 0 }
   _handleItemClick = (e, titleProps) => {
-    const { index, to } = titleProps
+    const { index } = titleProps
     this.setState({ activeIndex: index })
   }
   render () {
@@ -14,7 +18,7 @@ class AccordionMenu extends React.Component {
     return (
       <Accordion inverted className='Transition'>
         { MenuArray.map((item, index) => (
-          <div className='menuItem' key={ index }>
+          <div className='menuItem' key={ index } >
             <Accordion.Title
               active={ activeIndex === index }
               index={ index }
@@ -43,6 +47,3 @@ class AccordionMenu extends React.Component {
     )
   }
 }
-
-
-export default AccordionMenu

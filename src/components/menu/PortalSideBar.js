@@ -9,7 +9,7 @@ export default class PortalSideBar extends React.Component {
   //   // this.setProps({ sidebarIsCollapsed: !sidebarIsCollapsed })
   // }
   render () {
-    const { sidebarIsCollapsed, displayIsMobile, dispatch } = this.props
+    const { sidebarIsCollapsed } = this.props
     return (
       <div>
         <Sidebar
@@ -27,6 +27,7 @@ export default class PortalSideBar extends React.Component {
             icon='content' />
           {/* { sidebarIsCollapsed ? <DropdownMenu dispatch={ dispatch } /> : <AccordionMenu dispatch={ dispatch } />} */}
         </Sidebar>
-      </div> )
+      </div>
+    )
   }
 }
