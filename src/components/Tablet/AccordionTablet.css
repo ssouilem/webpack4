@@ -1,0 +1,6 @@
+.ui.labeled.icon.menu .item>.icon:not(.dropdown) {
+    height: 1em;
+    display: block;
+    font-size: 1.71428571em!important;
+    /* margin: 0 auto .5rem!important; */
+}
