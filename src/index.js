@@ -1,17 +1,22 @@
 // import App from "./App";
-import React from 'react'
-import ReactDOM from 'react-dom'
-// import App from './components/app'
-import App from './components/TabletApp'
-// import { Router } from 'react-router-dom'
-// import { history } from './history'
-// import './styles/all.css'
+import React, { Component } from 'react'
+import { render } from 'react-dom'
+import NavBar from './components/TabletApp'
+import { BrowserRouter, Route } from 'react-router-dom'
+import Watch from './components/pages/watch'
+import { Home } from './components/pages/home'
 
-import { BrowserRouter } from 'react-router-dom'
+class App extends Component {
+  render () {
+    return (
+      <BrowserRouter >
+        <NavBar>
+          <Route exact path='/' component={ Home } />
+          <Route path='/produits' component={ Watch } />
+        </NavBar>
+      </BrowserRouter>
+    )
+  }
+}
 
-// ReactDOM.render(<Router history={history}><App /></Router>, document.getElementById('root'));
-ReactDOM.render((
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-), document.getElementById('root'))
+render(<App />, document.getElementById('root'))

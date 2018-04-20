@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development --module-bind js=babel-loader",
-    "start": "webpack-dev-server --content-base public --mode development --open --inline --hot",
+    "start": "webpack-dev-server --content-base public --port 8081 --mode development --open --inline --hot",
     "build": "webpack --mode production --module-bind js=babel-loader"
   },
   "keywords": [],

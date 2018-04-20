@@ -1,11 +1,8 @@
 import React, {Component} from 'react'
-import styled from 'styled-components'
 import { Button, Icon } from 'semantic-ui-react'
-const LiveWrapper = styled.div`
 
-`
-export default class Watch extends Component{
-  render(){
+export default class Watch extends Component {
+  render () {
     return (
       <div>
         <h2>this watch</h2>
@@ -14,6 +11,6 @@ export default class Watch extends Component{
           <Icon name='right arrow' />
         </Button>
       </div>
-  )
+    )
   }
 }

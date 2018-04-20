@@ -1,3 +1,8 @@
 body {
     line-height: 2;
 }
+.portal {
+  /*margin-left: 150px;*/
+  height: 100%;
+  padding: 1px !important;
+}

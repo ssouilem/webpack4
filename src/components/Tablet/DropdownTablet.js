@@ -1,5 +1,6 @@
 import React from 'react'
 import { Dropdown, Menu, Icon } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 import MenuArray from '../menu/Menu.json'
 
 export default class DropdownTablet extends React.Component {
@@ -24,11 +25,10 @@ export default class DropdownTablet extends React.Component {
             { !item.submenus &&
               <Menu.Item
                 name={ item.name }
-                active={ activeItem === item.name }
-                onClick={ this._handleItemClick }
-                link
-                to={ item.route } >
-                <Icon name={ item.icon } />
+                active={ activeItem === item.name } >
+                {/* onClick={ this._handleItemClick } > */}
+                <Link to={ item.route } replace />
+                <Icon name={ item.icon } size='small' />
               </Menu.Item> }
             { item.submenus &&
               <Dropdown

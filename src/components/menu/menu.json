@@ -6,15 +6,33 @@
     "icon": "home"
   },
   {
-    "name": "gamepad",
-    "title": "Games",
-    "route": "/chargement",
-    "icon": "gamepad"
+    "name": "Services",
+    "title": "Services",
+    "route": "/services",
+    "icon": "qrcode"
   },
   {
-    "name": "chargement",
-    "title": "Chargement",
-    "route": "/chargement",
-    "icon": "external"
+    "name": "Produits",
+    "title": "Nos Produits",
+    "route": "/produits",
+    "icon": "tasks"
+  },
+  {
+    "name": "Partenaires",
+    "title": "Nos Partenaires",
+    "route": "/partenaires",
+    "icon": "chain"
+  },
+  {
+    "name": "Contacts",
+    "title": "Nous contacter",
+    "route": "/contacts",
+    "icon": "envelope"
+  },
+  {
+    "name": "Qualité",
+    "title": "Notre Qualité",
+    "route": "/qualite",
+    "icon": "detective"
   }
 ]

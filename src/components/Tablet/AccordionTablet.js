@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router'
+import { Link } from 'react-router-dom'
 import { Accordion, Icon } from 'semantic-ui-react'
 import MenuArray from '../menu/Menu.json'
 
@@ -22,11 +22,12 @@ export default class AccordionTablet extends React.Component {
             <Accordion.Title
               active={ activeIndex === index }
               index={ index }
+              link
               className='link item'
-              to={ item.route || '' }
+              to={ item.route }
               onClick={ this._handleItemClick }>
               <Icon name={ item.icon } />
-              { item.title }
+              <Link to={ item.route } >{ item.title }</Link>
             </Accordion.Title>
             { item.submenus &&
               <Accordion.Content
