@@ -53,7 +53,6 @@ class TabletApp extends Component {
               <Segment basic >
                 <Header as='h3'>Application Content
                   <br />
-                  <br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
                 </Header>
                 { children }
                 {/*
@@ -61,7 +60,6 @@ class TabletApp extends Component {
                   <Route exact path='/' component={ Home } />
                   <Route path={ '/produits' } component={ Watch } />
                 </Switch> */}
-                <Image src='/assets/images/wireframe/paragraph.png' />
               </Segment>
             </Sidebar.Pusher>
           </div>

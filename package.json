@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "antd": "^3.4.3",
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
@@ -40,13 +41,13 @@
     "webpack-livereload-plugin": "^2.1.1"
   },
   "dependencies": {
-    "semantic-ui": "^2.3.1",
-    "semantic-ui-css": "^2.3.1",
-    "semantic-ui-react": "^0.79.0",
     "history": "^4.7.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
+    "semantic-ui": "^2.3.1",
+    "semantic-ui-css": "^2.3.1",
+    "semantic-ui-react": "^0.79.0",
     "styled-components": "^3.2.3"
   }
 }

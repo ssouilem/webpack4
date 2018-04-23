@@ -1,11 +1,12 @@
+@import "~antd/lib/carousel/style/index.css";
+/* app styles */
 .fHBlm {
     color: inherit;
     font-family: "Covered By Your Grace", cursive;
     font-size: 1.5em;
     text-decoration: none;
 }
-
-#root {
+.root {
   height: 100%;
   width: 100%;
 }
@@ -16,9 +17,9 @@
   border-radius: 0em !important;
   border-bottom: 1px solid #d6cbcb !important;
   background: #f9f9f9 !important;
+  box-shadow: 0 3px 10px 0 rgba(0,0,0,.5) !important;
   height: 63px;
 }
-
 .portalContentExpanded {
   margin-left: 150px;
   height: 100%;
@@ -36,7 +37,6 @@
 .portalHeader {
   background: #E6EAED none;
 }
-
 .portalSideBarButton {
   width: 100%;
   margin-right: 0 !important;
@@ -54,18 +54,14 @@
     -ms-flex-direction: column;
     flex-direction: column;
 }
-/*
-ui.labeled.icon.menu .item>.icon:not(.dropdown) {
-    height: 1em;
-    display: block;
-    font-size: 1.71428571em!important;
-}
 
-.ui.menu {
-  margin: 0;
+.ant-carousel {
+  width: 90em !important;
 }
-
-.ui.sidebar.very.thin.icon {
-  overflow: visible !important;
+.ant-carousel .slick-slide {
+  text-align: center;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+  height: 20em !important;
 }
-*/
