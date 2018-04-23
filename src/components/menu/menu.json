@@ -24,15 +24,15 @@
     "icon": "chain"
   },
   {
-    "name": "Contacts",
-    "title": "Nous contacter",
-    "route": "/contacts",
-    "icon": "envelope"
-  },
-  {
     "name": "Qualité",
     "title": "Notre Qualité",
     "route": "/qualite",
     "icon": "detective"
+  },
+  {
+    "name": "Contacts",
+    "title": "Nous contacter",
+    "route": "/contacts",
+    "icon": "envelope"
   }
 ]

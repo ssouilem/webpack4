@@ -24,7 +24,9 @@ export default class DropdownTablet extends React.Component {
           <div className='menuItem' key={ index }>
             { !item.submenus &&
               <Menu.Item
+                as={ Link }
                 name={ item.name }
+                to={ item.route }
                 active={ activeItem === item.name } >
                 {/* onClick={ this._handleItemClick } > */}
                 <Link to={ item.route } replace />

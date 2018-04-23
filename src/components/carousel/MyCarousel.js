@@ -22,7 +22,7 @@ export default class MyCarousel extends React.Component {
   }
   render () {
     return (
-      <Carousel className='ant-carousel' autoplay>
+      <Carousel className='ant-carousel' >
         {this.state.data.map(val => (
           <a
             key={ val }

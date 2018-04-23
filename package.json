@@ -41,10 +41,12 @@
     "webpack-livereload-plugin": "^2.1.1"
   },
   "dependencies": {
+    "bootstrap": "^4.0.0",
     "history": "^4.7.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-router-dom": "^4.2.2",
+    "reactstrap": "^5.0.0-beta.3",
     "semantic-ui": "^2.3.1",
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.79.0",

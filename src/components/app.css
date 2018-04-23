@@ -1,4 +1,5 @@
 @import "~antd/lib/carousel/style/index.css";
+@import "~bootstrap/dist/css/bootstrap.css";
 /* app styles */
 .fHBlm {
     color: inherit;
@@ -32,7 +33,7 @@
 .portalContent {
   margin-left: 60px;
   height: 100%;
-  overflow: hidden;
+  overflow: auto;
 }
 .portalHeader {
   background: #E6EAED none;
@@ -57,11 +58,12 @@
 
 .ant-carousel {
   width: 90em !important;
+  background-color: #E6E6FA;
 }
 .ant-carousel .slick-slide {
   text-align: center;
   line-height: 160px;
   background: #364d79;
   overflow: hidden;
-  height: 20em !important;
+  height: 30em !important;
 }

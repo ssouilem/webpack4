@@ -1,7 +1,7 @@
 import '../styles/all.css'
 import './app.css'
 import React, { Component } from 'react'
-import { Sidebar, Segment, Menu, Image, Header, Button } from 'semantic-ui-react'
+import { Sidebar, Segment, Menu, Image, Button } from 'semantic-ui-react'
 import DropdownTablet from './Tablet/DropdownTablet'
 import AccordionTablet from './Tablet/AccordionTablet'
 // import { Route, Switch } from 'react-router-dom'
@@ -25,7 +25,7 @@ class TabletApp extends Component {
             animation='push'
             as={ Menu }
             color='grey'
-            width={ visible ? 'very thin' : 'thin' }
+            width={ !visible ? 'very thin' : 'thin' }
             visible
             icon='labeled'
             vertical
@@ -35,12 +35,12 @@ class TabletApp extends Component {
               className='portalSideBarButton'
               onClick={ this.toggleVisibility }
               icon='content' />
-            { visible ? <DropdownTablet /> : <AccordionTablet /> }
+            { !visible ? <DropdownTablet /> : <AccordionTablet /> }
           </Sidebar>
           {/* <Sidebar as={ Menu } animation='uncover' width={ width } visible={ !visible } icon='labeled' vertical inverted>
             { visible ? <DropdownTablet /> : <AccordionTablet /> }
           </Sidebar> */}
-          <div className={ !visible ? 'portalContentExpanded' : 'portalContent' }>
+          <div className={ visible ? 'portalContentExpanded' : 'portalContent' }>
             <Sidebar.Pusher >
               <Menu inverted className='SideBar' attached='top' >
                 {/* <Menu.Item key='sidebar' name='sidebar' color='red' onClick={ this.toggleVisibility } >
@@ -51,15 +51,7 @@ class TabletApp extends Component {
                 </Menu.Item>
               </Menu>
               <Segment basic >
-                <Header as='h3'>Application Content
-                  <br />
-                </Header>
                 { children }
-                {/*
-                <Switch>
-                  <Route exact path='/' component={ Home } />
-                  <Route path={ '/produits' } component={ Watch } />
-                </Switch> */}
               </Segment>
             </Sidebar.Pusher>
           </div>
