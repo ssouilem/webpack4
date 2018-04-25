@@ -1,5 +1,15 @@
 /* carousel */
 
+.custom-tag {
+  max-width: 100%;
+  background: black;
+}
+
+.carousel-img {
+  width:100%;
+  min-width: 1500px;
+}
+
 .antcarousel {
   text-align: center;
 }
@@ -15,4 +25,7 @@
   color: #fff;
 }
 
+.JumboText {
+  background-color: #e9ecef00;
+}
 /* END carousel */

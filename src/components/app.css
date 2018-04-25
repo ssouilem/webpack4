@@ -67,3 +67,14 @@
   overflow: hidden;
   height: 30em !important;
 }
+.row-top {
+  margin-top: -20px;
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+.row-middle {
+  margin-bottom: 0px;
+  border-bottom: 0px;
+  padding-bottom: 0px;
+  background-color: #f6f6f6;
+}
