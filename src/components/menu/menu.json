@@ -1,38 +1,38 @@
 [
   {
-    "name": "Home",
-    "title": "home",
+    "name": "Tableau de bord",
+    "title": "Tableau de bord",
     "route": "/",
     "icon": "home"
   },
   {
-    "name": "Services",
-    "title": "Services",
-    "route": "/services",
-    "icon": "qrcode"
+    "name": "clients",
+    "title": "Mos clients",
+    "route": "/clients",
+    "icon": "users"
   },
   {
-    "name": "Produits",
+    "name": "produits",
     "title": "Nos Produits",
     "route": "/produits",
     "icon": "tasks"
   },
   {
-    "name": "Partenaires",
-    "title": "Nos Partenaires",
-    "route": "/partenaires",
+    "name": "bordereaux",
+    "title": "Mes bordereaux",
+    "route": "/bordereaux",
     "icon": "chain"
   },
   {
-    "name": "Qualité",
-    "title": "Notre Qualité",
-    "route": "/qualite",
-    "icon": "detective"
+    "name": "factures",
+    "title": "Mes factures",
+    "route": "/factures",
+    "icon": "file"
   },
   {
-    "name": "Contacts",
-    "title": "Nous contacter",
-    "route": "/contacts",
-    "icon": "envelope"
+    "name": "Paiements",
+    "title": "Paiements",
+    "route": "/paiements",
+    "icon": "qrcode"
   }
 ]

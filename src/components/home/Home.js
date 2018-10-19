@@ -10,9 +10,9 @@ export default class Home extends Component {
 
   render () {
     return (
-      <div>
-        <Grid columns={ 4 } centered divided>
-          <Grid.Row className='row-top' stretched>
+      <div id="border">
+        <Grid columns={ 4 } centered >
+          <Grid.Row stretched>
             <BoostrapCarousel />
           </Grid.Row>
           <Grid.Row>

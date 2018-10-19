@@ -68,8 +68,7 @@
   height: 30em !important;
 }
 .row-top {
-  margin-top: -20px;
-  padding-top: 0rem !important;
+  padding-top: 0rem;
   padding-bottom: 0rem !important;
 }
 .row-middle {

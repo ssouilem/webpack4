@@ -22,7 +22,7 @@ class TabletApp extends Component {
       <div className='portal'>
         <Sidebar.Pushable >
           <Sidebar
-            animation='push'
+            //animation='push'
             as={ Menu }
             color='grey'
             width={ !visible ? 'very thin' : 'thin' }

@@ -3,6 +3,9 @@ import { browserHistory } from 'react-router'
 import { Link } from 'react-router-dom'
 import { Accordion, Icon } from 'semantic-ui-react'
 import MenuArray from '../menu/Menu.json'
+import './AccordionTablet.less';
+
+// import styles from './BoardChart.less'
 
 export default class AccordionTablet extends React.Component {
   constructor (props) {
@@ -26,7 +29,7 @@ export default class AccordionTablet extends React.Component {
               as={ Link }
               active={ activeIndex === index }
               index={ index }
-              link
+              // link
               className='link item'
               to={ item.route }>
               <Icon name={ item.icon } />
