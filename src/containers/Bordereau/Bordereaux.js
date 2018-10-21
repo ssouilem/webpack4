@@ -1,6 +1,5 @@
 import React from 'react'
 import { Tab, Menu, Header, Icon, Segment, Breadcrumb } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
 import BordereauList from 'COMPONENTS/Bordereau/BordereauList'
 import AddBordereau from 'COMPONENTS/Bordereau/AddBordereau'
 
@@ -15,14 +14,14 @@ const BreadcrumbBL = () => (
 )
 
 const HeaderNewBL = () => (
-  <Header as='h2'>
+  <Header as='h4'>
     <Icon name='edit outline' />
     <Header.Content>Créez un bordereau</Header.Content>
   </Header>
 )
 
 const HeaderAllBL = () => (
-  <Header as='h2'>
+  <Header as='h4'>
     <Icon name='clipboard outline' />
     <Header.Content>Tous les Bordereaux</Header.Content>
   </Header>
@@ -60,7 +59,19 @@ const panes = [
   },
 ]
 
-const TabBLItem = () => <Tab panes={panes} />
+class TabBLItem extends React.Component {
+  state = { activeIndex: 1 }
+  handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
+
+  render () {
+    const { activeIndex } = this.state
+
+    return (
+      <Tab panes={ panes } activeIndex={ activeIndex }
+        onTabChange={ this.handleTabChange } />
+    )
+  }
+}
 
 const mapStateToProps = ({ search }) => ({ search })
 

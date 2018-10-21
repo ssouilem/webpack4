@@ -2,7 +2,7 @@ import React from 'react'
 import { Button, Checkbox, Icon, Table } from 'semantic-ui-react'
 
 const TableApprove = (props) => (
-  <Table basic='very' compact selectable  >
+  <Table basic='very' compact selectable >
     <Table.Header>
       <Table.Row>
         <Table.HeaderCell />

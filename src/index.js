@@ -20,7 +20,7 @@ import frmessages from 'INTL/lang/fr.json'
 import enmessages from 'INTL/lang/en.json'
 import en from 'react-intl/locale-data/en'
 import fr from 'react-intl/locale-data/fr'
-import '../semantic/src/semantic.less';
+// import '../semantic/src/semantic.less';
 
 // const composeEnhancers =
 //   typeof window === 'object' &&
