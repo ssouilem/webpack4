@@ -129,7 +129,7 @@ module.exports = {
       IMAGES: path.resolve(__dirname, 'src/styles/images'),
       SRC: path.resolve(__dirname, 'src'),
       FRONT_THEME: path.resolve(__dirname, '/semantic/src/'),
-      INTL: path.resolve(__dirname,'intl'),
+      INTL: path.resolve(__dirname, 'intl'),
       '../../theme.config$': path.resolve(__dirname, '/semantic/src/themes/theme.config'),
     },
   },

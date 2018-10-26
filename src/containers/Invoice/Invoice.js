@@ -86,17 +86,17 @@ const panes = [
       </Menu.Item>
     ),
     render: () =>
-    <Tab.Pane>
-      <HeaderUsersIcon />
-      <Grid container  >
-        <Grid.Row>
-          <SearchSimple source= { members } />
-        </Grid.Row>
-        <Grid.Row centered>
-          <Campany />
-        </Grid.Row>
-      </Grid>
-    </Tab.Pane>,
+      <Tab.Pane>
+        <HeaderUsersIcon />
+        <Grid container >
+          <Grid.Row>
+            <SearchSimple source={ members } />
+          </Grid.Row>
+          <Grid.Row centered>
+            <Campany />
+          </Grid.Row>
+        </Grid>
+      </Tab.Pane>,
   },
   {
     menuItem: (
@@ -105,19 +105,19 @@ const panes = [
       </Menu.Item>
     ),
     render: () =>
-    <Tab.Pane>
-    <div>
-      <Segment vertical>
-          <BreadcrumbInvoice />
-        </Segment>
-        <Segment vertical>
-          <AddBordereau />
-        </Segment>
-      </div>
-    </Tab.Pane>,
+      <Tab.Pane>
+        <div>
+          <Segment vertical>
+            <BreadcrumbInvoice />
+          </Segment>
+          <Segment vertical>
+            <AddBordereau />
+          </Segment>
+        </div>
+      </Tab.Pane>,
   },
 ]
 
-const TabExampleCustomMenuItem = () => <Tab panes={panes} />
+const TabExampleCustomMenuItem = () => <Tab panes={ panes } />
 
 export default TabExampleCustomMenuItem

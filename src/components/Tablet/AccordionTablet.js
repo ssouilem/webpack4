@@ -3,7 +3,7 @@ import { browserHistory } from 'react-router'
 import { Link } from 'react-router-dom'
 import { Accordion, Icon } from 'semantic-ui-react'
 import MenuArray from '../menu/Menu.json'
-import './AccordionTablet.less';
+import './AccordionTablet.less'
 
 // import styles from './BoardChart.less'
 

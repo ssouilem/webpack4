@@ -8,10 +8,10 @@ import styles from './Bordereau.less'
 
 class Bordereau extends React.Component {
   state = {
-      avatar: undefined,
-      files: [],
-      UserByOpen: false,
-    }
+    avatar: undefined,
+    files: [],
+    UserByOpen: false,
+  }
   // _handleButtonClick = to => {
   //   this.props.dispatch(push(to))
   // }
@@ -33,9 +33,8 @@ class Bordereau extends React.Component {
                 <Grid.Column stretched className={ styles.avatar_profile }>
                   <Image circular />
                 </Grid.Column>
-                 <Grid.Column>
+                <Grid.Column>
                   <Form.Group grouped>
-
                     <Form.Field control='input'
                       type='radio'
                       name='avatarRadioGroup'
@@ -58,60 +57,55 @@ class Bordereau extends React.Component {
                         description='Adresse Gravatar' defaultMessage='Adresse Gravatar' /> } />
 
                   </Form.Group>
-                 </Grid.Column>
+                </Grid.Column>
               </Grid.Row>
             </Segment>
           </Grid.Column>
         </Grid.Row>
         <Grid.Row>
-            <Grid.Column textAlign='center'>
-              <Segment>
-                  <Header as='h2'>
-                    <FormattedMessage id='title.profile.informations'
-                      description='title profile' defaultMessage='INFORMATIONS DU PROFIL' />
-                  </Header>
-                  <Form widths='equal'>
-                    <Form.Input width={ 14 }
-                      disabled={ this.state.UserByOpen }
-                      label={ <FormattedMessage id='input.first.name'
-                        description='first name' defaultMessage='First name' /> }
-                      // value={ user.signIn && user.signIn.data && user.signIn.data.first_name }
-                      />
-                    <Form.Input width={ 14 } label={ <FormattedMessage id='input.last.name'
-                      description='last name' defaultMessage='Last name' /> }
-                      disabled={ this.state.UserByOpen }
-                      // value={ user.signIn && user.signIn.data && user.signIn.data.last_name }
-                      />
-                    <Form.Input width={ 14 } label={ <FormattedMessage id='input.email.address'
-                      description='e-mail address' defaultMessage='E-mail address' /> } disabled
-                      />
-                    <Form.Input width={ 14 } label={ <FormattedMessage id='input.ssh.key'
-                      description='SSH key' defaultMessage='SSH key' /> }
-                      // value={ user.signIn && user.signIn.data && user.signIn.data.ssh_key }
-                      />
-                  </Form>
-                </Segment>
-            </Grid.Column>
-          </Grid.Row>
-          <Grid.Row>
-            <Grid.Column textAlign='right'>
-              <Button.Group floated='right' >
-                <Button>{ <FormattedMessage id='button.cancel'
-                  description='button cancel' defaultMessage='Cancel' /> }</Button>
-                <Button.Or />
-                <Button positive>{ <FormattedMessage id='button.save'
-                  description='button save' defaultMessage='Save' /> }</Button>
-              </Button.Group>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-      </div>
-    )
+          <Grid.Column textAlign='center'>
+            <Segment>
+              <Header as='h2'>
+                <FormattedMessage id='title.profile.informations'
+                  description='title profile' defaultMessage='INFORMATIONS DU PROFIL' />
+              </Header>
+              <Form widths='equal'>
+                <Form.Input width={ 14 }
+                  disabled={ this.state.UserByOpen }
+                  label={ <FormattedMessage id='input.first.name'
+                    description='first name' defaultMessage='First name' /> }
+                  // value={ user.signIn && user.signIn.data && user.signIn.data.first_name }
+                />
+                <Form.Input width={ 14 } label={ <FormattedMessage id='input.last.name'
+                  description='last name' defaultMessage='Last name' /> } disabled={ this.state.UserByOpen }
+                  // value={ user.signIn && user.signIn.data && user.signIn.data.last_name }
+                />
+                <Form.Input width={ 14 } label={ <FormattedMessage id='input.email.address'
+                  description='e-mail address' defaultMessage='E-mail address' /> } disabled
+                />
+                <Form.Input width={ 14 } label={ <FormattedMessage id='input.ssh.key'
+                  description='SSH key' defaultMessage='SSH key' /> }
+                  // value={ user.signIn && user.signIn.data && user.signIn.data.ssh_key }
+                />
+              </Form>
+            </Segment>
+          </Grid.Column>
+        </Grid.Row>
+        <Grid.Row>
+          <Grid.Column textAlign='right'>
+            <Button.Group floated='right' >
+              <Button>{ <FormattedMessage id='button.cancel'
+                description='button cancel' defaultMessage='Cancel' /> }</Button>
+              <Button.Or />
+              <Button positive>{ <FormattedMessage id='button.save'
+                description='button save' defaultMessage='Save' /> }</Button>
+            </Button.Group>
+          </Grid.Column>
+        </Grid.Row>
+      </Grid>
+    </div>
+  )
 }
-
-
-
-
 
 Bordereau.propTypes = {}
 

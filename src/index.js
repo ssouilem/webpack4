@@ -7,12 +7,10 @@ import { addLocaleData, IntlProvider } from 'react-intl'
 import NavBar from './components/TabletApp'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Watch from './components/pages/watch'
-import Home from './components/home/Home'
 import HomePage from 'CONTAINERS/HomePage/HomePage'
 import DashBoard from './containers/DashBoard/DashBoard'
 import Bordereau from './containers/Bordereau/Bordereau'
 import Bordereaux from './containers/Bordereau/Bordereaux'
-import Test from 'CONTAINERS/Campany/Campany'
 import Campany from './containers/Invoice/Invoice'
 
 import rootReducer from './rootReducer'
@@ -42,7 +40,7 @@ console.log(store.getState())
 class App extends Component {
   render () {
     return (
-      <BrowserRouter  >
+      <BrowserRouter >
         <NavBar>
           <Route exact path='/' component={ HomePage } />
           <Route exact path='/clients' component={ Campany } />
