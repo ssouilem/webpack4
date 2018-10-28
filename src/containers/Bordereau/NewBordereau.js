@@ -1,9 +1,12 @@
 import React from 'react'
+import _ from 'lodash'
 import { Header, Segment, Grid, Image, Table, Form, List, Dropdown, Radio, Input } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
+import { connect } from 'react-redux'
 import AddBordereauDetail from 'COMPONENTS/Bordereau/AddBordereauDetail'
 import LineBordereauDetail from 'COMPONENTS/Bordereau/LineBordereauDetail'
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
+import { actions as produitsActions } from 'ACTIONS/produits'
 
 class NewBordereau extends React.Component {
   state = {
@@ -14,7 +17,7 @@ class NewBordereau extends React.Component {
     bordereauDetail: {
       reference: '',
       description: '',
-      qte: 'test',
+      qte: 1,
       reduction: '',
       unit: '',
       total: '',
@@ -49,6 +52,36 @@ class NewBordereau extends React.Component {
     mail: 'mymail@domaine.com',
   }
 
+  componentWillMount () {
+    this.resetComponent()
+  }
+
+  resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
+
+  handleResultSelect = (e, { result }) => {
+    var bordereauDetail = this.state.bordereauDetail
+    bordereauDetail.description = result.description
+    bordereauDetail.reference = result.reference
+    bordereauDetail.reduction = '20%'
+    bordereauDetail.unit = result.unit
+    this.setState({ value: result.reference, bordereauDetail })
+  }
+
+  handleSearchChange = (e, { value }) => {
+    this.setState({ isLoading: true, value })
+
+    setTimeout(() => {
+      if (this.state.value.length < 1) return this.resetComponent()
+
+      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+      const isMatch = result => re.test(result.reference)
+
+      this.setState({
+        isLoading: false,
+        results: _.filter(this.props.produits.produits, isMatch),
+      })
+    }, 300)
+  }
   addLineInvoice = (event) => {
     let idLocal = 'ID_' + (new Date()).getTime()
     this.setState({'id': idLocal})
@@ -262,7 +295,16 @@ submitMeetingForm = () => {
                     </Table.Row>
                   </Table.Header>
                   <Table.Body>
-                    <AddBordereauDetail bordereauDetailForm={ this.state.bordereauDetail } id={ this.state.id } onClick={ this.addLineInvoice } onChange={ this._handleChangeInput } />
+                    <AddBordereauDetail
+                      produits={ this.props.produits }
+                      bordereauDetailForm={ this.state.bordereauDetail }
+                      id={ this.state.id } onClick={ this.addLineInvoice }
+                      isLoading={ this.state.isLoading }
+                      handleResultSelect={ this.handleResultSelect }
+                      handleSearchChange={ this.handleSearchChange }
+                      results={ this.state.results }
+                      value={ this.state.value }
+                      onChange={ this._handleChangeInput } />
                   </Table.Body>
                   <Table.Footer>
                     {this.state.bordereauDetails.map(bordereauDetail => (
@@ -358,4 +400,19 @@ SegmentAddress.propTypes = {
   onClick: PropTypes.func.isRequired,
   updateAddress: updateAddressPropType,
 }
-export default NewBordereau
+
+NewBordereau.propTypes = {
+  produits: PropTypes.object,
+  fetchProduits: PropTypes.func,
+}
+
+const mapStateToProps = state => ({
+  produits: state.produits,
+})
+
+const mapDispatchToProps = dispatch => ({
+  fetchProduits: produitsActions.fetchProduits(dispatch),
+  dispatch,
+})
+export { NewBordereau }
+export default connect(mapStateToProps, mapDispatchToProps)(NewBordereau)

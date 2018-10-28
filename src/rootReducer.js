@@ -4,12 +4,14 @@ import { reducer as form } from 'redux-form'
 
 import portal from './redux/modules/portal'
 import bordereau from './redux/modules/bordereauActions'
+import produits from './redux/modules/produits'
 
 export const SIGN_OUT = 'SIGN_OUT'
 
 const appReducer = combineReducers({
   portal,
   bordereau,
+  produits,
   form,
 })
 
