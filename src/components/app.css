@@ -21,6 +21,16 @@
   box-shadow: 0 3px 10px 0 rgba(0,0,0,.5) !important;
   height: 63px;
 }
+.myaccount {
+  color: black;
+}
+
+.ui.menu .item>i.dropdown.icon {
+    padding: 0;
+    float: right;
+    margin: 0 0 0 2em !important;
+}
+
 .portalContentExpanded {
   margin-left: 150px;
   height: 100%;

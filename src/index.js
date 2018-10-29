@@ -1,6 +1,6 @@
 // import App from "./App";
 import React, { Component } from 'react'
-import { compose, applyMiddleware, createStore } from 'redux'
+import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { render } from 'react-dom'
 import { addLocaleData, IntlProvider } from 'react-intl'
@@ -12,6 +12,8 @@ import DashBoard from './containers/DashBoard/DashBoard'
 import Bordereau from './containers/Bordereau/Bordereau'
 import Bordereaux from './containers/Bordereau/Bordereaux'
 import Campany from './containers/Invoice/Invoice'
+import Entreprise from './containers/Entreprise/Entreprise'
+import Products from './containers/Products/Products'
 
 import rootReducer from './rootReducer'
 import frmessages from 'INTL/lang/fr.json'
@@ -44,10 +46,11 @@ class App extends Component {
         <NavBar>
           <Route exact path='/' component={ HomePage } />
           <Route exact path='/clients' component={ Campany } />
-          <Route path='/produits' component={ Bordereau } />
+          <Route path='/produits' component={ Products } />
           <Route path='/bordereaux' component={ Bordereaux } />
           <Route path='/factures' component={ DashBoard } />
           <Route exact path='/paiements' component={ Watch } />
+          <Route exact path='/entreprise' component={ Entreprise } />
         </NavBar>
       </BrowserRouter>
     )
@@ -55,8 +58,8 @@ class App extends Component {
 }
 
 render(
-  <IntlProvider locale={ navigator.language } messages={ messages } defaultLocale="fr-FR" >
-    <Provider store={store}>
+  <IntlProvider locale={ navigator.language } messages={ messages } defaultLocale='fr-FR' >
+    <Provider store={ store }>
       <App />
     </Provider>
   </IntlProvider>

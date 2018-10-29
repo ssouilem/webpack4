@@ -59,12 +59,12 @@ module.exports = {
       // },
 
       {
-         test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-         loader: 'file-loader'
+        test: /\.(ttf|eot)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+        loader: 'file-loader',
       },
       {
         test: /\.otf(\?.*)?$/,
-        use: 'file-loader?name=/fonts/[name].[ext]&mimetype=application/font-otf'
+        use: 'file-loader?name=/fonts/[name].[ext]&mimetype=application/font-otf',
       },
       {
         test: /\.css$/,
@@ -92,18 +92,19 @@ module.exports = {
         //
         // ],
         test: /\.less$/,
-          use: [{
-            loader: 'style-loader'
-          }, {
-            loader: 'css-loader'
-          }, {
-            loader: 'less-loader', options: {
-              paths: [
-                path.resolve(__dirname, 'node_modules')
-              ]
-            }
-          }]
-      }
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader',
+        }, {
+          loader: 'less-loader',
+          options: {
+            paths: [
+              path.resolve(__dirname, 'node_modules'),
+            ],
+          },
+        }],
+      },
     ],
   },
   devServer: {

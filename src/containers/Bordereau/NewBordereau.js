@@ -151,7 +151,6 @@ _handleOpen = () => this.setState({ modalOpen: true })
 _handleChange = (e, { name, value }) => this.setState({ [name]: value })
 
 submitMeetingForm = () => {
-
   let error = false
   let errors = this.state.errors
 
@@ -192,13 +191,6 @@ submitMeetingForm = () => {
   }
 
   this.setState({ errors })
-
-  let meeting = {
-    first_name: this.state.firstName,
-    last_name: this.state.lastName,
-    email: this.state.email,
-    location: this.state.location,
-  }
 }
 
   render = () => (
