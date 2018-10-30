@@ -395,7 +395,7 @@ SegmentAddress.propTypes = {
 
 NewBordereau.propTypes = {
   produits: PropTypes.object,
-  fetchProduits: PropTypes.func,
+  // fetchProduits: PropTypes.func,
 }
 
 const mapStateToProps = state => ({

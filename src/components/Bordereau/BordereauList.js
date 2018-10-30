@@ -128,9 +128,6 @@ class BordereauList extends React.Component {
 }
 
 BordereauList.propTypes = {
-  datedebut: PropTypes.object,
-  datefin: PropTypes.object,
-  slips: PropTypes.object,
   handleChange: PropTypes.func,
   fetchSlips: PropTypes.func,
 }
