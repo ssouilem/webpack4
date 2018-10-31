@@ -7,6 +7,7 @@ import AddBordereauDetail from 'COMPONENTS/Bordereau/AddBordereauDetail'
 import LineBordereauDetail from 'COMPONENTS/Bordereau/LineBordereauDetail'
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
 import { actions as produitsActions } from 'ACTIONS/produits'
+import styles from './NewBordereau.less'
 
 class NewBordereau extends React.Component {
   state = {
@@ -27,18 +28,27 @@ class NewBordereau extends React.Component {
     lastName: '',
     email: '',
     location: '',
+    phoneNumber: '',
+    address1: '',
+    addess2: '',
+    zipCode: '',
+    city: '',
     errors: {
       firstNameError: false,
       lastNameError: false,
       emailError: false,
       locationError: false,
+      phoneNumber: false,
       formError: false,
+      address1Error: false,
+      addess2Error: false,
+      zipCodeError: false,
+      cityError: false,
       errorMessage: 'Please complete all required fields.',
     },
     complete: false,
     modalOpen: false,
   }
-
   clientsOptions = [
     { key: 'af', value: 'SOUILEM', flag: 'af', text: 'SOUILEM' },
     { key: 'cs', value: 'Comptoir Sahloul', text: 'Comptoir Sahloul' },
@@ -154,14 +164,14 @@ submitMeetingForm = () => {
   let error = false
   let errors = this.state.errors
 
-  if (this.state.studentFirstName === '') {
+  if (this.state.firstName === '') {
     errors.firstNameError = true
     error = true
   } else {
     errors.firstNameError = false
     error = false
   }
-  if (this.state.studentLastName === '') {
+  if (this.state.LastName === '') {
     errors.lastNameError = true
     error = true
   } else {
@@ -182,6 +192,41 @@ submitMeetingForm = () => {
     errors.locationError = false
     error = false
   }
+  if (this.state.phoneNumber === '') {
+    errors.phoneNumberError = true
+    error = true
+  } else {
+    errors.phoneNumberError = false
+    error = false
+  }
+  if (this.state.address1 === '') {
+    errors.address1Error = true
+    error = true
+  } else {
+    errors.address1Error = false
+    error = false
+  }
+  if (this.state.address2 === '') {
+    errors.address2Error = true
+    error = true
+  } else {
+    errors.address2Error = false
+    error = false
+  }
+  if (this.state.zipCode === '') {
+    errors.zipCodeError = true
+    error = true
+  } else {
+    errors.zipCodeError = false
+    error = false
+  }
+  if (this.state.city === '') {
+    errors.cityError = true
+    error = true
+  } else {
+    errors.cityError = false
+    error = false
+  }
 
   if (error) {
     errors.formError = true
@@ -189,13 +234,12 @@ submitMeetingForm = () => {
   } else {
     errors.formError = false
   }
-
   this.setState({ errors })
 }
 
   render = () => (
     <Form id='myform'>
-      <Grid >
+      <Grid className='newBordereau' >
         <Grid.Column width={ 14 }>
           <Grid textAlign='center' >
             <Grid.Row>
@@ -256,7 +300,7 @@ submitMeetingForm = () => {
                   icon='sign-in'
                   title='Information du client.'
                   client={ this.client }
-                  onClick={ this._updateAddress }
+                  onClick
                   updateAddress={ { onChange: this._handleChange,
                     handleOpen: this._handleOpen,
                     modalOpen: this.state.modalOpen,
@@ -389,13 +433,12 @@ SegmentAddress.propTypes = {
   icon: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   client: PropTypes.object.isRequired,
-  onClick: PropTypes.func.isRequired,
+  onClick: PropTypes.bool,
   updateAddress: updateAddressPropType,
 }
 
 NewBordereau.propTypes = {
   produits: PropTypes.object,
-  fetchProduits: PropTypes.func,
 }
 
 const mapStateToProps = state => ({

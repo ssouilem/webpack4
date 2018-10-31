@@ -8,10 +8,9 @@ import NavBar from './components/TabletApp'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Watch from './components/pages/watch'
 import HomePage from 'CONTAINERS/HomePage/HomePage'
-import DashBoard from './containers/DashBoard/DashBoard'
-import Bordereau from './containers/Bordereau/Bordereau'
+import Invoices from './containers/Invoices/Invoices'
 import Bordereaux from './containers/Bordereau/Bordereaux'
-import Campany from './containers/Invoice/Invoice'
+import Companies from './containers/Companies/Companies'
 import Entreprise from './containers/Entreprise/Entreprise'
 import Products from './containers/Products/Products'
 
@@ -20,7 +19,7 @@ import frmessages from 'INTL/lang/fr.json'
 import enmessages from 'INTL/lang/en.json'
 import en from 'react-intl/locale-data/en'
 import fr from 'react-intl/locale-data/fr'
-// import '../semantic/src/semantic.less';
+// import '../semantic/src/semantic.less'
 
 // const composeEnhancers =
 //   typeof window === 'object' &&
@@ -45,10 +44,10 @@ class App extends Component {
       <BrowserRouter >
         <NavBar>
           <Route exact path='/' component={ HomePage } />
-          <Route exact path='/clients' component={ Campany } />
+          <Route exact path='/clients' component={ Companies } />
           <Route path='/produits' component={ Products } />
           <Route path='/bordereaux' component={ Bordereaux } />
-          <Route path='/factures' component={ DashBoard } />
+          <Route path='/factures' component={ Invoices } />
           <Route exact path='/paiements' component={ Watch } />
           <Route exact path='/entreprise' component={ Entreprise } />
         </NavBar>

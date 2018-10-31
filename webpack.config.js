@@ -99,9 +99,12 @@ module.exports = {
         }, {
           loader: 'less-loader',
           options: {
-            paths: [
-              path.resolve(__dirname, 'node_modules'),
-            ],
+            sourceMap: true,
+            importLoaders: 1,
+            modules: true,
+            // paths: [
+            //   path.resolve(__dirname, 'node_modules'),
+            // ],
           },
         }],
       },

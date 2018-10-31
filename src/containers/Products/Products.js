@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Header, Grid, Table, Form, List, Segment, Icon, Button, Breadcrumb, Search } from 'semantic-ui-react'
+import { Header, Grid, Table, List, Segment, Icon, Button, Breadcrumb, Search } from 'semantic-ui-react'
 
 const sections = [
   { key: 'home', content: 'Home', link: true },
@@ -16,7 +16,7 @@ const source = [{
 
 class Products extends React.Component {
 
-  componentWillMount() {
+  componentWillMount () {
     this.resetComponent()
   }
 
@@ -44,93 +44,91 @@ class Products extends React.Component {
     const { isLoading, value, results } = this.state
 
     return (
-      <Form id='myform'>
-        <Grid celled >
-          <Grid.Column width={ 1 } >
-          </Grid.Column>
-          <Grid.Column width={ 15 }>
-            <Grid celled >
-              <Grid.Row>
-                <Grid.Column width={ 12 }>
-                  <Breadcrumb divider='/' sections={ sections } />
-                </Grid.Column>
-                <Grid.Column width={ 4 } >
-                  <Button fluid primary>Créer un produit</Button>
-                </Grid.Column>
-              </Grid.Row>
-              <Grid.Row>
-                <Grid.Column width={ 12 }>
-                  <Grid celled textAlign='center' >
-                    <Grid.Row>
-                      <Grid.Column width={ 8 } textAlign='left'>
-                        <Header as='h5'>PRODUITS ET SERVICES</Header>
-                      </Grid.Column>
-                      <Grid.Column width={ 8 } textAlign='right' >
-                        <Search
-                          loading={ isLoading }
-                          onResultSelect={ this.handleResultSelect }
-                          onSearchChange={ _.debounce(this.handleSearchChange, 500, { leading: true }) }
-                          results={results}
-                          value={value}
-                        />
-                      </Grid.Column>
-                    </Grid.Row>
-                    <Grid.Row>
-                      <Grid.Column textAlign='center'>
-                        <Table >
-                          <Table.Header>
-                            <Table.Row>
-                              <Table.HeaderCell>Reference</Table.HeaderCell>
-                              <Table.HeaderCell>Description</Table.HeaderCell>
-                              <Table.HeaderCell>Qte</Table.HeaderCell>
-                              <Table.HeaderCell>Reduction</Table.HeaderCell>
-                              <Table.HeaderCell>Unit</Table.HeaderCell>
-                              <Table.HeaderCell>Total</Table.HeaderCell>
-                              <Table.HeaderCell>Actions</Table.HeaderCell>
-                            </Table.Row>
-                          </Table.Header>
-                          <Table.Body>
+      <Grid celled >
+        <Grid.Column width={ 1 } >
+        </Grid.Column>
+        <Grid.Column width={ 15 }>
+          <Grid celled >
+            <Grid.Row>
+              <Grid.Column width={ 12 }>
+                <Breadcrumb divider='/' sections={ sections } />
+              </Grid.Column>
+              <Grid.Column width={ 4 } >
+                <Button fluid primary>Créer un produit</Button>
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column width={ 12 }>
+                <Grid celled textAlign='center' >
+                  <Grid.Row>
+                    <Grid.Column width={ 8 } textAlign='left'>
+                      <Header as='h5'>PRODUITS ET SERVICES</Header>
+                    </Grid.Column>
+                    <Grid.Column width={ 8 } textAlign='right' >
+                      <Search
+                        loading={ isLoading }
+                        onResultSelect={ this.handleResultSelect }
+                        onSearchChange={ _.debounce(this.handleSearchChange, 500, { leading: true }) }
+                        results={results}
+                        value={value}
+                      />
+                    </Grid.Column>
+                  </Grid.Row>
+                  <Grid.Row>
+                    <Grid.Column textAlign='center'>
+                      <Table >
+                        <Table.Header>
+                          <Table.Row>
+                            <Table.HeaderCell>Reference</Table.HeaderCell>
+                            <Table.HeaderCell>Description</Table.HeaderCell>
+                            <Table.HeaderCell>Qte</Table.HeaderCell>
+                            <Table.HeaderCell>Reduction</Table.HeaderCell>
+                            <Table.HeaderCell>Unit</Table.HeaderCell>
+                            <Table.HeaderCell>Total</Table.HeaderCell>
+                            <Table.HeaderCell>Actions</Table.HeaderCell>
+                          </Table.Row>
+                        </Table.Header>
+                        <Table.Body>
 
-                            {this.state && this.state.bordereauDetails ? this.state.bordereauDetails.map(bordereauDetail => (
-                              <label> tests </label>
-                            )) :
-                              <Table.Row>
-                                <Table.HeaderCell colSpan='7'>
-                                  <Grid textAlign='center'>
-                                    <Grid.Row>
-                                      <Icon size='big' name='pdf file outline' />
-                                    </Grid.Row>
-                                    <Grid.Row>
-                                        Pas de produits dans la liste.
-                                    </Grid.Row>
-                                    <Grid.Row>
-                                      <Button primary>Créer un produit</Button>
-                                    </Grid.Row>
-                                   </Grid>
-                                  </Table.HeaderCell>
-                              </Table.Row>
-                            }
-                          </Table.Body>
-                        </Table>
-                      </Grid.Column>
-                    </Grid.Row>
-                  </Grid>
-                </Grid.Column>
-                <Grid.Column width={ 4 }>
-                  <Grid celled >
-                    <Segment.Group>
-                      <Segment>MON COMPTE</Segment>
-                      <Segment>Parametres de facturation</Segment>
-                      <Segment>Parametres de compte</Segment>
-                      <Segment>Monnais de paiement</Segment>
-                    </Segment.Group>
-                  </Grid>
-                </Grid.Column>
-              </Grid.Row>
-            </Grid>
-          </Grid.Column>
-        </Grid>
-      </Form>
+                          {this.state && this.state.bordereauDetails ? this.state.bordereauDetails.map(bordereauDetail => (
+                            <label> tests </label>
+                          )) :
+                            <Table.Row>
+                              <Table.HeaderCell colSpan='7'>
+                                <Grid textAlign='center'>
+                                  <Grid.Row>
+                                    <Icon size='big' name='pdf file outline' />
+                                  </Grid.Row>
+                                  <Grid.Row>
+                                      Pas de produits dans la liste.
+                                  </Grid.Row>
+                                  <Grid.Row>
+                                    <Button primary>Créer un produit</Button>
+                                  </Grid.Row>
+                                 </Grid>
+                                </Table.HeaderCell>
+                            </Table.Row>
+                          }
+                        </Table.Body>
+                      </Table>
+                    </Grid.Column>
+                  </Grid.Row>
+                </Grid>
+              </Grid.Column>
+              <Grid.Column width={ 4 }>
+                <Grid celled >
+                  <Segment.Group>
+                    <Segment>MON COMPTE</Segment>
+                    <Segment>Parametres de facturation</Segment>
+                    <Segment>Parametres de compte</Segment>
+                    <Segment>Monnais de paiement</Segment>
+                  </Segment.Group>
+                </Grid>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Grid.Column>
+      </Grid>
     )
   }
 }

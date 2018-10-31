@@ -133,5 +133,4 @@ class Entreprise extends Component {
   }
 }
 
-
 export default Entreprise

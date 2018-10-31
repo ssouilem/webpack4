@@ -3,36 +3,36 @@
     "name": "Tableau de bord",
     "title": "Tableau de bord",
     "route": "/",
-    "icon": "home"
+    "icon": "chart pie"
   },
   {
     "name": "clients",
     "title": "Mos clients",
     "route": "/clients",
-    "icon": "users"
+    "icon": "id badge"
   },
   {
     "name": "produits",
     "title": "Nos Produits",
     "route": "/produits",
-    "icon": "tasks"
+    "icon": "dolly"
   },
   {
     "name": "bordereaux",
     "title": "Mes bordereaux",
     "route": "/bordereaux",
-    "icon": "chain"
+    "icon": "file alternate outline"
   },
   {
     "name": "factures",
     "title": "Mes factures",
     "route": "/factures",
-    "icon": "file"
+    "icon": "file alternate"
   },
   {
     "name": "Paiements",
     "title": "Paiements",
     "route": "/paiements",
-    "icon": "qrcode"
+    "icon": "cc visa"
   }
 ]
