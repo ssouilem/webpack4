@@ -23,7 +23,7 @@ const clients = [
     'text': 'Direct Plast',
     'value': '2',
     'price': 0.710,
-    'city': 'FIRST_CHOICE',
+    'city': 'FIRST',
     'reference': 'R12',
     'unit': 'METRE',
   },

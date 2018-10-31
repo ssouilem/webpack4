@@ -104,16 +104,7 @@ render = () => (
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
-                  { /*<AddBordereauDetail
-                    produits={ this.props.produits }
-                    bordereauDetailForm={ this.state.bordereauDetail }
-                    id={ this.state.id } onClick={ this.addLineInvoice }
-                    isLoading={ this.state.isLoading }
-                    handleResultSelect={ this.handleResultSelect }
-                    handleSearchChange={ this.handleSearchChange }
-                    results={ this.state.results }
-                    value={ this.state.value }
-                    onChange={ this._handleChangeInput } />*/ }
+
                 </Table.Body>
                 <Table.Footer>
                   {this.props.slips.map(bordereauDetail => (

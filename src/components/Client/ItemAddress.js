@@ -53,7 +53,7 @@ const ItemAddress = ({ errors, onChange, disabled, item }) => (
           onChange={ onChange }
           error={ errors.zipCodeError } />
         <Form.Input
-          placeholder='Ville'
+          placeholder='Ville '
           label='Ville'
           name='city'
           onChange={ onChange }

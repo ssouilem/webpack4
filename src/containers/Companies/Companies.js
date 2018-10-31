@@ -110,7 +110,6 @@ class Campanies extends React.Component {
   }
 }
 
-
 Campanies.propTypes = {}
 
 const mapStateToProps = state => ({

@@ -119,7 +119,7 @@ class Products extends React.Component {
                 <Grid celled >
                   <Segment.Group>
                     <Segment>MON COMPTE</Segment>
-                    <Segment>Parametres de facturation</Segment>
+                    <Segment>> Parametres de facturation</Segment>
                     <Segment>Parametres de compte</Segment>
                     <Segment>Monnais de paiement</Segment>
                   </Segment.Group>

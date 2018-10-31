@@ -11,7 +11,7 @@ const onPortalStateChange = (dispatch) => (state) => (
     payload: {
       portalIsOpen: state.portalIsOpen,
     },
-  })
+  }) 
 )
 
 const changeSidebarState = (dispatch) => (state) => (
