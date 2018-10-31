@@ -88,7 +88,7 @@ class AddBordereau extends React.Component {
               {this.state.invoices.map(invoice => (
                 <AddBordereauDetail addLineInvoice={this.addLineInvoice}/>
               ))}
-              
+
               <Divider hidden />
               <Segment vertical textAlign='right' >
                   <Button  disabled color='twitter'>
