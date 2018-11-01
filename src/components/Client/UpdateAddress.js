@@ -3,7 +3,7 @@ import { Modal, Button, Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import ItemAddress from 'COMPONENTS/Client/ItemAddress'
 
-const UpdateAddress = ({ onChange, handleOpen, modalOpen, handleClose, complete, submitMeetingForm, errors }) => (
+const UpdateAddress = ({ item, onChange, handleOpen, modalOpen, handleClose, complete, submitMeetingForm, errors }) => (
   <Modal
     trigger={ <Button onClick={ handleOpen }
       basic icon='pencil alternate' content='Modifier' floated='right' /> }
@@ -19,6 +19,7 @@ const UpdateAddress = ({ onChange, handleOpen, modalOpen, handleClose, complete,
         ? <ItemAddress
           errors={ errors }
           onChange={ onChange }
+          item={{ firstName: item.name }} 
           disabled={ false }
         />
         : <div className='modal-complete'>
@@ -42,10 +43,11 @@ const UpdateAddress = ({ onChange, handleOpen, modalOpen, handleClose, complete,
 UpdateAddress.propTypes = {
   onChange: PropTypes.func.isRequired,
   handleOpen: PropTypes.func.isRequired,
-  modalOpen: PropTypes.bool.isRequired,
+  modalOpen: PropTypes.bool,
   handleClose: PropTypes.func.isRequired,
   complete: PropTypes.bool.isRequired,
   submitMeetingForm: PropTypes.func.isRequired,
   errors: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
 }
 export default UpdateAddress

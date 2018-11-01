@@ -4,7 +4,7 @@ import BordereauList from 'COMPONENTS/Bordereau/BordereauList'
 import NewBordereau from 'CONTAINERS/Bordereau/NewBordereau'
 import Invoice from 'CONTAINERS/Invoices/Invoice'
 import { BreadcrumbUtils } from 'COMPONENTS/Utils/Utils'
-import SearchSimple from 'COMPONENTS/Search/SearchSimple'
+import SearchSimple from 'CONTAINERS/Search/SearchSimple'
 
 const members = [
   { 'title': 'Vandervort - McCullough', id: 50, 'image': 'https://react.semantic-ui.com//images/avatar/large/matthew.png', avatar_url: 'https://react.semantic-ui.com//images/avatar/large/matthew.png', name: 'Souilem', username: 'samir' },

@@ -24,7 +24,7 @@ const SegmentAddress = ({ icon, title, onClick, client, updateAddress }) => (
       </Card.Content>
       { (onClick &&
       <Card.Content >
-        <UpdateAddress { ...updateAddress } />
+        <UpdateAddress { ...updateAddress } item={ client }/>
         <Divider hidden />
         <Divider hidden />
       </Card.Content>) ||
@@ -44,7 +44,7 @@ const updateAddressPropType = PropTypes.shape({
   handleClose: PropTypes.func.isRequired,
   complete: PropTypes.bool.isRequired,
   submitMeetingForm: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
+  errors: PropTypes.object,
 })
 
 SegmentAddress.propTypes = {
