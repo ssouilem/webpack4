@@ -1,22 +1,21 @@
 import _ from 'lodash'
 import React from 'react'
-import {Header, Grid, Table, Button, Search, Icon } from 'semantic-ui-react'
+import {Header, Grid, Table, Button, Icon } from 'semantic-ui-react'
+import SearchSimple from 'CONTAINERS/Search/SearchSimple'
 import PropTypes from 'prop-types'
 
-const CompaniesList = ({ onClick, handleResultSelect, handleSearchChange, fetchClients, clients, isLoading, value, results }) => (
+const CompaniesList = ({ onClick, fetchClients, clients }) => (
   <Grid textAlign='center' >
     <Grid.Row>
       <Grid.Column width={ 8 } textAlign='left'>
         <Header as='h5'>LISTE DES CLIENTS</Header>
       </Grid.Column>
       <Grid.Column width={ 8 } textAlign='right' >
-        <Search
-          loading={ isLoading }
-          onResultSelect={ handleResultSelect }
-          onSearchChange={ _.debounce(handleSearchChange, 500, { leading: true }) }
-          results={ results }
-          value={ value }
-        />
+        <SearchSimple source={ clients.map(client => ({
+          key: client.id,
+          title: client.title,
+          description: client.description,
+        })) } />
       </Grid.Column>
     </Grid.Row>
     <Grid.Row>
@@ -33,7 +32,7 @@ const CompaniesList = ({ onClick, handleResultSelect, handleSearchChange, fetchC
           </Table.Header>
           <Table.Body>
           { clients ? clients.map(client => (
-            <Table.Row key={ client.id }>
+            <Table.Row key={ client.key }>
               <Table.HeaderCell>{ client.name }</Table.HeaderCell>
               <Table.HeaderCell>{ client.siret }</Table.HeaderCell>
               <Table.HeaderCell>{ client.contactName }</Table.HeaderCell>
@@ -77,13 +76,8 @@ const CompaniesList = ({ onClick, handleResultSelect, handleSearchChange, fetchC
 )
 
 CompaniesList.propTypes = {
-  handleResultSelect: PropTypes.func.isRequired,
-  handleSearchChange: PropTypes.func.isRequired,
   fetchClients: PropTypes.func.isRequired,
   clients: PropTypes.array,
-  isLoading: PropTypes.bool.isRequired,
-  value: PropTypes.string.isRequired,
-  results: PropTypes.array.isRequired,
   onClick: PropTypes.func.isRequired,
 }
 

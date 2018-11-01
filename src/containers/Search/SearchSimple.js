@@ -23,7 +23,7 @@ class SearchSimple extends Component {
         this.props.setResultsProps({ value })
       }, 300)
   }
-  
+
   render = () => (
     <Search
       search={ this.props.search}
@@ -35,7 +35,7 @@ class SearchSimple extends Component {
 
 SearchSimple.propTypes = {
   search: PropTypes.object.isRequired,
-  source: PropTypes.object.isRequired,
+  source: PropTypes.array,
   reinitialize: PropTypes.func.isRequired,
   setSourceProps: PropTypes.func.isRequired,
   setValueProps: PropTypes.func.isRequired,

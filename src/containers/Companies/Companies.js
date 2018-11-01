@@ -22,44 +22,12 @@ const sections = [
   { key: 'info', content: 'Personal Information', active: true },
 ]
 
-const source = [{
-  title: 'test',
-  description: 'test',
-  price: 'test'
-}]
 
 class Campanies extends React.Component {
-
-  componentWillMount () {
-    this.resetComponent()
+  componentWillMount() {
     this.props.fetchClients()
   }
-
-  resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
-
-  handleResultSelect = (e, { result }) => this.setState({ value: result.title })
-
-  handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value })
-
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.resetComponent()
-
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.title)
-
-      this.setState({
-        isLoading: false,
-        results: _.filter(source, isMatch),
-      })
-    }, 300)
-  }
-
-
-  render() {
-  const { isLoading, value, results, client } = this.state
-
-  return (
+  render = () => (
     <Grid celled >
       <Grid.Column width={ 1 } >
       </Grid.Column>
@@ -69,7 +37,6 @@ class Campanies extends React.Component {
             <Grid.Column width={ 12 }>
               <Breadcrumb divider='/' sections={ sections } />
               <Select
-                value={ client && client.access_level }
                 selectOnBlur={ false }
                 options= { ROLES }/>
             </Grid.Column>
@@ -82,14 +49,16 @@ class Campanies extends React.Component {
 
             <CompaniesList
               onClick={ this.props.onClick }
-              handleResultSelect={ this.handleResultSelect }
-              handleSearchChange={ this.handleSearchChange }
               fetchClients={ this.props.fetchClients }
-              clients={ this.props.clients }
-              isLoading={this.state.isLoading }
-              value={ this.state.value }
-              results={ this.state.results }
-             />
+              clients={ this.props.clients.map(client => ({
+                key: client.id,
+                title: client.name,
+                name: client.name,
+                description: client.name,
+                contactName: client.contactName,
+                siret: client.siret,
+                city: client.city,
+              })) } />
 
             </Grid.Column>
             <Grid.Column width={ 4 }>
@@ -106,8 +75,7 @@ class Campanies extends React.Component {
         </Grid>
       </Grid.Column>
     </Grid>
-    )
-  }
+  )
 }
 
 Campanies.propTypes = {}
