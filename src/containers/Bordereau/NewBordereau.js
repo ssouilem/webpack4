@@ -7,73 +7,48 @@ import AddBordereauDetail from 'COMPONENTS/Bordereau/AddBordereauDetail'
 import LineBordereauDetail from 'COMPONENTS/Bordereau/LineBordereauDetail'
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
 import { actions as produitsActions } from 'ACTIONS/produits'
+import { actions as clientsActions } from 'ACTIONS/clients'
+import { actions as addressActions } from 'ACTIONS/address'
 import styles from './NewBordereau.less'
 
 class NewBordereau extends React.Component {
   state = {
+    totalTVA: 0,
+    totalAmountHT: 0,
+    totalAmountTTC: 0,
     bordereauType: 'DELIVERY',
     id: '',
     invoices: [],
     bordereauDetails: [],
     bordereauDetail: {
+      id: '',
       reference: '',
       description: '',
       qte: 1,
       reduction: '',
       unit: '',
-      total: '',
+      total: 0,
     },
-    // Model
-    firstName: '',
-    lastName: '',
-    email: '',
-    location: '',
-    phoneNumber: '',
-    address1: '',
-    addess2: '',
-    zipCode: '',
-    city: '',
-    errors: {
-      firstNameError: false,
-      lastNameError: false,
-      emailError: false,
-      locationError: false,
-      phoneNumber: false,
-      formError: false,
-      address1Error: false,
-      addess2Error: false,
-      zipCodeError: false,
-      cityError: false,
-      errorMessage: 'Please complete all required fields.',
-    },
-    complete: false,
-    modalOpen: false,
-  }
-  clientsOptions = [
-    { key: 'af', value: 'SOUILEM', flag: 'af', text: 'SOUILEM' },
-    { key: 'cs', value: 'Comptoir Sahloul', text: 'Comptoir Sahloul' },
-  ]
-  client = {
-    name: 'TEST',
-    address: 'rue farhat hached',
-    city: 'SOUSSE',
-    contact: {firstName: 'Mohamed TODO'},
-    siret: 'Numero fiscal',
-    mail: 'mymail@domaine.com',
   }
 
   componentWillMount () {
     this.resetComponent()
+    this.props.fetchClients()
   }
 
+  // Search FUNC
   resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
-
   handleResultSelect = (e, { result }) => {
+    this.setState({result: result})
+    console.log('handleResultSelect : ', result, this.props.client)
     var bordereauDetail = this.state.bordereauDetail
     bordereauDetail.description = result.description
     bordereauDetail.reference = result.reference
-    bordereauDetail.reduction = '20%'
+    bordereauDetail.reduction = this.props.client.reduction
     bordereauDetail.unit = result.unit
+    let totalHT = (parseInt(bordereauDetail.qte) * parseFloat(result.price)) * ((100 - parseInt(bordereauDetail.reduction)) / 100)
+    console.log('Total : ', parseFloat(bordereauDetail.qte), parseFloat(result.price), parseInt(bordereauDetail.reduction), totalHT)
+    bordereauDetail.total = totalHT.toFixed(3)
     this.setState({ value: result.reference, bordereauDetail })
   }
 
@@ -92,18 +67,43 @@ class NewBordereau extends React.Component {
       })
     }, 300)
   }
-  addLineInvoice = (event) => {
+  // ADD BORD DEATIL
+  _addLinebordereauDetail = (event) => {
     let idLocal = 'ID_' + (new Date()).getTime()
     this.setState({'id': idLocal})
+    this.state.bordereauDetail.id = idLocal
     // this.setState(prevState => ({
     //   invoices: [...prevState.invoices, invoice]
     // }))
-    this.setState({ bordereauDetails: [...this.state.bordereauDetails, this.state.bordereauDetail], bordereauDetail: {} })
+    let totalHT = parseFloat(this.state.totalAmountHT) + parseFloat(this.state.bordereauDetail.total)
+    let totalTVA = totalHT * 0.2
+    let totalTTC = totalHT + totalTVA
+
+    // Calcule somme
+    this.setState({ totalAmountHT: parseFloat(totalHT), totalAmountTTC: parseFloat(totalTTC), totalTVA: parseFloat(totalTVA) })
+
+    // reinit form
+    const bordereauDetail = {
+      id: '',
+      reference: '',
+      description: '',
+      qte: 1,
+      reduction: '',
+      unit: '',
+      total: 0,
+    }
+    this.setState({ bordereauDetails: [...this.state.bordereauDetails, this.state.bordereauDetail], bordereauDetail: bordereauDetail })
     document.getElementById('myform').reset()
   }
 
+  _deleteLinebordereauDetail = (event, {name}) => {
+    console.log('id', name)
+    _.remove(this.state.bordereauDetails, function (currentObject) { return currentObject.id === name })
+
+    // @TODO mettre a jour les Montants
+    this.setState({ bordereauDetails: this.state.bordereauDetails })
+  }
   _handleChangeInput = (event) => {
-    console.log('Variables : _handleChangeInput ', this)
     const { name, value } = event.target
     if (this.state.id === '') {
       let initId = 'ID_' + (new Date()).getTime()
@@ -124,10 +124,14 @@ class NewBordereau extends React.Component {
       }
       case 'qte': {
         bordereauDetail.qte = value
+        let total = (parseInt(bordereauDetail.qte) * this.state.result.price) * ((100 - bordereauDetail.reduction) / 100)
+        bordereauDetail.total = total.toFixed(3)
         break
       }
       case 'reduction': {
         bordereauDetail.reduction = value
+        let total = (parseInt(bordereauDetail.qte) * this.state.result.price) * ((100 - bordereauDetail.reduction) / 100)
+        bordereauDetail.total = total.toFixed(3)
         break
       }
       case 'unit': {
@@ -151,14 +155,14 @@ class NewBordereau extends React.Component {
     //   console.log('Before update: ', JSON.stringify(bordereauDetails[objIndex]))
     // this.props.setWizardVarsProps({ key: name, value })
   }
+  // UPDATE BORD TYPE
   _handleCheckedChange = (e, { value }) => this.setState({ bordereauType: value })
-  _handleSelectChange = (e, { name, value }) => this.setState({ [name]: value })
-  _updateAddress = () => console.log('lancement de pop')
+  // SELECT CLIENT
+  _handleSelectChange = (e, { name, value }) => {
+    this.props.handleChangeClient({ [name]: value })
+  }
 
-// Model FUNCTION
-_handleClose = () => this.setState({ modalOpen: false })
-_handleOpen = () => this.setState({ modalOpen: true })
-_handleChange = (e, { name, value }) => this.setState({ [name]: value })
+_handleChange = (e, { name, value }) => this.props.setItemProps({ [name]: value })
 
 submitMeetingForm = () => {
   let error = false
@@ -253,7 +257,12 @@ submitMeetingForm = () => {
                   fluid
                   search
                   selection
-                  options={ this.clientsOptions }
+                  value={ this.props.selectedClient }
+                  options={ this.props.clients.map(client => ({
+                    key: client.id,
+                    value: client.id,
+                    text: client.text,
+                  })) }
                   onChange={ this._handleSelectChange }
                 />
               </Grid.Column>
@@ -299,15 +308,15 @@ submitMeetingForm = () => {
                 <SegmentAddress
                   icon='sign-in'
                   title='Information du client.'
-                  client={ this.client }
+                  client={ this.props.client }
                   onClick
                   updateAddress={ { onChange: this._handleChange,
-                    handleOpen: this._handleOpen,
-                    modalOpen: this.state.modalOpen,
-                    handleClose: this._handleClose,
-                    complete: this.state.complete,
+                    handleOpen: this.props.handleOpen,
+                    modalOpen: this.props.modalOpen,
+                    handleClose: this.props.handleClose,
+                    complete: this.props.complete,
                     submitMeetingForm: this.submitMeetingForm,
-                    errors: this.state.errors } }
+                    address: this.props.address } }
                 />
               </Grid.Column>
             </Grid.Row>
@@ -334,7 +343,7 @@ submitMeetingForm = () => {
                     <AddBordereauDetail
                       produits={ this.props.produits }
                       bordereauDetailForm={ this.state.bordereauDetail }
-                      id={ this.state.id } onClick={ this.addLineInvoice }
+                      id={ this.state.id } onClick={ this._addLinebordereauDetail }
                       isLoading={ this.state.isLoading }
                       handleResultSelect={ this.handleResultSelect }
                       handleSearchChange={ this.handleSearchChange }
@@ -346,7 +355,7 @@ submitMeetingForm = () => {
                     {this.state.bordereauDetails.map(bordereauDetail => (
                       <LineBordereauDetail
                         line={ bordereauDetail }
-                        onClick={ this.addLineInvoice } />
+                        onClick={ this._deleteLinebordereauDetail } />
                     ))}
                   </Table.Footer>
                 </Table>
@@ -357,19 +366,19 @@ submitMeetingForm = () => {
                 <List divided verticalAlign='middle'>
                   <List.Item>
                     <List.Content floated='right'>
-                      5,550
+                      { this.state.totalAmountHT ? this.state.totalAmountHT.toFixed(3) : 0 }
                     </List.Content>
                     <List.Content><Header as='h5'>Montant HT</Header></List.Content>
                   </List.Item>
                   <List.Item>
                     <List.Content floated='right'>
-                      5,550
+                      { this.state.totalTVA ? this.state.totalTVA.toFixed(3) : 0 }
                     </List.Content>
                     <List.Content><Header as='h5'>TVA 20%</Header></List.Content>
                   </List.Item>
                   <List.Item>
                     <List.Content floated='right'>
-                      5,550
+                      { this.state.totalAmountTTC ? this.state.totalAmountTTC.toFixed(3) : 0 }
                     </List.Content>
                     <List.Content><Header as='h5'>Montant TTC</Header></List.Content>
                   </List.Item>
@@ -426,7 +435,7 @@ const updateAddressPropType = PropTypes.shape({
   handleClose: PropTypes.func.isRequired,
   complete: PropTypes.bool.isRequired,
   submitMeetingForm: PropTypes.func.isRequired,
-  errors: PropTypes.object.isRequired,
+  address: PropTypes.object.isRequired,
 })
 
 SegmentAddress.propTypes = {
@@ -439,15 +448,29 @@ SegmentAddress.propTypes = {
 
 NewBordereau.propTypes = {
   produits: PropTypes.object,
+  setItemProps: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
   produits: state.produits,
+  clients: state.clients.data,
+  client: state.clients.client,
+  selectedClient: state.clients.selectedClient,
+  modalOpen: state.modalOpen,
+  complete: state.complete,
+  address: state.address,
 })
 
 const mapDispatchToProps = dispatch => ({
   fetchProduits: produitsActions.fetchProduits(dispatch),
+  setItemProps: addressActions.setItemProps(dispatch),
+  handleClose: addressActions.handleClose(dispatch),
+  handleOpen: addressActions.handleOpen(dispatch),
+  fetchClients: clientsActions.fetchClients(dispatch),
+  reinitializeItem: addressActions.reinitializeItem(dispatch),
+  handleChangeClient: clientsActions.handleChangeClient(dispatch),
   dispatch,
 })
+
 export { NewBordereau }
 export default connect(mapStateToProps, mapDispatchToProps)(NewBordereau)

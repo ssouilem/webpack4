@@ -3,7 +3,7 @@ import { Table, Button } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
 const LineBordereauDetail = ({ onClick, line }) => (
-  <Table.Row>
+  <Table.Row key={ line.id }>
     <Table.HeaderCell>{ line.reference }</Table.HeaderCell>
     <Table.HeaderCell>{ line.description }</Table.HeaderCell>
     <Table.HeaderCell>{ line.qte }</Table.HeaderCell>
@@ -12,6 +12,7 @@ const LineBordereauDetail = ({ onClick, line }) => (
     <Table.HeaderCell>{ line.total }</Table.HeaderCell>
     <Table.HeaderCell><Button
       onClick={ onClick }
+      name={ line.id }
       icon='delete'
       color='red'
       floated='right' /></Table.HeaderCell>

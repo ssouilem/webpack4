@@ -6,6 +6,7 @@ const clients = [
   {
     'id': 'ID_33',
     'contactName': 'Societe 1',
+    'reduction': 20,
     'siret': 'TN12211222213',
     'name': 'Comptoire sahloul',
     'value': '1',
@@ -18,6 +19,7 @@ const clients = [
   {
     'id': 'ID_12',
     'contactName': 'EURO',
+    'reduction': 20,
     'siret': 'TN12211222213',
     'name': 'Direct Plast',
     'text': 'Direct Plast',
@@ -30,6 +32,7 @@ const clients = [
   {
     'id': 'ID_3',
     'contactName': 'EURO',
+    'reduction': 30,
     'siret': 'TN12211222213',
     'name': 'quincaillerie One',
     'text': 'quincaillerie One',
@@ -42,6 +45,7 @@ const clients = [
     'id': 'ID_34',
     'contactName': 'EURO',
     'siret': 'TN12211222213',
+    'reduction': 10,
     'name': 'quincaillerie Two',
     'text': 'quincaillerie Two',
     'value': 'quincaillerie Two',

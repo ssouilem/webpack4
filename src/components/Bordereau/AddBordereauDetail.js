@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Table, Form, Button, Search } from 'semantic-ui-react'
+import { Table, Form, Button, Search, Input } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
 const AddBordereauDetail = (props) => {
@@ -17,11 +17,15 @@ const AddBordereauDetail = (props) => {
         value={ value }
       />
       </Table.HeaderCell>
-      <Table.HeaderCell><Form.Input name='description' id={ id } onBlur={ onChange } fluid placeholder='description' defaultValue={ bordereauDetailForm && bordereauDetailForm.description } /></Table.HeaderCell>
-      <Table.HeaderCell><Form.Input name='qte' type='number' id={ id } onBlur={ onChange } fluid placeholder='Qte' /></Table.HeaderCell>
-      <Table.HeaderCell><Form.Input name='reduction' id={ id } onBlur={ onChange } fluid placeholder='Reduction' defaultValue={ bordereauDetailForm && bordereauDetailForm.reduction } /></Table.HeaderCell>
+      <Table.HeaderCell><Form.Input fluid name='description' id={ id } onBlur={ onChange } placeholder='description' defaultValue={ bordereauDetailForm && bordereauDetailForm.description } /></Table.HeaderCell>
+      <Table.HeaderCell><Form.Input fluid name='qte' type='number' id={ id } onBlur={ onChange } placeholder='Qte' defaultValue={ bordereauDetailForm && bordereauDetailForm.qte } /></Table.HeaderCell>
+      <Table.HeaderCell><Form.Input as={ Input } name='reduction' id={ id } onBlur={ onChange } fluid placeholder='Reduction'
+        defaultValue={ bordereauDetailForm && bordereauDetailForm.reduction }
+        label={ { basic: true, content: '%' } }
+        labelPosition='right' />
+      </Table.HeaderCell>
       <Table.HeaderCell><Form.Input name='unit' id={ id } onBlur={ onChange } fluid placeholder='Unit' defaultValue={ bordereauDetailForm && bordereauDetailForm.unit } /></Table.HeaderCell>
-      <Table.HeaderCell><Form.Input name='total' id={ id } onBlur={ onChange } fluid placeholder='Total' defaultValue={ bordereauDetailForm && bordereauDetailForm.total } /></Table.HeaderCell>
+      <Table.HeaderCell><Form.Input name='total' id={ id } onBlur={ onChange } fluid placeholder='Total' value={ bordereauDetailForm && bordereauDetailForm.total } /></Table.HeaderCell>
       <Table.HeaderCell><Button id={ id }
         onClick={ onClick }
         icon='add'

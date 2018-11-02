@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 
 class SearchSimple extends Component {
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.initialize()
     this.props.setSourceProps({ source: this.props.source })
   }

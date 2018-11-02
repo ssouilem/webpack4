@@ -1,44 +1,47 @@
 import React from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { Header, Grid, Table, List, Segment, Icon, Button, Breadcrumb, Search, Select } from 'semantic-ui-react'
-import { FormattedMessage } from 'react-intl'
+import { Header, Grid, Segment, Button, Breadcrumb, Search } from 'semantic-ui-react'
+// import { FormattedMessage } from 'react-intl'
 import CompaniesList from 'COMPONENTS/Companies/CompaniesList'
 import { actions as clientsActions } from 'ACTIONS/clients'
-
 // import { push } from 'react-router-redux'
 import styles from './Companies.less'
 
-const ROLES = [
-  { key: 50, value: 50, text: 'Owner' },
-  { key: 40, value: 40, text: 'Scrum Master' },
-  { key: 30, value: 30, text: 'Developper' },
-  { key: 10, value: 10, text: 'Guest' },
-]
-
 const sections = [
   { key: 'home', content: 'Home', link: true },
-  { key: 'registration', content: 'Registration', link: true },
-  { key: 'info', content: 'Personal Information', active: true },
+  { key: 'registration', content: 'Clients', link: true },
 ]
 
-
 class Campanies extends React.Component {
-  componentWillMount() {
+  componentWillMount () {
     this.props.fetchClients()
+    this.resetComponent()
   }
+  resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
+  handleResultSelect = (e, { result }) => this.setState({ value: result.name })
+  handleSearchChange = (e, { value }) => {
+    this.setState({ isLoading: true, value })
+    setTimeout(() => {
+      if (this.state.value.length < 1) return this.resetComponent()
+      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+      const isMatch = result => re.test(result.name)
+      this.setState({
+        isLoading: false,
+        results: _.filter(this.props.clients, isMatch),
+      })
+    }, 300)
+  }
+
   render = () => (
-    <Grid celled >
+    <Grid >
       <Grid.Column width={ 1 } >
       </Grid.Column>
       <Grid.Column width={ 15 }>
-        <Grid celled >
+        <Grid >
           <Grid.Row>
             <Grid.Column width={ 12 }>
-              <Breadcrumb divider='/' sections={ sections } />
-              <Select
-                selectOnBlur={ false }
-                options= { ROLES }/>
+              <Breadcrumb divider=' > ' sections={ sections } />
             </Grid.Column>
             <Grid.Column width={ 4 } >
               <Button fluid primary>Ajouter un client</Button>
@@ -46,20 +49,37 @@ class Campanies extends React.Component {
           </Grid.Row>
           <Grid.Row>
             <Grid.Column width={ 12 }>
-
-            <CompaniesList
-              onClick={ this.props.onClick }
-              fetchClients={ this.props.fetchClients }
-              clients={ this.props.clients.map(client => ({
-                key: client.id,
-                title: client.name,
-                name: client.name,
-                description: client.name,
-                contactName: client.contactName,
-                siret: client.siret,
-                city: client.city,
-              })) } />
-
+              <Grid textAlign='center' >
+                <Grid.Row>
+                  <Grid.Column width={ 8 } textAlign='left'>
+                    <Header as='h5'>LISTE DES CLIENTS</Header>
+                  </Grid.Column>
+                  <Grid.Column width={ 8 } textAlign='right' >
+                    <Search
+                      name='searchProduct'
+                      loading={ this.state.isLoading }
+                      onResultSelect={ this.handleResultSelect }
+                      onSearchChange={ _.debounce(this.handleSearchChange, 500, { leading: true }) }
+                      results={ this.state.results }
+                      value={ this.state.value }
+                    />
+                  </Grid.Column>
+                </Grid.Row>
+                <Grid.Row>
+                  <CompaniesList
+                    onClick={ this.props.onClick }
+                    fetchClients={ this.state.results }
+                    clients={ this.props.clients.map(client => ({
+                      key: client.id,
+                      title: client.name,
+                      name: client.name,
+                      description: client.name,
+                      contactName: client.contactName,
+                      siret: client.siret,
+                      city: client.city,
+                    })) } />
+                </Grid.Row>
+              </Grid>
             </Grid.Column>
             <Grid.Column width={ 4 }>
               <Grid celled >
