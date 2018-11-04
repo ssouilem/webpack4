@@ -1,5 +1,6 @@
 import React from 'react'
 import { Button, Checkbox, Icon, Table, Header } from 'semantic-ui-react'
+import { Link } from 'react-router-dom'
 
 const TableApprove = (props) => (
   <Table basic='very' compact selectable stackable >
@@ -54,7 +55,7 @@ const TableApprove = (props) => (
       <Table.Row>
         <Table.HeaderCell />
         <Table.HeaderCell colSpan='7'>
-          <Button floated='right' icon labelPosition='left' primary size='small'>
+          <Button as={ Link } to='/factures' floated='right' icon labelPosition='left' primary size='small'>
             <Icon name='user' /> Nouvelle facture
           </Button>
           <Button name='all' onClick={ props.onClick } size='small'>{ props.state.allChecked ? 'Tout décocher' : 'Tout sélectionner' }</Button>

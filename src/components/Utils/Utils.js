@@ -9,3 +9,9 @@ export const BreadcrumbUtils = ({ parent, child }) => (
     <Breadcrumb.Section active>{ child }</Breadcrumb.Section>
   </Breadcrumb>
 )
+
+export const TableType = {
+  SHOW_CLIENTS: 'SHOW_CLIENTS',
+  SHOW_PRODUCTS: 'SHOW_PRODUCTS',
+  SHOW_BORDEREAUX: 'SHOW_BORDEREAUX',
+}

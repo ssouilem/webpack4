@@ -27,11 +27,13 @@ export const bordereauListPanes = [
     pane: (
       <Tab.Pane>
         <div>
-          <BreadcrumbUtils parent='Bordereaux' child='Liste de bordereaux' />
+          <Segment vertical>
+            <BreadcrumbUtils parent='Bordereaux' child='Nouveau bordereau' />
+          </Segment>
+          <Segment vertical>
+            <BordereauList />
+          </Segment>
         </div>
-        <Segment vertical placeholder>
-          <BordereauList />
-        </Segment>
       </Tab.Pane>
     ),
   },

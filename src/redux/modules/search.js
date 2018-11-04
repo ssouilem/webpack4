@@ -83,7 +83,7 @@ const ACTION_HANDLERS = {
     value: action.payload.value || state.value,
   }),
   [INITIALIZE_SEARCH]: (state, action) => action.payload,
-  [REINITIALIZE_SEARCH]: (state, action) =>({
+  [REINITIALIZE_SEARCH]: (state, action) => ({
     ...state,
     isLoading: false,
     value: '',

@@ -1,3 +1,4 @@
+import _ from 'lodash'
 const SET_WIZARD_PROPS = 'SET_WIZARD_PROPS'
 const SET_WIZARD_DONE = 'SET_WIZARD_DONE'
 const INCREMENT_STEP = 'INCREMENT_STEP'
@@ -8,6 +9,7 @@ const SET_DATE_PROPS = 'SET_DATE_PROPS'
 const FETCH_SLIPS_SENDING = 'FETCH_SLIPS_SENDING'
 const FETCH_SLIPS_SUCCESS = 'FETCH_SLIPS_SUCCESS'
 const FETCH_SLIPS_FAILURE = 'FETCH_SLIPS_FAILURE'
+const SET_CHECKED_PROPS = 'SET_CHECKED_PROPS'
 
 const listClips = [
   {
@@ -76,6 +78,13 @@ const setWizardProps = dispatch => state => {
   })
 }
 
+const setCheckedItemProps = dispatch => state => {
+  dispatch({
+    type: SET_CHECKED_PROPS,
+    payload: state,
+  })
+}
+
 const setWizardDone = dispatch => ({ done }) => {
   dispatch({
     type: SET_WIZARD_DONE,
@@ -122,9 +131,31 @@ const prev = dispatch => () => {
   })
 }
 
+const setFieldValue = (state, action, field) => {
+  console.log(state.data.length, action.payload)
+  var datatmp = _.find(state.data, function (obj) { return obj.id === action.payload.id })
+  console.log('avant ', state.data.length, datatmp)
+  datatmp.checked = action.payload.value
+  if (datatmp) {
+    _.merge(datatmp, datatmp)
+  } else {
+    state.data.push(datatmp)
+  }
+  // calcule totalAmountHT
+  if (datatmp.checked) {
+    state.totalAmountHT = parseFloat(state.totalAmountHT) + parseFloat(datatmp.subTotal)
+  } else {
+    state.totalAmountHT = parseFloat(state.totalAmountHT) - parseFloat(datatmp.subTotal)
+  }
+  state.totalAmountTVA = state.totalAmountHT * 0.2
+  state.totalAmountTTC = state.totalAmountHT + state.totalAmountTVA
+  return state.data
+}
+
 export const actions = {
   setWizardVarsProps,
   setWizardProps,
+  setCheckedItemProps,
   reinitializeWizard,
   setWizardDone,
   handleChange,
@@ -157,6 +188,10 @@ const ACTION_HANDLERS = {
     ...state,
     datedebut: action.payload.datedebut || state.datedebut,
     datefin: action.payload.datefin || state.datefin,
+  }),
+  [SET_CHECKED_PROPS]: (state, action) => ({
+    ...state,
+    data: setFieldValue(state, action, 'data'),
   }),
   [SET_WIZARD_PROPS]: (state, action) => ({
     ...state,
@@ -212,6 +247,9 @@ const ACTION_HANDLERS = {
 
 const initialState = {
   data: undefined,
+  totalAmountHT: 0,
+  totalAmountTTC: 0,
+  totalAmountTVA: 0,
   sending: false,
   error: undefined,
   datedebut: '',

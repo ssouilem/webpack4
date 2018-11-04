@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Header, Segment, Grid, Image, Table, Form, List, Dropdown, Radio, Input } from 'semantic-ui-react'
+import { Header, Segment, Grid, Image, Table, Form, List, Dropdown, Radio, Input, Sticky } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import AddBordereauDetail from 'COMPONENTS/Bordereau/AddBordereauDetail'
@@ -8,7 +8,6 @@ import LineBordereauDetail from 'COMPONENTS/Bordereau/LineBordereauDetail'
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
 import { actions as produitsActions } from 'ACTIONS/produits'
 import { actions as clientsActions } from 'ACTIONS/clients'
-import { actions as addressActions } from 'ACTIONS/address'
 import styles from './NewBordereau.less'
 
 class NewBordereau extends React.Component {
@@ -36,11 +35,12 @@ class NewBordereau extends React.Component {
     this.props.fetchClients()
   }
 
+  // Sticky
+  handleContextRef = contextRef => this.setState({ contextRef })
   // Search FUNC
   resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
   handleResultSelect = (e, { result }) => {
     this.setState({result: result})
-    console.log('handleResultSelect : ', result, this.props.client)
     var bordereauDetail = this.state.bordereauDetail
     bordereauDetail.description = result.description
     bordereauDetail.reference = result.reference
@@ -243,7 +243,7 @@ submitMeetingForm = () => {
 
   render = () => (
     <Form id='myform'>
-      <Grid className='newBordereau' >
+      <Grid className='newBordereau' ref={ this.handleContextRef } >
         <Grid.Column width={ 14 }>
           <Grid textAlign='center' >
             <Grid.Row>
@@ -258,7 +258,7 @@ submitMeetingForm = () => {
                   search
                   selection
                   value={ this.props.selectedClient }
-                  options={ this.props.clients.map(client => ({
+                  options={ this.props.clients && this.props.clients.data.map(client => ({
                     key: client.id,
                     value: client.id,
                     text: client.text,
@@ -301,22 +301,27 @@ submitMeetingForm = () => {
                 <SegmentAddress
                   icon='building'
                   title='Information du societé.'
-                  client={ { name: 'Direct Plast', address: 'Rue Farhat Hached', city: '4060 KALAA KEBIRA ', contact: {firstName: 'Mohamed Oussama'}, siret: 'TN123456789/FS', mail: 'mymail@domaine.com' } }
+                  clients={ {
+                    client: { name: 'Direct Plast',
+                      address: 'Rue Farhat Hached',
+                      city: '4060 KALAA KEBIRA ',
+                      contact: {firstName: 'Mohamed Oussama', mail: 'mymail@domaine.com'},
+                      siret: 'TN123456789/FS' },
+                  } }
                 />
               </Grid.Column>
-              <Grid.Column textAlign='left'>
+              <Grid.Column textAlign='left' >
                 <SegmentAddress
                   icon='sign-in'
                   title='Information du client.'
-                  client={ this.props.client }
+                  clients={ this.props.clients }
                   onClick
                   updateAddress={ { onChange: this._handleChange,
                     handleOpen: this.props.handleOpen,
                     modalOpen: this.props.modalOpen,
                     handleClose: this.props.handleClose,
                     complete: this.props.complete,
-                    submitMeetingForm: this.submitMeetingForm,
-                    address: this.props.address } }
+                    submitMeetingForm: this.submitMeetingForm } }
                 />
               </Grid.Column>
             </Grid.Row>
@@ -339,8 +344,9 @@ submitMeetingForm = () => {
                       <Table.HeaderCell>Actions</Table.HeaderCell>
                     </Table.Row>
                   </Table.Header>
-                  <Table.Body>
+                  <Table.Body >
                     <AddBordereauDetail
+                      active={ this.props.selectedClient === '' }
                       produits={ this.props.produits }
                       bordereauDetailForm={ this.state.bordereauDetail }
                       id={ this.state.id } onClick={ this._addLinebordereauDetail }
@@ -400,28 +406,30 @@ submitMeetingForm = () => {
           </Grid>
         </Grid.Column>
         <Grid.Column width={ 2 }>
-          <Grid celled >
-            <List relaxed>
-              <List.Item>
-                <List.Content>
-                  <List.Header>Societe : </List.Header>
-                  <List.Description>{ this.state.selectedClient && this.state.selectedClient }</List.Description>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <List.Content>
-                  <List.Header>Type : </List.Header>
-                  <List.Description>{ this.state.bordereauType && this.state.bordereauType }</List.Description>
-                </List.Content>
-              </List.Item>
-              <List.Item>
-                <List.Content>
-                  <List.Header>Numéro : </List.Header>
-                  <List.Description>{ this.state.bordereauNumber && this.state.bordereauNumber }</List.Description>
-                </List.Content>
-              </List.Item>
-            </List>
-          </Grid>
+          <Sticky context={ this.state.contextRef }>
+            <Grid celled >
+              <List relaxed>
+                <List.Item>
+                  <List.Content>
+                    <List.Header>Societe : </List.Header>
+                    <List.Description>{ this.props.selectedClient && this.props.selectedClient }</List.Description>
+                  </List.Content>
+                </List.Item>
+                <List.Item>
+                  <List.Content>
+                    <List.Header>Type : </List.Header>
+                    <List.Description>{ this.state.bordereauType && this.state.bordereauType }</List.Description>
+                  </List.Content>
+                </List.Item>
+                <List.Item>
+                  <List.Content>
+                    <List.Header>Numéro : </List.Header>
+                    <List.Description>{ this.state.bordereauNumber && this.state.bordereauNumber }</List.Description>
+                  </List.Content>
+                </List.Item>
+              </List>
+            </Grid>
+          </Sticky>
         </Grid.Column>
       </Grid>
     </Form>
@@ -435,13 +443,12 @@ const updateAddressPropType = PropTypes.shape({
   handleClose: PropTypes.func.isRequired,
   complete: PropTypes.bool.isRequired,
   submitMeetingForm: PropTypes.func.isRequired,
-  address: PropTypes.object.isRequired,
 })
 
 SegmentAddress.propTypes = {
   icon: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  client: PropTypes.object.isRequired,
+  clients: PropTypes.object.isRequired,
   onClick: PropTypes.bool,
   updateAddress: updateAddressPropType,
 }
@@ -453,21 +460,20 @@ NewBordereau.propTypes = {
 
 const mapStateToProps = state => ({
   produits: state.produits,
-  clients: state.clients.data,
+  clients: state.clients,
   client: state.clients.client,
   selectedClient: state.clients.selectedClient,
   modalOpen: state.modalOpen,
   complete: state.complete,
-  address: state.address,
 })
 
 const mapDispatchToProps = dispatch => ({
   fetchProduits: produitsActions.fetchProduits(dispatch),
-  setItemProps: addressActions.setItemProps(dispatch),
-  handleClose: addressActions.handleClose(dispatch),
-  handleOpen: addressActions.handleOpen(dispatch),
+  setItemProps: clientsActions.setItemProps(dispatch),
+  handleClose: clientsActions.handleClose(dispatch),
+  handleOpen: clientsActions.handleOpen(dispatch),
   fetchClients: clientsActions.fetchClients(dispatch),
-  reinitializeItem: addressActions.reinitializeItem(dispatch),
+  reinitializeItem: clientsActions.reinitializeItem(dispatch),
   handleChangeClient: clientsActions.handleChangeClient(dispatch),
   dispatch,
 })

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Header, Grid, Table, Button, Icon } from 'semantic-ui-react'
+import { Grid, Table, Button, Icon } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
 const CompaniesList = ({ onClick, fetchClients, clients }) => (
@@ -56,7 +56,7 @@ const CompaniesList = ({ onClick, fetchClients, clients }) => (
             </Table.Cell>
           </Table.Row>
         )) : <Table.Row>
-          <Table.HeaderCell colSpan='7'>
+          <Table.HeaderCell colSpan='5'>
             <Grid textAlign='center'>
               <Grid.Row>
                 <Icon size='big' name='pdf file outline' />

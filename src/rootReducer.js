@@ -16,7 +16,6 @@ const appReducer = combineReducers({
   bordereau,
   produits,
   clients,
-  address,
   search,
   form,
 })
