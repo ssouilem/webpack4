@@ -25,8 +25,8 @@ const AddBordereauDetail = (props) => {
         label={ { basic: true, content: '%' } }
         labelPosition='right' />
       </Table.HeaderCell>
-      <Table.HeaderCell><Form.Input name='unit' disabled={ active }  id={ id } onBlur={ onChange } fluid placeholder='Unit' defaultValue={ bordereauDetailForm && bordereauDetailForm.unit } /></Table.HeaderCell>
-      <Table.HeaderCell><Form.Input name='total' disabled={ active }  id={ id } onBlur={ onChange } fluid placeholder='Total' value={ bordereauDetailForm && bordereauDetailForm.total } /></Table.HeaderCell>
+      <Table.HeaderCell><Form.Input name='unit' disabled={ active } id={ id } onBlur={ onChange } fluid placeholder='Unit' defaultValue={ bordereauDetailForm && bordereauDetailForm.unit } /></Table.HeaderCell>
+      <Table.HeaderCell><Form.Input name='total' disabled={ active } id={ id } onBlur={ onChange } fluid placeholder='Total' value={ bordereauDetailForm && bordereauDetailForm.total } /></Table.HeaderCell>
       <Table.HeaderCell><Button id={ id }
         disabled={ active }
         onClick={ onClick }

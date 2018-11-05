@@ -3,6 +3,7 @@ import _ from 'lodash'
 import { Header, Grid, Table, Icon, Search, Button, Checkbox } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { TableType } from 'COMPONENTS/Utils/Utils'
+import PaymentMethod from 'COMPONENTS/Invoices/PaymentMethod'
 import styles from './TableInternal.less'
 
 class TableInternal extends React.Component {
@@ -17,12 +18,20 @@ class TableInternal extends React.Component {
     setTimeout(() => {
       if (this.state.value.length < 1) return this.resetComponent()
 
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.reference)
-
+      let re = new RegExp(_.escapeRegExp(this.state.value), 'i')
+      let isMatch = ''
+      switch (this.props.tableType) {
+        case TableType.SHOW_INVOICES :
+          console.log('Search invoices')
+          isMatch = result => re.test(result.company)
+          break
+        default:
+          isMatch = result => re.test(result.reference)
+          break
+      }
       this.setState({
         isLoading: false,
-        results: _.filter(this.state.items, isMatch),
+        results: _.filter(this.props.items, isMatch),
       })
     }, 300)
   }
@@ -34,6 +43,7 @@ render = ({isLoading, results, value} = this.state, { items } = this.props) => (
       </Grid.Column>
       <Grid.Column width={ 8 } textAlign='right' >
         <Search
+          open={ false }
           name='searchProduct'
           loading={ isLoading }
           onResultSelect={ this.handleResultSelect }
@@ -56,8 +66,7 @@ render = ({isLoading, results, value} = this.state, { items } = this.props) => (
               <Table.HeaderCell>Actions</Table.HeaderCell>
             </Table.Row>
           </Table.Header>
-            : this.props.tableType === TableType.SHOW_BORDEREAUX &&
-            <Table.Header>
+            : this.props.tableType === TableType.SHOW_BORDEREAUX ? <Table.Header>
               <Table.Row>
                 <Table.HeaderCell />
                 <Table.HeaderCell>BORDEREAU ID</Table.HeaderCell>
@@ -69,81 +78,133 @@ render = ({isLoading, results, value} = this.state, { items } = this.props) => (
                 <Table.HeaderCell>ACTIONS</Table.HeaderCell>
               </Table.Row>
             </Table.Header>
-          }
+              : this.props.tableType === TableType.SHOW_INVOICES &&
+              <Table.Header>
+                <Table.Row>
+                  <Table.HeaderCell />
+                  <Table.HeaderCell>FACTURE N°</Table.HeaderCell>
+                  <Table.HeaderCell>CLIENT</Table.HeaderCell>
+                  <Table.HeaderCell>DATE DE CREATION</Table.HeaderCell>
+                  <Table.HeaderCell>ÉCHÉANCE</Table.HeaderCell>
+                  <Table.HeaderCell>MONTANT</Table.HeaderCell>
+                  <Table.HeaderCell>STATUT</Table.HeaderCell>
+                  <Table.HeaderCell>ACTIONS</Table.HeaderCell>
+                </Table.Row>
+              </Table.Header> }
           <Table.Body>
             { results.length >= 1 ? results.map(result => (
-              (this.props.tableType === TableType.SHOW_PRODUCTS) ? <Table.Row id={ result.id }>
-                <Table.Cell>{ result.reference }</Table.Cell>
-                <Table.Cell>{ result.description }</Table.Cell>
-                <Table.Cell>{ result.quality }</Table.Cell>
-                <Table.Cell>{ result.price }</Table.Cell>
-                <Table.Cell>{ result.unit }</Table.Cell>
-                <Table.Cell>Actions</Table.Cell>
-              </Table.Row>
-                : (this.props.tableType === TableType.SHOW_BORDEREAUX) ? <Table.Row key={ result.id }>
-                  <Table.Cell collapsing>
-                    <Checkbox name={ result.id } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
-                  </Table.Cell>
-                  <Table.Cell>{ result.number }</Table.Cell>
-                  <Table.Cell>{ result.company }</Table.Cell>
-                  <Table.Cell>{ result.createdDate }</Table.Cell>
-                  <Table.Cell>{ result.treatmentDate }</Table.Cell>
-                  <Table.Cell>{ !result.invoice && result.invoice }</Table.Cell>
-                  <Table.Cell>{ result.subTotal }</Table.Cell>
-                  <Table.Cell>
-                    <Button
-                      icon='delete'
-                      // color='red'
-                      floated='right' />
-                    <Button primary
-                      icon='sign out'
-                      content='Update'
-                      // color='red'
-                      floated='right' />
-                  </Table.Cell>
-                </Table.Row> : ''
+              (this.props.tableType === TableType.SHOW_PRODUCTS) ?
+                <Table.Row id={ result.id }>
+                  <Table.Cell>{ result.reference }</Table.Cell>
+                  <Table.Cell>{ result.description }</Table.Cell>
+                  <Table.Cell>{ result.quality }</Table.Cell>
+                  <Table.Cell>{ result.price }</Table.Cell>
+                  <Table.Cell>{ result.unit }</Table.Cell>
+                  <Table.Cell>Actions</Table.Cell>
+                </Table.Row>
+                : (this.props.tableType === TableType.SHOW_BORDEREAUX) ?
+                  <Table.Row key={ result.id }>
+                    <Table.Cell collapsing>
+                      <Checkbox name={ result.id } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
+                    </Table.Cell>
+                    <Table.Cell>{ result.number }</Table.Cell>
+                    <Table.Cell>{ result.company }</Table.Cell>
+                    <Table.Cell>{ result.createdDate }</Table.Cell>
+                    <Table.Cell>{ result.treatmentDate }</Table.Cell>
+                    <Table.Cell>{ !result.invoice && result.invoice }</Table.Cell>
+                    <Table.Cell>{ result.subTotal }</Table.Cell>
+                    <Table.Cell>
+                      <Button
+                        icon='delete'
+                        // color='red'
+                        floated='right' />
+                      <Button primary
+                        icon='sign out'
+                        content='Update'
+                        // color='red'
+                        floated='right' />
+                    </Table.Cell>
+                  </Table.Row>
+                  : this.props.tableType === TableType.SHOW_INVOICES &&
+                  <Table.Row key={ result.id }>
+                    <Table.Cell collapsing>
+                      <Checkbox name={ result.id } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
+                    </Table.Cell>
+                    <Table.Cell>{ result.number }</Table.Cell>
+                    <Table.Cell>{ result.company }</Table.Cell>
+                    <Table.Cell>{ result.createdDate }</Table.Cell>
+                    <Table.Cell>{ result.issueDate }</Table.Cell>
+                    <Table.Cell>{ result.amount }</Table.Cell>
+                    <Table.Cell>{ result.payDown ? result.payDown : 'En attente'}</Table.Cell>
+                    <Table.Cell>
+                      <Button
+                        icon='edit'
+                        floated='right' />
+                      <PaymentMethod />
+                    </Table.Cell>
+                  </Table.Row>
             )) : items && items.length >= 1 ? items.map(item => (
-              this.props.tableType === TableType.SHOW_PRODUCTS ? <Table.Row id={ item.id }>
-                <Table.Cell>{ item.reference }</Table.Cell>
-                <Table.Cell>{ item.description }</Table.Cell>
-                <Table.Cell>{ item.quality }</Table.Cell>
-                <Table.Cell>{ item.price }</Table.Cell>
-                <Table.Cell>{ item.unit }</Table.Cell>
-                <Table.Cell>
-                  <Button
-                    onClick={ this.props.onClick }
-                    icon='edit'
-                    color='olive'
-                    floated='right' />
-                  <Button
-                    onClick={ this.props.onClick({action: 'Edit'}) }
-                    icon='low vision'
-                    color='green'
-                    floated='right' />
-                </Table.Cell>
-              </Table.Row>
-                : this.props.tableType === TableType.SHOW_BORDEREAUX ? <Table.Row key={ item.id }>
-                  <Table.Cell collapsing>
-                    <Checkbox name={ item.id } onChange={ this.props.onChecked } checked={ this.props.state[item.id] } />
-                  </Table.Cell>
-                  <Table.Cell>{ item.number }</Table.Cell>
-                  <Table.Cell>{ item.company }</Table.Cell>
-                  <Table.Cell>{ item.createdDate }</Table.Cell>
-                  <Table.Cell>{ item.treatmentDate }</Table.Cell>
-                  <Table.Cell>{ !item.invoice && item.invoice }</Table.Cell>
-                  <Table.Cell>{ item.subTotal }</Table.Cell>
+              this.props.tableType === TableType.SHOW_PRODUCTS ?
+                <Table.Row id={ item.id }>
+                  <Table.Cell>{ item.reference }</Table.Cell>
+                  <Table.Cell>{ item.description }</Table.Cell>
+                  <Table.Cell>{ item.quality }</Table.Cell>
+                  <Table.Cell>{ item.price }</Table.Cell>
+                  <Table.Cell>{ item.unit }</Table.Cell>
                   <Table.Cell>
                     <Button
-                      icon='delete'
-                      // color='red'
+                      onClick={ this.props.onClick }
+                      icon='edit'
+                      color='olive'
                       floated='right' />
-                    <Button primary
-                      icon='sign out'
-                      content='Update'
-                      // color='red'
+                    <Button
+                      onClick={ this.props.onClick({action: 'Edit'}) }
+                      icon='low vision'
+                      color='green'
                       floated='right' />
                   </Table.Cell>
-                </Table.Row> : ''
+                </Table.Row>
+                : this.props.tableType === TableType.SHOW_BORDEREAUX ?
+                  <Table.Row key={ item.id }>
+                    <Table.Cell collapsing>
+                      <Checkbox name={ item.id } onChange={ this.props.onChecked } checked={ this.props.state[item.id] } />
+                    </Table.Cell>
+                    <Table.Cell>{ item.number }</Table.Cell>
+                    <Table.Cell>{ item.company }</Table.Cell>
+                    <Table.Cell>{ item.createdDate }</Table.Cell>
+                    <Table.Cell>{ item.treatmentDate }</Table.Cell>
+                    <Table.Cell>{ !item.invoice && item.invoice }</Table.Cell>
+                    <Table.Cell>{ item.subTotal }</Table.Cell>
+                    <Table.Cell>
+                      <Button
+                        icon='delete'
+                        // color='red'
+                        floated='right' />
+                      <Button primary
+                        icon='sign out'
+                        content='Update'
+                        // color='red'
+                        floated='right' />
+                    </Table.Cell>
+                  </Table.Row>
+                  : this.props.tableType === TableType.SHOW_INVOICES &&
+                  <Table.Row key={ item.id }>
+                    <Table.Cell collapsing>
+                      <Checkbox name={ item.id } onChange={ this.props.onChecked } checked={ this.props.state[item.id] } />
+                    </Table.Cell>
+                    <Table.Cell>{ item.number }</Table.Cell>
+                    <Table.Cell>{ item.company }</Table.Cell>
+                    <Table.Cell>{ item.createdDate }</Table.Cell>
+                    <Table.Cell>{ item.issueDate }</Table.Cell>
+                    <Table.Cell>{ item.amount.toFixed(3) }</Table.Cell>
+                    <Table.Cell>{ item.payDown ? item.payDown : 'En attente' }</Table.Cell>
+                    <Table.Cell>
+                      <Button
+                        icon='edit'
+                        floated='right' />
+                      <PaymentMethod />
+                    </Table.Cell>
+                  </Table.Row>
             )) : <Table.Row>
               <Table.HeaderCell colSpan='7'>
                 <Grid textAlign='center'>

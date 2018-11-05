@@ -407,7 +407,8 @@ submitMeetingForm = () => {
         </Grid.Column>
         <Grid.Column width={ 2 }>
           <Sticky context={ this.state.contextRef }>
-            <Grid celled >
+            <Grid as={ Segment } placeholder>
+              <Header as='h5' icon='cog' content='Paramètres' />
               <List relaxed>
                 <List.Item>
                   <List.Content>

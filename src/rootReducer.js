@@ -6,14 +6,15 @@ import portal from './redux/modules/portal'
 import bordereau from './redux/modules/bordereauActions'
 import produits from './redux/modules/produits'
 import clients from './redux/modules/clients'
-import address from './redux/modules/address'
 import search from './redux/modules/search'
+import invoices from './redux/modules/invoices'
 
 export const SIGN_OUT = 'SIGN_OUT'
 
 const appReducer = combineReducers({
   portal,
   bordereau,
+  invoices,
   produits,
   clients,
   search,

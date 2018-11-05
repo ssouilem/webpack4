@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, Tab, Menu, Header, Icon, Segment, Button } from 'semantic-ui-react'
 import BordereauList from 'COMPONENTS/Bordereau/BordereauList'
+import InvoicesList from 'CONTAINERS/Invoices/InvoicesList'
 import NewBordereau from 'CONTAINERS/Bordereau/NewBordereau'
 import Invoice from 'CONTAINERS/Invoices/Invoice'
 import { BreadcrumbUtils } from 'COMPONENTS/Utils/Utils'
@@ -83,17 +84,14 @@ export const panes = [
     ),
     pane: (
       <Tab.Pane>
-        <Grid celled>
-          <Grid.Row>
+        <div>
+          <Segment vertical>
             <BreadcrumbUtils parent='Factures' child='Liste de factures' />
-          </Grid.Row>
-          <Grid.Row>
-            <SearchSimple source={ members } />
-          </Grid.Row>
-          <Grid.Row centered>
-            <BordereauList />
-          </Grid.Row>
-        </Grid>
+          </Segment>
+          <Segment vertical>
+            <InvoicesList />
+          </Segment>
+        </div>
       </Tab.Pane>
     ),
   },
