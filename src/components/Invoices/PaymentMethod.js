@@ -1,39 +1,15 @@
 import React from 'react'
-import { Button, Modal, Form } from 'semantic-ui-react'
+import { Button, Modal, Form, Header, Divider } from 'semantic-ui-react'
 import { DatePicker } from 'antd'
+import { DateFormat, BankOptions, PaiementMode } from 'COMPONENTS/Utils/Utils'
 import moment from 'moment'
 import styles from './Payment.less'
 
-const options = [
-  { key: 'ck', text: 'Chèques', value: 'Chèques' },
-  { key: 'cv', text: 'Cartes ou Virement', value: 'cartes' },
-  { key: 'e', text: 'Espèces', value: 'Espèces' },
-]
-const bankOptions = [
-  { key: 'BIAT', text: 'BIAT', value: 'BIAT' },
-  { key: 'ATB', text: 'ATB', value: 'ATB' },
-  { key: 'AMENBANK', text: 'AMENBANK', value: 'AMENBANK' },
-  { key: 'ALBARAKA', text: 'ALBARAKA', value: 'ALBARAKA' },
-  { key: 'ATTIJARI', text: 'ATTIJARI', value: 'ATTIJARI' },
-  { key: 'BH', text: 'BH', value: 'BH' },
-  { key: 'BTE', text: 'BTE', value: 'BTE' },
-  { key: 'BNA', text: 'BNA', value: 'BNA' },
-  { key: 'BTS', text: 'BTS', value: 'BTS' },
-  { key: 'BTL', text: 'BTL', value: 'BTL' },
-  { key: 'NAIB', text: 'NAIB', value: 'NAIB' },
-  { key: 'QNB', text: 'QNB', value: 'QNB' },
-  { key: 'STB', text: 'STB', value: 'STB' },
-  { key: 'UIB', text: 'UIB', value: 'UIB' },
-  { key: 'UBCI', text: 'UBCI', value: 'UBCI' },
-  { key: 'STUSID', text: ' STUSID', value: 'STUSID' },
-]
-
-const dateFormat = 'YYYY/MM/DD'
 class PaymentMethod extends React.Component {
   componentWillMount () {
     this.resetComponent()
   }
-  resetComponent = () => this.setState({ paymentType: 1, paymentsMode: [{ key: 1 }], disabled: true })
+  resetComponent = () => this.setState({ paymentType: 1, paymentsMode: [{ key: 1 }], disabled: false })
   _handlePaymentType = (e, { name, value }) => this.setState({ paymentType: value, paymentsMode: [{ key: 1, type: value }], disabled: false })
   _handlebank = (e, { name, value }) => this.setState({ selectedBank: value })
   _handleChange = (e, { name, value }) => {
@@ -43,56 +19,65 @@ class PaymentMethod extends React.Component {
         paymentsMode: [...prevState.paymentsMode, { key: index, type: this.state.paymentType }],
       }))
     }
-    // state.paymentsMode.push(pay)
   }
 
   render = ({ paymentNumber, disabled } = this.state, { payment, onChange, validateTransactionMode } = this.props) => (
     <Modal trigger={ <Button icon='dollar sign' floated='right' /> } size='small' centered={ false } closeIcon >
       <Modal.Header>Moyens de paiement</Modal.Header>
-      <Modal.Content image>
+      <Modal.Content scrolling>
         <Modal.Description className={ styles.modal }>
           <Form>
             <Form.Field>
-              <Form.Select name='paymentType'
-                required onChange={ this._handlePaymentType }
-                options={ options }
-                label='Mode de paiement' placeholder='Mode de paiement...'
-                value={ payment && payment.paymentType } />
-            </Form.Field>
-            <Form.Field>
-              <Form.Select name='bank'
-                disabled={ disabled }
-                required onChange={ this._handlebank }
+              <Form.Dropdown label='Banque'
+                required fluid search selection
+                name='bank'
+                onChange={ this._handlebank }
                 value={ this.state.selectedBank }
-                options={ bankOptions }
-                label='Banque' placeholder='Choisir la banque...' />
+                placeholder='Choisir la banque...'
+                options={ BankOptions } />
             </Form.Field>
-            <Form.Input name='paymentNumber'
+            <Form.Input disabled={ disabled } label='Titulaire du compte bancaire'
+              placeholder='Titulaire du compte bancaire...'
+              name='CompteName' />
+            <Form.Input name='amountTotal'
               disabled={ disabled }
-              type='number'
-              onChange={ this._handleChange }
-              label='Nombre de paiement' placeholder='Nombre de paiement...'
+              label='Montant total de la transaction' placeholder='Montant...'
               defaultValue={ paymentNumber ? this.state.paymentNumber : '1' }
             />
             { this.state.paymentsMode.map(payment => (
-              <Form.Group widths='equal'>
-                <Form.Field disabled={ disabled }>
-                  <label>
-                    Montant de { payment.type } n° { payment.key } : </label>
-                  <Form.Input name='montant'
-                    value={ payment && payment.lastName } />
-                </Form.Field>
-                { payment.type === 'Chèques' &&
-                <Form.Input disabled={ disabled } label='Numéro de Chéque'
-                  placeholder='Numéro de Chéque'
-                  name='NumCheque' />
-                }
-                <Form.Field disabled={ disabled }>
-                  <label>Montant de { payment.type } n° { payment.key } : </label>
-                  <DatePicker defaultValue={ moment('2015/01/01', dateFormat) } format={ dateFormat } />
-                </Form.Field>
-              </Form.Group>
-
+              <div>
+                <Divider hidden />
+                <Header dividing as='h4'>Premier Paiement</Header>
+                <Form.Group widths='equal'>
+                  <Form.Field>
+                    <Form.Dropdown fluid search selection required
+                      name='paymentType'
+                      label='Mode de paiement'
+                      placeholder='Choisir les modes de paiement'
+                      onChange={ this._handlePaymentType }
+                      value={ payment && payment.paymentType }
+                      options={ PaiementMode } />
+                  </Form.Field>
+                  <Form.Field disabled={ disabled }>
+                    <label>
+                      Montant de { payment.type } n° { payment.key } : </label>
+                    <Form.Input name='montant'
+                      value={ payment && payment.lastName } />
+                  </Form.Field>
+                </Form.Group>
+                <Form.Group widths='equal'>
+                  <Form.Input disabled={ disabled } label='Numéro de Chéque (optionnel)'
+                    placeholder='Numéro de Chéque'
+                    name='NumCheque' />
+                  <Form.Field disabled={ disabled }>
+                    <label>Date de la transaction n° { payment.key } : </label>
+                    <DatePicker defaultValue={ moment((new Date()).toLocaleString(), DateFormat) } format={ DateFormat } />
+                  </Form.Field>
+                </Form.Group>
+                <Button icon='add'
+                  labelPosition='left' content='Paiement'
+                  onClick={ validateTransactionMode } />
+              </div>
             )) }
           </Form>
         </Modal.Description>
@@ -100,7 +85,7 @@ class PaymentMethod extends React.Component {
       <Modal.Actions>
         <Button positive icon='checkmark'
           labelPosition='right' content='Submit'
-          onClick={ validateTransactionMode } />
+          onClick={ this._handleChange } />
       </Modal.Actions>
     </Modal>
   )

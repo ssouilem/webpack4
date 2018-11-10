@@ -4,6 +4,7 @@ import { Header, Grid, Table, Icon, Search, Button, Checkbox } from 'semantic-ui
 import { Link } from 'react-router-dom'
 import { TableType } from 'COMPONENTS/Utils/Utils'
 import PaymentMethod from 'COMPONENTS/Invoices/PaymentMethod'
+import AddProduct from 'COMPONENTS/Products/AddProduct'
 import styles from './TableInternal.less'
 
 class TableInternal extends React.Component {
@@ -100,7 +101,20 @@ render = ({isLoading, results, value} = this.state, { items } = this.props) => (
                   <Table.Cell>{ result.quality }</Table.Cell>
                   <Table.Cell>{ result.price }</Table.Cell>
                   <Table.Cell>{ result.unit }</Table.Cell>
-                  <Table.Cell>Actions</Table.Cell>
+                  <Table.Cell>
+                    <AddProduct>
+                      <Button primary
+                        icon='pencil'
+                        inverted
+                        floated='right' />
+                    </AddProduct>
+                    <Button
+                      onClick={ this.props.onClick({action: 'Delete'}) }
+                      icon='delete'
+                      color='red'
+                      inverted
+                      floated='right' />
+                  </Table.Cell>
                 </Table.Row>
                 : (this.props.tableType === TableType.SHOW_BORDEREAUX) ?
                   <Table.Row key={ result.id }>
@@ -118,6 +132,7 @@ render = ({isLoading, results, value} = this.state, { items } = this.props) => (
                         icon='delete'
                         // color='red'
                         floated='right' />
+
                       <Button primary
                         icon='sign out'
                         content='Update'
@@ -152,15 +167,17 @@ render = ({isLoading, results, value} = this.state, { items } = this.props) => (
                   <Table.Cell>{ item.price }</Table.Cell>
                   <Table.Cell>{ item.unit }</Table.Cell>
                   <Table.Cell>
+                    <AddProduct>
+                      <Button primary
+                        icon='pencil'
+                        inverted
+                        floated='right' />
+                    </AddProduct>
                     <Button
-                      onClick={ this.props.onClick }
-                      icon='edit'
-                      color='olive'
-                      floated='right' />
-                    <Button
-                      onClick={ this.props.onClick({action: 'Edit'}) }
-                      icon='low vision'
-                      color='green'
+                      onClick={ this.props.onClick({action: 'Delete'}) }
+                      icon='delete'
+                      color='red'
+                      inverted
                       floated='right' />
                   </Table.Cell>
                 </Table.Row>

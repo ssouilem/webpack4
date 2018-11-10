@@ -20,7 +20,7 @@ const AddBordereauDetail = (props) => {
       </Table.HeaderCell>
       <Table.HeaderCell><Form.Input fluid disabled={ active } name='description' id={ id } onBlur={ onChange } placeholder='description' defaultValue={ bordereauDetailForm && bordereauDetailForm.description } /></Table.HeaderCell>
       <Table.HeaderCell><Form.Input fluid disabled={ active } name='qte' type='number' id={ id } onBlur={ onChange } placeholder='Qte' defaultValue={ bordereauDetailForm && bordereauDetailForm.qte } /></Table.HeaderCell>
-      <Table.HeaderCell><Form.Input as={ Input } disabled={ active }  name='reduction' id={ id } onBlur={ onChange } fluid placeholder='Reduction'
+      <Table.HeaderCell><Form.Input as={ Input } disabled={ active } name='reduction' id={ id } onBlur={ onChange } fluid placeholder='Reduction'
         defaultValue={ bordereauDetailForm && bordereauDetailForm.reduction }
         label={ { basic: true, content: '%' } }
         labelPosition='right' />

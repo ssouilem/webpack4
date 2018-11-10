@@ -111,6 +111,17 @@ export const panes = [
           <Segment vertical>
             <Invoice />
           </Segment>
+          <Segment textAlign='right' >
+            <Button disabled color='twitter'>
+              <Icon name='save outline' /> Enregistrer le brouillon
+            </Button>
+            <Button color='twitter'>
+              <Icon name='save' /> Enregistrer
+            </Button>
+            <Button color='google plus'>
+              <Icon name='cancel' /> Annuler
+            </Button>
+          </Segment>
         </div>
       </Tab.Pane>),
   },

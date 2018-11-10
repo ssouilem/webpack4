@@ -1,25 +1,17 @@
 import React from 'react'
-import { Modal, Form } from 'semantic-ui-react'
+import { Modal, Form, Divider, Header } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
 const ItemAddress = ({ address, onChange, disabled }) => (
   <Modal.Description>
     <Form error={ address && address.errors && address.errors.formError }>
       <Form.Field>
-        <Form.Input name='firstName'
+        <Form.Input name='CompanyName'
           disabled={ disabled }
           required onChange={ onChange }
-          label='First Name' placeholder='First Name...'
+          label='Société' placeholder='Société...'
           value={ address && address.firstName }
           error={ address && address.errors && address.errors.firstNameError } />
-      </Form.Field>
-      <Form.Field>
-        <Form.Input name='lastName'
-          disabled={ disabled }
-          required onChange={ onChange }
-          label='Last Name' placeholder='Last Name...'
-          value={ address && address.lastName }
-          error={ address && address.errors && address.errors.lastNameError } />
       </Form.Field>
       <Form.Field >
         <Form.Input name='email'
@@ -32,19 +24,20 @@ const ItemAddress = ({ address, onChange, disabled }) => (
         <Form.Input required
           name='phoneNumber'
           onChange={ onChange }
-          label='Numéro de telephone'
-          placeholder='Numéro de telephone...'
+          label='Téléphone fixe'
+          placeholder='Téléphone fixe...'
           value={ address && address.phoneNumber }
           error={ address && address.errors && address.errors.phoneNumberError } />
       </Form.Field>
-      <Form.Input label='Adresse'
+      <Form.TextArea label='Adresse'
         placeholder='Adresse'
+        required
         onChange={ onChange }
         name='address1'
         value={ address && address.address1 }
         error={ address && address.errors && address.errors.address1Error } />
       <Form.Input
-        placeholder="Complement d'Adresse"
+        placeholder="Complement d'Adresse (Optionnel)"
         label="Complement d'Adresse"
         name='address2'
         value={ address && address.address2 }
@@ -65,6 +58,40 @@ const ItemAddress = ({ address, onChange, disabled }) => (
           onChange={ onChange }
           error={ address && address.errors && address.errors.cityError } />
       </Form.Group>
+      <Divider hidden />
+      <Header dividing as='h4'>INTERLOCUTEUR</Header>
+      <Form.Field>
+        <Form.Input name='contactFirstName'
+          disabled={ disabled }
+          required onChange={ onChange }
+          label='Nom' placeholder='Last Name...'
+          value={ address && address.lastName }
+          error={ address && address.errors && address.errors.lastNameError } />
+      </Form.Field>
+      <Form.Field>
+        <Form.Input name='contactLastName'
+          disabled={ disabled }
+          required onChange={ onChange }
+          label='Prénom' placeholder='Last Name...'
+          value={ address && address.lastName }
+          error={ address && address.errors && address.errors.lastNameError } />
+      </Form.Field>
+      <Form.Field >
+        <Form.Input name='contactMail'
+          required onChange={ onChange }
+          label='Email' placeholder='Email...'
+          value={ address && address.email }
+          error={ address && address.errors && address.errors.emailError } />
+      </Form.Field>
+      <Form.Field>
+        <Form.Input required
+          name='contactMobileNumber'
+          onChange={ onChange }
+          label='Téléphone mobile'
+          placeholder='Téléphone mobile...'
+          value={ address && address.phoneNumber }
+          error={ address && address.errors && address.errors.phoneNumberError } />
+      </Form.Field>
     </Form>
   </Modal.Description>
 )

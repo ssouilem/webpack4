@@ -2,17 +2,31 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const path = require('path')
 
+const PATHS = {
+  app: path.resolve(__dirname, 'app'),
+  build: path.resolve(__dirname, 'build'),
+  dist: path.resolve(__dirname, 'dist'),
+  src: path.resolve(__dirname, 'src'),
+}
+
+const excludePaths = [path.resolve(__dirname, 'node_modules')]
+const includePaths = [path.resolve(__dirname, './src')]
+
 module.exports = {
+  entry: {
+    app: PATHS.src + '/index.js',
+  },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'index_bundle.js',
+    path: PATHS.build,
+    filename: 'bundle.js',
     publicPath: '/',
   },
   module: {
     rules: [
       {
         test: /\.js$/,
-        exclude: /node_modules/,
+        include: includePaths,
+        exclude: excludePaths,
         use: {
           loader: 'babel-loader',
         },
@@ -92,6 +106,8 @@ module.exports = {
         //
         // ],
         test: /\.less$/,
+        include: includePaths,
+        exclude: excludePaths,
         use: [{
           loader: 'style-loader',
         }, {
@@ -102,9 +118,9 @@ module.exports = {
             sourceMap: true,
             importLoaders: 1,
             modules: true,
-            // paths: [
-            //   path.resolve(__dirname, 'node_modules'),
-            // ],
+            paths: [
+              path.resolve(__dirname, 'node_modules'),
+            ],
           },
         }],
       },

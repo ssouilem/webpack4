@@ -2,6 +2,7 @@ import React from 'react'
 import { Dropdown, Menu, Icon } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import MenuArray from '../menu/Menu.json'
+import styles from './AccordionTablet.less'
 
 export default class DropdownTablet extends React.Component {
   constructor (props) {

@@ -1,0 +1,122 @@
+@import './styles/all.css';
+@import '../semantic/src/semantic.less';
+
+.portal {
+  /*margin-left: 150px;*/
+  height: 100%;
+  padding: 1px !important;
+}
+
+.appContent {
+  &:extend(.column);
+  background-color: white;
+  border: 0.5px solid green;
+  padding: 5px;
+  border-radius: 5%;
+}
+
+.portalButton {
+  position: absolute !important;
+  right: 17px;
+  top: 50px;
+  // z-index: 1002;
+}
+
+.portalButton.negative {
+  top: 0;
+}
+
+.iframe {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+}
+
+/* app styles */
+.fHBlm {
+    color: inherit;
+    font-family: "Covered By Your Grace", cursive;
+    font-size: 1.5em;
+    text-decoration: none;
+}
+.root {
+  height: 100%;
+  width: 100%;
+}
+.portal{
+  height: 100%;
+}
+.SideBar {
+  border-radius: 0em !important;
+  border-bottom: 1px solid #d6cbcb !important;
+  background: #f9f9f9 !important;
+  box-shadow: 0 3px 10px 0 rgba(0,0,0,.5) !important;
+  height: 63px;
+}
+.myaccount {
+  color: black;
+}
+
+.ui.menu .item>i.dropdown.icon {
+    padding: 0;
+    float: right;
+    margin: 0 0 0 2em !important;
+}
+
+.portalContentExpanded {
+  margin-left: 150px;
+  height: 100%;
+}
+.portalContentSegment {
+  overflow-y: auto;
+  padding: 0 !important;
+  height: calc(~'100% - 60px');
+}
+.portalContent {
+  margin-left: 60px;
+  height: 100%;
+  overflow: auto;
+}
+.portalHeader {
+  background: #E6EAED none;
+}
+.portalSideBarButton {
+  width: 100%;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  height: 63px;
+}
+.portalModalContent {
+    padding: 1px !important;
+    height: 100%;
+}
+.ui.labeled.icon.menu .item {
+    min-width: 3em;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
+}
+
+.ant-carousel {
+  width: 90em !important;
+  background-color: #E6E6FA;
+}
+.ant-carousel .slick-slide {
+  text-align: center;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+  height: 30em !important;
+}
+.row-top {
+  padding-top: 0rem;
+  padding-bottom: 0rem !important;
+}
+.row-middle {
+  margin-bottom: 0px;
+  border-bottom: 0px;
+  padding-bottom: 0px;
+  background-color: #f6f6f6;
+}

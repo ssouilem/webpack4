@@ -317,9 +317,6 @@ submitMeetingForm = () => {
                   clients={ this.props.clients }
                   onClick
                   updateAddress={ { onChange: this._handleChange,
-                    handleOpen: this.props.handleOpen,
-                    modalOpen: this.props.modalOpen,
-                    handleClose: this.props.handleClose,
                     complete: this.props.complete,
                     submitMeetingForm: this.submitMeetingForm } }
                 />
@@ -439,9 +436,6 @@ submitMeetingForm = () => {
 
 const updateAddressPropType = PropTypes.shape({
   onChange: PropTypes.func.isRequired,
-  handleOpen: PropTypes.func.isRequired,
-  modalOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
   complete: PropTypes.bool.isRequired,
   submitMeetingForm: PropTypes.func.isRequired,
 })

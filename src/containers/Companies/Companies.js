@@ -1,9 +1,10 @@
 import React from 'react'
 import _ from 'lodash'
 import { connect } from 'react-redux'
-import { Header, Grid, Segment, Button, Breadcrumb, Search } from 'semantic-ui-react'
+import { Header, Grid, Segment, Breadcrumb, Search, Sticky } from 'semantic-ui-react'
 // import { FormattedMessage } from 'react-intl'
 import CompaniesList from 'COMPONENTS/Companies/CompaniesList'
+import AddCustomer from 'COMPONENTS/Client/AddCustomer'
 import { actions as clientsActions } from 'ACTIONS/clients'
 // import { push } from 'react-router-redux'
 import styles from './Companies.less'
@@ -32,19 +33,21 @@ class Campanies extends React.Component {
       })
     }, 300)
   }
+  // Sticky
+  handleContextRef = contextRef => this.setState({ contextRef })
 
   render = () => (
     <Grid >
       <Grid.Column width={ 1 } >
       </Grid.Column>
       <Grid.Column width={ 15 }>
-        <Grid >
+        <Grid ref={ this.handleContextRef } >
           <Grid.Row>
             <Grid.Column width={ 12 }>
               <Breadcrumb divider=' > ' sections={ sections } />
             </Grid.Column>
             <Grid.Column width={ 4 } >
-              <Button fluid primary>Ajouter un client</Button>
+              <AddCustomer />
             </Grid.Column>
           </Grid.Row>
           <Grid.Row>
@@ -82,14 +85,17 @@ class Campanies extends React.Component {
               </Grid>
             </Grid.Column>
             <Grid.Column width={ 4 }>
-              <Grid celled >
-                <Segment.Group>
-                  <Segment>MON COMPTE</Segment>
-                  <Segment>Parametres de facturation</Segment>
-                  <Segment>Parametres de compte</Segment>
-                  <Segment>Monnais de paiement</Segment>
-                </Segment.Group>
-              </Grid>
+              <Sticky context={ this.state.contextRef } >
+                <Grid as={ Segment } placeholder>
+                  <Header as='h5' icon='cog' content='Paramètres' />
+                  <Segment.Group>
+                    <Segment>MON COMPTE</Segment>
+                    <Segment>> Parametres de facturation</Segment>
+                    <Segment>Parametres de compte</Segment>
+                    <Segment>Monnais de paiement</Segment>
+                  </Segment.Group>
+                </Grid>
+              </Sticky>
             </Grid.Column>
           </Grid.Row>
         </Grid>

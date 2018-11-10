@@ -1,10 +1,13 @@
 // import App from "./App";
 import React, { Component } from 'react'
-import { createStore } from 'redux'
+// import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { render } from 'react-dom'
 import { addLocaleData, IntlProvider } from 'react-intl'
+import createStore from './redux/createStore'
+import configureAxios from './axios.init'
 import NavBar from './components/TabletApp'
+import { browserHistory } from 'react-router'
 import { BrowserRouter, Route } from 'react-router-dom'
 import Watch from './components/pages/watch'
 import HomePage from 'CONTAINERS/HomePage/HomePage'
@@ -14,12 +17,16 @@ import Companies from './containers/Companies/Companies'
 import Entreprise from './containers/Entreprise/Entreprise'
 import Products from './containers/Products/Products'
 
-import rootReducer from './rootReducer'
+// import rootReducer from './rootReducer'
 import frmessages from 'INTL/lang/fr.json'
 import enmessages from 'INTL/lang/en.json'
 import en from 'react-intl/locale-data/en'
 import fr from 'react-intl/locale-data/fr'
-// import '../semantic/src/semantic.less'
+import './App.less'
+
+document.domain = 'localhost'
+const initialState = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+const store = createStore(initialState, browserHistory)
 
 // const composeEnhancers =
 //   typeof window === 'object' &&
@@ -33,10 +40,13 @@ import fr from 'react-intl/locale-data/fr'
 //   // other store enhancers if any
 // );
 const MOUNT_NODE = document.getElementById('root')
+// let store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
 const messages = new RegExp('^fr').test(navigator.language) ? frmessages : enmessages
 addLocaleData([...en, ...fr])
-let store = createStore(rootReducer, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
-console.log(store.getState())
+configureAxios(store)
+
+// console.log(store.getState())
 
 class App extends Component {
   render () {

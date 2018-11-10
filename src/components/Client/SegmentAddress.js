@@ -39,9 +39,6 @@ const SegmentAddress = ({ icon, title, onClick, clients, updateAddress }) => (
 
 const updateAddressPropType = PropTypes.shape({
   onChange: PropTypes.func.isRequired,
-  handleOpen: PropTypes.func.isRequired,
-  modalOpen: PropTypes.bool,
-  handleClose: PropTypes.func.isRequired,
   complete: PropTypes.bool.isRequired,
   submitMeetingForm: PropTypes.func.isRequired,
 })

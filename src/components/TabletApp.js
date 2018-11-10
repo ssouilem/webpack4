@@ -1,5 +1,3 @@
-import '../styles/all.css'
-import './app.css'
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 import { Sidebar, Segment, Menu, Image, Button, Dropdown, Icon } from 'semantic-ui-react'

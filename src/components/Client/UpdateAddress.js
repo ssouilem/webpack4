@@ -3,18 +3,14 @@ import { Modal, Button, Image } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import ItemAddress from 'COMPONENTS/Client/ItemAddress'
 
-const UpdateAddress = ({ onChange, handleOpen, modalOpen, handleClose, complete, submitMeetingForm, clients }) => (
+const UpdateAddress = ({ onChange, complete, submitMeetingForm, clients }) => (
   <Modal
-    trigger={ <Button onClick={ handleOpen }
-      basic icon='pencil alternate' content='Modifier' floated='right' /> }
-    open={ modalOpen }
-    onClose={ handleClose }
+    trigger={ <Button basic icon='pencil alternate' content='Modifier' floated='right' /> }
     centered={ false }
     size='small'
-    closeIcon
   >
     <Modal.Header content="Modifier l'adresse de client" />
-    <Modal.Content>
+    <Modal.Content scrolling>
       { !complete
         ? <ItemAddress
           address={ clients }
@@ -29,7 +25,7 @@ const UpdateAddress = ({ onChange, handleOpen, modalOpen, handleClose, complete,
     </Modal.Content>
     { !complete
       ? <Modal.Actions>
-        <Button color='red' onClick={ handleClose }>Close</Button>
+        <Button color='red'>Close</Button>
         <Button positive icon='checkmark'
           labelPosition='right' content='Submit'
           onClick={ submitMeetingForm } />
@@ -41,9 +37,6 @@ const UpdateAddress = ({ onChange, handleOpen, modalOpen, handleClose, complete,
 
 UpdateAddress.propTypes = {
   onChange: PropTypes.func.isRequired,
-  handleOpen: PropTypes.func.isRequired,
-  modalOpen: PropTypes.bool,
-  handleClose: PropTypes.func.isRequired,
   complete: PropTypes.bool.isRequired,
   submitMeetingForm: PropTypes.func.isRequired,
   clients: PropTypes.object.isRequired,

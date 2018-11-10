@@ -1,6 +1,7 @@
 import React from 'react'
 import { Grid, Table, Button, Icon } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
+import AddCustomer from 'COMPONENTS/Client/AddCustomer'
 
 const CompaniesList = ({ onClick, fetchClients, clients }) => (
   <Grid.Column textAlign='center'>
@@ -22,16 +23,18 @@ const CompaniesList = ({ onClick, fetchClients, clients }) => (
             <Table.HeaderCell>{ client.contactName }</Table.HeaderCell>
             <Table.HeaderCell>{ client.city }</Table.HeaderCell>
             <Table.HeaderCell>
+              <AddCustomer>
+                <Button
+                  icon='pencil'
+                  inverted
+                  color='blue'
+                  floated='right' />
+              </AddCustomer>
               <Button
                 onClick={ onClick }
-                icon='edit'
-                color='olive'
-                floated='right' />
-
-              <Button
-                onClick={ onClick }
-                icon='low vision'
-                color='green'
+                icon='delete'
+                color='red'
+                inverted
                 floated='right' />
             </Table.HeaderCell>
           </Table.Row>
@@ -42,16 +45,18 @@ const CompaniesList = ({ onClick, fetchClients, clients }) => (
             <Table.Cell>{ client.contactName }</Table.Cell>
             <Table.Cell>{ client.city }</Table.Cell>
             <Table.Cell>
+              <AddCustomer>
+                <Button
+                  icon='pencil'
+                  inverted
+                  color='blue'
+                  floated='right' />
+              </AddCustomer>
               <Button
                 onClick={ onClick }
-                icon='edit'
-                color='olive'
-                floated='right' />
-
-              <Button
-                onClick={ onClick }Cell
-                icon='low vision'
-                color='green'
+                icon='delete'
+                color='red'
+                inverted
                 floated='right' />
             </Table.Cell>
           </Table.Row>
