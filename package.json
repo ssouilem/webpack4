@@ -4,11 +4,21 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "webpack --mode development --module-bind js=babel-loader",
-    "start": "webpack-dev-server --watch --content-base build --port 8081 --mode development --open --inline --hot",
+    "dev": "better-npm-run dev",
+    "server": "node ./src/server",
+    "start": "webpack-dev-server --watch --content-base build --port 8081 --mode development --open --inline --hot ",
     "build": "webpack --mode production --module-bind js=babel-loader --progress --display-error-details",
     "transpile": "babel src -d dist --copy-files",
     "prepublishOnly": "npm run transpile"
+  },
+  "betterScripts": {
+    "dev": {
+      "command": "concurrently --kill-others \"npm run server\" \"npm run start\"",
+      "env": {
+        "NODE_ENV": "development",
+        "HOST": "my-local-dev-env.global"
+      }
+    }
   },
   "keywords": [],
   "author": "",
@@ -20,6 +30,7 @@
     "babel-loader": "^7.1.4",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
+    "concurrently": "^4.0.1",
     "css-loader": "^0.28.11",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
@@ -47,7 +58,10 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "better-npm-run": "^0.1.1",
     "bootstrap": "^4.0.0",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
     "history": "^4.7.2",
     "lodash": "^4.17.11",
     "postcss-loader": "^3.0.0",

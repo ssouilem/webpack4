@@ -18,10 +18,22 @@ export const listUnit = {
   ROULEAU: 'ROULEAU',
 }
 
+const instance = axios.create({
+  baseURL: 'http://api.plos.org',
+  responseType: 'json',
+  withCredentials: true,
+  crossdomain: true,
+  mode: 'cors',
+  headers: {
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
+  },
+})
+
 const fetchProducts = dispatch => () =>
   dispatch({
     type: [FETCH_PRODUCTS_SENDING, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_FAILURE],
-    promise: axios.get('http://api.plos.org/search?q=title:DNA'),
+    promise: instance.get('/search?q=title:DNA'),
   })
 
 const wait = ms => new Promise((resolve, reject) => setTimeout(resolve, ms))

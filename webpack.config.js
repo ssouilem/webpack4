@@ -13,6 +13,31 @@ const excludePaths = [path.resolve(__dirname, 'node_modules')]
 const includePaths = [path.resolve(__dirname, './src')]
 
 module.exports = {
+  // app: function () {
+  //   const app = express()
+  //   const indexPath = path.join(__dirname, 'index.html')
+  //   const publicPath = express.static(path.join(__dirname, '../dist'))
+  //
+  //   app.use('/dist', publicPath)
+  //   app.use(function (req, res, next) {
+  //     res.header('Access-Control-Allow-Origin', '*')
+  //     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  //     next()
+  //   })
+  //   app.get('/', function (_, res) { res.sendFile(indexPath) })
+  //
+  //   return app
+  // },
+  devServer: {
+    open: true,
+    historyApiFallback: true,
+    watchOptions: { aggregateTimeout: 300, poll: 1000 },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
+    },
+  },
   entry: {
     app: PATHS.src + '/index.js',
   },
@@ -93,16 +118,16 @@ module.exports = {
         //   'less-loader',
         //   // MiniCssExtractPlugin.loader,
         //   // {
-        //   //     loader: "css-loader",
+        //   //     loader: 'css-loader',
         //   //     options: {
         //   //       importLoaders: 1,
         //   //       sourceMap: true,
         //   //       modules: true,
-        //   //       localIdentName: "[local]___[hash:base64:5]"
+        //   //       localIdentName: '[local]___[hash:base64:5]'
         //   //     }
         //   //   },
         //   //   { loader: 'less-loader' },
-        //   //   "less-loader"
+        //   //   'less-loader'
         //
         // ],
         test: /\.less$/,
@@ -125,9 +150,6 @@ module.exports = {
         }],
       },
     ],
-  },
-  devServer: {
-    historyApiFallback: true,
   },
   plugins: [
     new MiniCssExtractPlugin({
