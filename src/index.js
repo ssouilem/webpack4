@@ -24,7 +24,7 @@ import en from 'react-intl/locale-data/en'
 import fr from 'react-intl/locale-data/fr'
 import './App.less'
 
-document.domain = 'localhost'
+document.domain = 'soft-team.fr'
 const initialState = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 const store = createStore(initialState, browserHistory)
 

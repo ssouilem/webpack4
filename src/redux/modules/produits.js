@@ -20,8 +20,8 @@ export const listUnit = {
 
 const fetchProducts = dispatch => () =>
   dispatch({
-    type: FETCH_PRODUCTS_SUCCESS,
-    promise: axios.get('http://localhost:8080/products/', { withCredentials: false }),
+    type: [FETCH_PRODUCTS_SENDING, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_FAILURE],
+    promise: axios.get('http://api.plos.org/search?q=title:DNA'),
   })
 
 const wait = ms => new Promise((resolve, reject) => setTimeout(resolve, ms))

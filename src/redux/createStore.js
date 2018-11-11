@@ -1,13 +1,18 @@
+import axios from 'axios'
 import { applyMiddleware, compose, createStore } from 'redux'
 // import createMiddleware from 'MIDDLEWARE/clientMiddleware'
 // import createSagaMiddleware from 'redux-saga'
-// import { multiClientMiddleware } from 'redux-axios-middleware'
+import axiosMiddleware from 'redux-axios-middleware'
 // import clients from './clients'
 // import watchMany from './sagas'
 import { routerMiddleware } from 'react-router-redux'
 import thunk from 'redux-thunk'
 import rootReducer from '../rootReducer'
 
+const client = axios.create({
+  // baseURL: 'http://',
+  responseType: 'json',
+})
 export default (initialState = {}, history) => {
   // ======================================================
   // Middleware Configuration
@@ -15,10 +20,10 @@ export default (initialState = {}, history) => {
   //  const sagaMiddleware = createSagaMiddleware()
   const middleware = [
     thunk,
-//    createMiddleware(),
-//    sagaMiddleware,
+    // createMiddleware(),
+    // sagaMiddleware,
     routerMiddleware(history),
-//    multiClientMiddleware(clients),
+    axiosMiddleware(client),
   ]
 
   // ======================================================
