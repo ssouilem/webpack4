@@ -97,7 +97,7 @@ const ItemAddress = ({ address, onChange, disabled }) => (
 )
 
 ItemAddress.propTypes = {
-  address: PropTypes.object.isRequired,
+  address: PropTypes.object,
   onChange: PropTypes.func.isRequired,
   disabled: PropTypes.bool.isRequired,
 }

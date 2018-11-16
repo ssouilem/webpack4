@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { Grid, Header, Form, Button, Segment, Responsive, Icon, Accordion } from 'semantic-ui-react'
 import TableInternal from 'COMPONENTS/Common/TableInternal'
 import { TableType } from 'COMPONENTS/Utils/Utils'
-import { actions as bordereauActions } from 'ACTIONS/bordereauActions'
+import { actions as bordereauActions } from 'ACTIONS/bordereau'
 import {
   DateInput,
 } from 'semantic-ui-calendar-react'
@@ -17,9 +17,12 @@ class BordereauList extends React.Component {
     activeIndex: false,
   }
   componentWillMount () {
-    if (this.props.bordereau && (!this.props.bordereau.data ||
-      (this.props.bordereau.data && this.props.bordereau.data.length < 1))) {
-      this.props.fetchSlips()
+    // if (this.props.bordereau && (!this.props.bordereau.data ||
+    //   (this.props.bordereau.data && this.props.bordereau.data.length < 1))) {
+    //   this.props.fetchSlips()
+    // }
+    if (!this.props.bordereau.sending && !this.props.bordereau.data) {
+      this.props.fetchBordereaux()
     }
   }
   // les probleme il est au niveau de constructor pour init la liste
@@ -121,15 +124,16 @@ class BordereauList extends React.Component {
                 <Grid.Column width={ 16 }>
                   <Button floated='right' color='blue'>Rechercher</Button>
                 </Grid.Column>
-          
+
               </Grid>
             </Accordion.Content>
           </Accordion>
 
           <Grid.Column width={ 16 }>
             <TableInternal
-              items={ this.props.slips }
+              items={ this.props.bordereau.data }
               onChecked={ this.toggle }
+              deleteItem={ this.props.deleteBordereau }
               state={ this.state }
               onClick={ (action) => console.log('view or edit', action) }
               tableType={ TableType.SHOW_BORDEREAUX } />
@@ -156,6 +160,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   handleChange: bordereauActions.handleChange(dispatch),
   fetchSlips: bordereauActions.fetchSlips(dispatch),
+  fetchBordereaux: bordereauActions.fetchBordereaux(dispatch),
+  deleteBordereau: bordereauActions.deleteBordereau(dispatch),
   setCheckedItemProps: bordereauActions.setCheckedItemProps(dispatch),
   dispatch,
 })

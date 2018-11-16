@@ -1,26 +1,19 @@
 import axios from 'axios'
 
-// axios.defaults.baseURL = 'http://localhost:8080'
-axios.defaults.withCredentials = true
+axios.defaults.baseURL = 'http://compta.dev.local.ina.fr:8080'
+axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS' // for all requests
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*' // for all requests
+// axios.defaults.headers.post['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS' // for POST requests
+
+// axios.defaults.withCredentials = true
 export default function configureAxios (store) {
+  console.log(axios.interceptors.request)
   axios.interceptors.request.use((config) => {
-    // let cookieValue = cookies.getToken()
-    // if (cookieValue) {
-    //   config.headers.Authorization = cookieValue
-    // }
     return config
   })
-
   axios.interceptors.response.use((response) => {
-    // if (response.headers && response.headers['authorization']) {
-    //   cookies.saveToken(response.headers['authorization'])
-    // }
     return response
   }, (error) => {
-    // if (error.response.status === 401 || error.response.status === 403) {
-    //   // cookies.logout()
-    //   // window.location.replace(`//${ __DOPS_SERVER_HOST__ }/20170516/api/login`)
-    // }
     return Promise.reject(error)
   })
 }

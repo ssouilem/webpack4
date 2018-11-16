@@ -3,7 +3,7 @@ import { combineReducers } from 'redux'
 import { reducer as form } from 'redux-form'
 
 import portal from './redux/modules/portal'
-import bordereau from './redux/modules/bordereauActions'
+import bordereau from './redux/modules/bordereau'
 import produits from './redux/modules/produits'
 import clients from './redux/modules/clients'
 import search from './redux/modules/search'

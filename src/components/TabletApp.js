@@ -55,8 +55,8 @@ class TabletApp extends Component {
                       <Dropdown.Header>MON COMPTE</Dropdown.Header>
                       <Dropdown.Item disabled >Compte utilisateur</Dropdown.Item>
                       <Dropdown.Item disabled >Paramètres de facturation</Dropdown.Item>
-                      <Dropdown.Item as={ Link } to='/entreprise' >
-                        Coordonnées de l'entreprise
+                      <Dropdown.Item>
+                        <Link to='/entreprise'>Coordonnées de l'entreprise</Link>
                       </Dropdown.Item>
                     </Dropdown.Menu>
                   </Dropdown>

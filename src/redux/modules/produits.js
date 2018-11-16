@@ -1,8 +1,9 @@
+import _ from 'lodash'
 import axios from 'axios'
-axios.defaults.withCredentials = true
+// axios.defaults.withCredentials = false
+
 const REINITIALIZE_WIZARD = 'REINITIALIZE_WIZARD'
 const SET_DATE_PROPS = 'SET_DATE_PROPS'
-const FETCH_SLIPS_SUCCESS = 'FETCH_SLIPS_SUCCESS'
 
 const FETCH_PRODUCTS_SENDING = 'FETCH_PRODUCTS_SENDING'
 const FETCH_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS'
@@ -12,111 +13,70 @@ const CREATE_PRODUCT_SENDING = 'CREATE_PRODUCT_SENDING'
 const CREATE_PRODUCT_SUCCESS = 'CREATE_PRODUCT_SUCCESS'
 const CREATE_PRODUCT_FAILURE = 'CREATE_PRODUCT_FAILURE'
 
-export const listUnit = {
-  METRE: 'METRE',
-  KILO: 'KILO',
-  ROULEAU: 'ROULEAU',
-}
+const DELETE_PRODUCT_SENDING = 'DELETE_PRODUCT_SENDING'
+const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS'
+const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE'
 
-const instance = axios.create({
-  baseURL: 'http://api.plos.org',
-  responseType: 'json',
-  withCredentials: true,
-  crossdomain: true,
-  mode: 'cors',
-  headers: {
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
-  },
-})
+// const instance = axios.create({
+//   baseURL: 'http://localhost:8080',
+//   responseType: 'json',
+//   withCredentials: false,
+//   crossdomain: true,
+//   mode: 'cors',
+//   headers: {
+//     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+//     'Access-Control-Allow-Origin': '*',
+//     'Content-Type': 'application/json',
+//   },
+// })
 
 const fetchProducts = dispatch => () =>
   dispatch({
-    type: [FETCH_PRODUCTS_SENDING, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_FAILURE],
-    promise: instance.get('/search?q=title:DNA'),
+    types: [FETCH_PRODUCTS_SENDING, FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_FAILURE],
+    promise: axios.get('/products/').then((res) => {
+      console.log(res.data)
+      return res
+    }),
   })
 
-const wait = ms => new Promise((resolve, reject) => setTimeout(resolve, ms))
+// const wait = ms => new Promise((resolve, reject) => setTimeout(resolve, ms))
 
 const createProduct = dispatch => productProps => {
   return dispatch({
     types: [CREATE_PRODUCT_SENDING, CREATE_PRODUCT_SUCCESS, CREATE_PRODUCT_FAILURE],
-    promise: axios
-      .post('http://localhost:8080/products/', {
-        name: productProps.name,
-        description: productProps.description,
-        groupId: productProps.groupId,
-        quality: productProps.quality,
-        logs: productProps.logs,
-        artifacts: productProps.artifacts,
-        templateId: productProps.templateId,
-        vars: productProps.vars,
-      })
-      .then(async product => {
-        await wait(7000)
-        axios.get(`/products/stats/${product.data.messageId}`).then(stat => {
-          console.log('Product created on Gitlab ', stat.data.product)
-        })
-      }),
+    promise: axios.post('/products/', {
+      reference: productProps.reference,
+      description: productProps.description,
+      unit: productProps.unit,
+      quality: productProps.quality,
+      price: productProps.price,
+      tva: productProps.tva,
+    }).then((res) => {
+      console.log(res.data)
+      return res
+
+    // then(async product => {
+    //   await wait(7000)
+    //   axios.get(`/products/stats/${product.data.messageId}`).then(stat => {
+    //     console.log('Product created on Gitlab ', stat.data.product)
+    //   })
+    }),
   })
 }
+
+const deleteProduct = dispatch => uid =>
+  dispatch({
+    types: [DELETE_PRODUCT_SENDING, DELETE_PRODUCT_SUCCESS, DELETE_PRODUCT_FAILURE],
+    promise: axios.delete('/products/' + uid).then((res) => {
+      console.log(res.data)
+      return uid
+    }),
+  })
 
 export const setVisibilityFilter = filter => ({
   type: 'SET_VISIBILITY_FILTER',
   filter,
 })
-
-const produits = [
-  {
-    'id': 'ID_9',
-    'change': 'EURO',
-    'description': 'tube 13',
-    'name': 'rs',
-    'price': 0.700,
-    'quality': 'FIRST_CHOICE',
-    'reference': 'R13',
-    'unit': 'METRE',
-  },
-  {
-    'id': 'ID_12',
-    'change': 'EURO',
-    'description': 'tube 12',
-    'name': 'rs',
-    'price': 0.710,
-    'quality': 'FIRST_CHOICE',
-    'reference': 'R12',
-    'unit': 'METRE',
-  },
-  {
-    'id': 'ID_3',
-    'change': 'EURO',
-    'description': 'tube 11',
-    'name': 'rs',
-    'price': 0.720,
-    'quality': 'FIRST_CHOICE',
-    'reference': 'R11',
-    'unit': 'METRE',
-  },
-  {
-    'id': 'ID_34',
-    'change': 'EURO',
-    'description': 'tube',
-    'name': 'rs',
-    'price': 0.700,
-    'quality': 'FIRST_CHOICE',
-    'reference': 'r12',
-    'unit': 'METRE',
-  }]
-
-const fetchProduits = dispatch => () => {
-  console.log('fetchClips ')
-  dispatch({
-    type: FETCH_SLIPS_SUCCESS,
-    payload: {
-      data: produits,
-    },
-  })
-}
 
 const handleChange = dispatch => state => {
   console.log('handleChange ', state)
@@ -141,18 +101,12 @@ export const actions = {
   reinitializeProduit,
   handleChange,
   fetchProducts,
-  fetchProduits,
   createProduct,
+  deleteProduct,
   addTab,
 }
 
 const ACTION_HANDLERS = {
-  [FETCH_SLIPS_SUCCESS]: (state, action) => ({
-    ...state,
-    sending: false,
-    error: undefined,
-    data: produits.map(data => ({ ...data })),
-  }),
   [REINITIALIZE_WIZARD]: (state, action) => action.payload,
   [FETCH_PRODUCTS_SENDING]: (state, action) => ({
     ...state,
@@ -163,7 +117,7 @@ const ACTION_HANDLERS = {
     ...state,
     sending: false,
     error: undefined,
-    data: action.response,
+    data: action.result.data,
   }),
   [FETCH_PRODUCTS_FAILURE]: (state, action) => ({
     ...state,
@@ -179,10 +133,29 @@ const ACTION_HANDLERS = {
   [CREATE_PRODUCT_SUCCESS]: (state, action) => ({
     ...state,
     sending: false,
+    data: [...state.data, action.result.data],
     done: action.result.data.uid,
     error: undefined,
   }),
   [CREATE_PRODUCT_FAILURE]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: action.error,
+  }),
+  [DELETE_PRODUCT_SENDING]: (state, action) => ({
+    ...state,
+    sending: true,
+    error: undefined,
+  }),
+  [DELETE_PRODUCT_SUCCESS]: (state, action) => ({
+    ...state,
+    sending: false,
+    delete: _.remove(state.data, function (currentObject) { return currentObject.uid === action.result }),
+    // done: _.remove(state.data, { uid: action.result }),
+    // done: action.result.data.uid,
+    error: undefined,
+  }),
+  [DELETE_PRODUCT_FAILURE]: (state, action) => ({
     ...state,
     sending: false,
     error: action.error,
@@ -196,7 +169,7 @@ const initialState = {
   datedebut: '',
   datefin: '',
   name: '',
-  produits: produits,
+  produits: [],
 }
 
 export default function bordereauReducer (state = initialState, action) {

@@ -6,14 +6,14 @@
   "scripts": {
     "dev": "better-npm-run dev",
     "server": "node ./src/server",
-    "start": "webpack-dev-server --watch --content-base build --port 8081 --mode development --open --inline --hot ",
+    "start": "webpack-dev-server --watch --content-base build --host 0.0.0.0  --port 8081  --public compta.dev.local.ina.fr:8081 --mode development --open --inline --hot ",
     "build": "webpack --mode production --module-bind js=babel-loader --progress --display-error-details",
     "transpile": "babel src -d dist --copy-files",
     "prepublishOnly": "npm run transpile"
   },
   "betterScripts": {
     "dev": {
-      "command": "concurrently --kill-others \"npm run server\" \"npm run start\"",
+      "command": "concurrently --kill-others \"npm run start\"",
       "env": {
         "NODE_ENV": "development",
         "HOST": "my-local-dev-env.global"
@@ -63,6 +63,7 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "history": "^4.7.2",
+    "http": "0.0.0",
     "lodash": "^4.17.11",
     "postcss-loader": "^3.0.0",
     "prop-types": "^15.6.2",

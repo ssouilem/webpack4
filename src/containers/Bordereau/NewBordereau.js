@@ -6,8 +6,9 @@ import { connect } from 'react-redux'
 import AddBordereauDetail from 'COMPONENTS/Bordereau/AddBordereauDetail'
 import LineBordereauDetail from 'COMPONENTS/Bordereau/LineBordereauDetail'
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
-import { actions as produitsActions } from 'ACTIONS/produits'
 import { actions as clientsActions } from 'ACTIONS/clients'
+import { actions as productsActions } from 'ACTIONS/produits'
+
 import styles from './NewBordereau.less'
 
 class NewBordereau extends React.Component {
@@ -15,87 +16,37 @@ class NewBordereau extends React.Component {
     totalTVA: 0,
     totalAmountHT: 0,
     totalAmountTTC: 0,
-    bordereauType: 'DELIVERY',
+    bordereauType: 'LIVRAISON',
     id: '',
     invoices: [],
     bordereauDetails: [],
-    bordereauDetail: {
-      id: '',
-      reference: '',
-      description: '',
-      qte: 1,
-      reduction: '',
-      unit: '',
-      total: 0,
-    },
   }
 
   componentWillMount () {
-    this.resetComponent()
-    this.props.fetchClients()
+    if (!this.props.clients.sending && !this.props.clients.data) {
+      this.props.fetchCustomers()
+    }
+    if (!this.props.products.sending && !this.props.products.data) {
+      this.props.fetchProducts()
+    }
   }
 
   // Sticky
   handleContextRef = contextRef => this.setState({ contextRef })
-  // Search FUNC
-  resetComponent = () => this.setState({ isLoading: false, results: [], value: '' })
-  handleResultSelect = (e, { result }) => {
-    this.setState({result: result})
-    var bordereauDetail = this.state.bordereauDetail
-    bordereauDetail.description = result.description
-    bordereauDetail.reference = result.reference
-    bordereauDetail.reduction = this.props.client.reduction
-    bordereauDetail.unit = result.unit
-    let totalHT = (parseInt(bordereauDetail.qte) * parseFloat(result.price)) * ((100 - parseInt(bordereauDetail.reduction)) / 100)
-    console.log('Total : ', parseFloat(bordereauDetail.qte), parseFloat(result.price), parseInt(bordereauDetail.reduction), totalHT)
-    bordereauDetail.total = totalHT.toFixed(3)
-    this.setState({ value: result.reference, bordereauDetail })
-  }
-
-  handleSearchChange = (e, { value }) => {
-    this.setState({ isLoading: true, value })
-
-    setTimeout(() => {
-      if (this.state.value.length < 1) return this.resetComponent()
-
-      const re = new RegExp(_.escapeRegExp(this.state.value), 'i')
-      const isMatch = result => re.test(result.reference)
-
-      this.setState({
-        isLoading: false,
-        results: _.filter(this.props.produits.produits, isMatch),
-      })
-    }, 300)
-  }
   // ADD BORD DEATIL
-  _addLinebordereauDetail = (event) => {
-    let idLocal = 'ID_' + (new Date()).getTime()
-    this.setState({'id': idLocal})
-    this.state.bordereauDetail.id = idLocal
-    // this.setState(prevState => ({
-    //   invoices: [...prevState.invoices, invoice]
-    // }))
-    let totalHT = parseFloat(this.state.totalAmountHT) + parseFloat(this.state.bordereauDetail.total)
-    let totalTVA = totalHT * 0.2
-    let totalTTC = totalHT + totalTVA
+  _addLinebordereauDetail = props => {
+    // add item to list
+    var bordereauDetail = { ...props, id: props.productUid }
+    this.setState({ bordereauDetails: [...this.state.bordereauDetails, bordereauDetail] })
 
     // Calcule somme
+    let totalHT = parseFloat(this.state.totalAmountHT) + parseFloat(props.total)
+    let totalTVA = totalHT * 0.2
+    let totalTTC = totalHT + totalTVA
     this.setState({ totalAmountHT: parseFloat(totalHT), totalAmountTTC: parseFloat(totalTTC), totalTVA: parseFloat(totalTVA) })
-
-    // reinit form
-    const bordereauDetail = {
-      id: '',
-      reference: '',
-      description: '',
-      qte: 1,
-      reduction: '',
-      unit: '',
-      total: 0,
-    }
-    this.setState({ bordereauDetails: [...this.state.bordereauDetails, this.state.bordereauDetail], bordereauDetail: bordereauDetail })
-    document.getElementById('myform').reset()
+    this.props.setBordereauDetails({ ...bordereauDetail })
   }
-
+  // DELETE ITEM
   _deleteLinebordereauDetail = (event, {name}) => {
     console.log('id', name)
     _.remove(this.state.bordereauDetails, function (currentObject) { return currentObject.id === name })
@@ -103,143 +54,23 @@ class NewBordereau extends React.Component {
     // @TODO mettre a jour les Montants
     this.setState({ bordereauDetails: this.state.bordereauDetails })
   }
-  _handleChangeInput = (event) => {
-    const { name, value } = event.target
-    if (this.state.id === '') {
-      let initId = 'ID_' + (new Date()).getTime()
-      this.state.id = initId
-      this.setState({'id': initId})
-    }
-    console.log(' ID : ', this.state.id, value)
-    var bordereauDetail = this.state.bordereauDetail
-    // this.setState({[name]: value})
-    switch (name) {
-      case 'reference': {
-        bordereauDetail.reference = value
-        break
-      }
-      case 'description': {
-        bordereauDetail.description = value
-        break
-      }
-      case 'qte': {
-        bordereauDetail.qte = value
-        let total = (parseInt(bordereauDetail.qte) * this.state.result.price) * ((100 - bordereauDetail.reduction) / 100)
-        bordereauDetail.total = total.toFixed(3)
-        break
-      }
-      case 'reduction': {
-        bordereauDetail.reduction = value
-        let total = (parseInt(bordereauDetail.qte) * this.state.result.price) * ((100 - bordereauDetail.reduction) / 100)
-        bordereauDetail.total = total.toFixed(3)
-        break
-      }
-      case 'unit': {
-        bordereauDetail.unit = value
-        break
-      }
-      case 'total': {
-        bordereauDetail.total = value
-        break
-      }
-      default: {
-        // statements;
-        break
-      }
-    }
-    this.setState({bordereauDetail})
-    // // var foundBr = bordereauDetails.find(o => o.id === this.state.id)
-    // var objIndex = bordereauDetails.findIndex(obj => obj.id === this.state.id)
-    // console.log(JSON.stringify(bordereauDetails), objIndex)
-    // if (!objIndex) {
-    //   console.log('Before update: ', JSON.stringify(bordereauDetails[objIndex]))
-    // this.props.setWizardVarsProps({ key: name, value })
-  }
   // UPDATE BORD TYPE
-  _handleCheckedChange = (e, { value }) => this.setState({ bordereauType: value })
+  _handleCheckedChange = (e, { value }) => {
+    this.setState({ bordereauType: value })
+    this.props.setBordereauProps({ type: value })
+  }
   // SELECT CLIENT
-  _handleSelectChange = (e, { name, value }) => {
+  _handleChangeCustmer = (e, { name, value }) => {
     this.props.handleChangeClient({ [name]: value })
+    this.props.setBordereauProps({ [name]: value })
+  }
+
+  _handleSelectChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
+    this.props.setBordereauProps({ [name]: value })
   }
 
 _handleChange = (e, { name, value }) => this.props.setItemProps({ [name]: value })
-
-submitMeetingForm = () => {
-  let error = false
-  let errors = this.state.errors
-
-  if (this.state.firstName === '') {
-    errors.firstNameError = true
-    error = true
-  } else {
-    errors.firstNameError = false
-    error = false
-  }
-  if (this.state.LastName === '') {
-    errors.lastNameError = true
-    error = true
-  } else {
-    errors.lastNameError = false
-    error = false
-  }
-  if (this.state.email === '') {
-    errors.emailError = true
-    error = true
-  } else {
-    errors.emailError = false
-    error = false
-  }
-  if (this.state.location === '') {
-    errors.locationError = true
-    error = true
-  } else {
-    errors.locationError = false
-    error = false
-  }
-  if (this.state.phoneNumber === '') {
-    errors.phoneNumberError = true
-    error = true
-  } else {
-    errors.phoneNumberError = false
-    error = false
-  }
-  if (this.state.address1 === '') {
-    errors.address1Error = true
-    error = true
-  } else {
-    errors.address1Error = false
-    error = false
-  }
-  if (this.state.address2 === '') {
-    errors.address2Error = true
-    error = true
-  } else {
-    errors.address2Error = false
-    error = false
-  }
-  if (this.state.zipCode === '') {
-    errors.zipCodeError = true
-    error = true
-  } else {
-    errors.zipCodeError = false
-    error = false
-  }
-  if (this.state.city === '') {
-    errors.cityError = true
-    error = true
-  } else {
-    errors.cityError = false
-    error = false
-  }
-
-  if (error) {
-    errors.formError = true
-    return
-  } else {
-    errors.formError = false
-  }
-  this.setState({ errors })
-}
 
   render = () => (
     <Form id='myform'>
@@ -257,13 +88,13 @@ submitMeetingForm = () => {
                   fluid
                   search
                   selection
-                  value={ this.props.selectedClient }
-                  options={ this.props.clients && this.props.clients.data.map(client => ({
-                    key: client.id,
-                    value: client.id,
-                    text: client.text,
+                  value={ this.props.selectedClient && this.props.selectedClient !== '' && this.props.selectedClient }
+                  options={ this.props.clients && this.props.clients.data && this.props.clients.data.map(client => ({
+                    key: client.uid,
+                    value: client.uid,
+                    text: client.name,
                   })) }
-                  onChange={ this._handleSelectChange }
+                  onChange={ this._handleChangeCustmer }
                 />
               </Grid.Column>
               <Grid.Column width={ 8 } textAlign='left' >
@@ -271,16 +102,16 @@ submitMeetingForm = () => {
                 <Form.Field>
                   <Radio toggle
                     label='Bordereau de livraison'
-                    name='radioGroup'
-                    value='DELIVERY'
-                    checked={ this.state.bordereauType === 'DELIVERY' }
+                    name='type'
+                    value='LIVRAISON'
+                    checked={ this.state.bordereauType === 'LIVRAISON' }
                     onChange={ this._handleCheckedChange }
                   />
                 </Form.Field>
                 <Form.Field>
                   <Radio toggle
                     label='Bordereau de retour'
-                    name='radioGroup'
+                    name='type'
                     value='RETURN'
                     checked={ this.state.bordereauType === 'RETURN' }
                     onChange={ this._handleCheckedChange }
@@ -343,16 +174,12 @@ submitMeetingForm = () => {
                   </Table.Header>
                   <Table.Body >
                     <AddBordereauDetail
+                      id={ this.state.id }
                       active={ this.props.selectedClient === '' }
-                      produits={ this.props.produits }
                       bordereauDetailForm={ this.state.bordereauDetail }
-                      id={ this.state.id } onClick={ this._addLinebordereauDetail }
-                      isLoading={ this.state.isLoading }
-                      handleResultSelect={ this.handleResultSelect }
-                      handleSearchChange={ this.handleSearchChange }
-                      results={ this.state.results }
-                      value={ this.state.value }
-                      onChange={ this._handleChangeInput } />
+                      onClick={ this._addLinebordereauDetail }
+                      products={ this.props.products.data }
+                    />
                   </Table.Body>
                   <Table.Footer>
                     {this.state.bordereauDetails.map(bordereauDetail => (
@@ -449,27 +276,25 @@ SegmentAddress.propTypes = {
 }
 
 NewBordereau.propTypes = {
-  produits: PropTypes.object,
+  products: PropTypes.object,
   setItemProps: PropTypes.func,
 }
 
 const mapStateToProps = state => ({
-  produits: state.produits,
+  products: state.produits,
   clients: state.clients,
   client: state.clients.client,
   selectedClient: state.clients.selectedClient,
-  modalOpen: state.modalOpen,
   complete: state.complete,
 })
 
 const mapDispatchToProps = dispatch => ({
-  fetchProduits: produitsActions.fetchProduits(dispatch),
+  fetchCustomers: clientsActions.fetchCustomers(dispatch),
+  createCustomer: clientsActions.createCustomer(dispatch),
+  deleteCustomer: clientsActions.deleteCustomer(dispatch),
   setItemProps: clientsActions.setItemProps(dispatch),
-  handleClose: clientsActions.handleClose(dispatch),
-  handleOpen: clientsActions.handleOpen(dispatch),
-  fetchClients: clientsActions.fetchClients(dispatch),
-  reinitializeItem: clientsActions.reinitializeItem(dispatch),
   handleChangeClient: clientsActions.handleChangeClient(dispatch),
+  fetchProducts: productsActions.fetchProducts(dispatch),
   dispatch,
 })
 

@@ -1,6 +1,5 @@
 import React from 'react'
 import { Modal, Button, Image } from 'semantic-ui-react'
-import PropTypes from 'prop-types'
 import ItemAddress from 'COMPONENTS/Client/ItemAddress'
 
 class AddCustomer extends React.Component {
@@ -53,18 +52,33 @@ class AddCustomer extends React.Component {
       this.setState({formError: false})
     }
   }
+  _handleInputChange = (e, { name, value }) => this.setState({ [name]: value })
+  _handleSubmit = () => {
+    this.props.submitForm({
+      name: this.state.CompanyName,
+      mail: this.state.email,
+      address: this.state.address1,
+      additionalAddress: this.state.address2,
+      zideCode: this.state.zideCode,
+      city: this.state.city,
+      phoneNumber: this.state.phoneNumber,
+      faxNumber: this.state.phoneNumber, // @TODO Add faxNumber to form
+      tvaNumber: this.state.phoneNumber, // @TODO Add tvaNumber to form
+    })
+  }
 
-  render = ({ onChange, children } = this.props) => (
+  render = ({ children } = this.props) => (
     <Modal
-      trigger={ children !== undefined ? children : <Button basic iconPosition='left' fluid icon='pencil alternate' content='Modifier' floated='right' /> }
+      trigger={ children !== undefined ? children : <Button fluid icon='add' content='Ajouter un client' floated='right' /> }
       centered={ false }
+      closeIcon
       size='small'
     >
       <Modal.Header content="Modifier l'adresse de client" />
       <Modal.Content scrolling>
         { !this.state.complete
           ? <ItemAddress
-            onChange={ onChange }
+            onChange={ this._handleInputChange }
             disabled={ false }
           />
           : <div className='modal-complete'>
@@ -78,7 +92,7 @@ class AddCustomer extends React.Component {
           <Button color='red'>Close</Button>
           <Button positive icon='checkmark'
             labelPosition='right' content='Submit'
-            onClick={ this.successCallback } />
+            onClick={ this._handleSubmit } />
         </Modal.Actions>
         : null }
     </Modal>

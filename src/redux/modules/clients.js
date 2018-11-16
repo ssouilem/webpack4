@@ -1,3 +1,6 @@
+import _ from 'lodash'
+import axios from 'axios'
+
 const REINITIALIZE_CLIENTS = 'REINITIALIZE_CLIENTS'
 const FETCH_CLIENTS_SUCCESS = 'FETCH_CLIENTS_SUCCESS'
 const SELECTED_CLIENTS_PROPS = 'SELECTED_CLIENTS_PROPS'
@@ -7,59 +10,68 @@ const SET_MODAL_OPEN_PROPS = 'SET_MODAL_OPEN_PROPS'
 const SET_MODAL_CLOSE_PROPS = 'SET_MODAL_CLOSE_PROPS'
 const SET_ITEM_PROPS = 'SET_ITEM_PROPS'
 
-const clients = [
-  {
-    'id': 'ID_33',
-    'contactName': 'Societe 1',
-    'reduction': 20,
-    'siret': 'TN12211222213',
-    'name': 'Comptoire sahloul',
-    'value': '1',
-    'text': 'Comptoire sahloul',
-    'price': 0.700,
-    'city': 'FIRST_CHOICE',
-    'reference': 'R13',
-    'unit': 'METRE',
+const FETCH_CUSTOMERS_SENDING = 'FETCH_CUSTOMERS_SENDING'
+const FETCH_CUSTOMERS_SUCCESS = 'FETCH_CUSTOMERS_SUCCESS'
+const FETCH_CUSTOMERS_FAILURE = 'FETCH_CUSTOMERS_FAILURE'
+
+const CREATE_CUSTOMER_SENDING = 'CREATE_CUSTOMER_SENDING'
+const CREATE_CUSTOMER_SUCCESS = 'CREATE_CUSTOMER_SUCCESS'
+const CREATE_CUSTOMER_FAILURE = 'CREATE_CUSTOMER_FAILURE'
+
+const DELETE_CUSTOMER_SENDING = 'DELETE_CUSTOMER_SENDING'
+const DELETE_CUSTOMER_SUCCESS = 'DELETE_CUSTOMER_SUCCESS'
+const DELETE_CUSTOMER_FAILURE = 'DELETE_CUSTOMER_FAILURE'
+
+const instance = axios.create({
+  baseURL: 'http://localhost:8080',
+  responseType: 'json',
+  withCredentials: false,
+  crossdomain: true,
+  mode: 'cors',
+  headers: {
+    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+    'Access-Control-Allow-Origin': '*',
+    'Content-Type': 'application/json',
   },
-  {
-    'id': 'ID_12',
-    'contactName': 'EURO',
-    'reduction': 20,
-    'siret': 'TN12211222213',
-    'name': 'Direct Plast',
-    'text': 'Direct Plast',
-    'value': '2',
-    'price': 0.710,
-    'city': 'FIRST',
-    'reference': 'R12',
-    'unit': 'METRE',
-  },
-  {
-    'id': 'ID_3',
-    'contactName': 'EURO',
-    'reduction': 30,
-    'siret': 'TN12211222213',
-    'name': 'quincaillerie One',
-    'text': 'quincaillerie One',
-    'price': 0.720,
-    'quality': 'FIRST_CHOICE',
-    'reference': 'R11',
-    'unit': 'METRE',
-  },
-  {
-    'id': 'ID_34',
-    'contactName': 'EURO',
-    'siret': 'TN12211222213',
-    'reduction': 10,
-    'name': 'quincaillerie Two',
-    'text': 'quincaillerie Two',
-    'value': 'quincaillerie Two',
-    'price': 0.700,
-    'city': 'SOUSSE',
-    'reference': 'r12',
-    'unit': 'METRE',
-  },
-]
+})
+
+const fetchCustomers = dispatch => () =>
+  dispatch({
+    types: [FETCH_CUSTOMERS_SENDING, FETCH_CUSTOMERS_SUCCESS, FETCH_CUSTOMERS_FAILURE],
+    promise: instance.get('/customers/').then((res) => {
+      console.log(res.data)
+      return res
+    }),
+  })
+
+const createCustomer = dispatch => productProps => {
+  return dispatch({
+    types: [CREATE_CUSTOMER_SENDING, CREATE_CUSTOMER_SUCCESS, CREATE_CUSTOMER_FAILURE],
+    promise: instance.post('/customers/', {
+      name: productProps.name,
+      mail: productProps.mail,
+      address: productProps.address,
+      additionalAddress: productProps.additionalAddress,
+      zideCode: productProps.zideCode,
+      city: productProps.city,
+      phoneNumber: productProps.phoneNumber,
+      faxNumber: productProps.faxNumber, // @TODO Add faxNumber to form
+      tvaNumber: productProps.tvaNumber,
+    }).then((res) => {
+      console.log(res.data)
+      return res
+    }),
+  })
+}
+
+const deleteCustomer = dispatch => uid =>
+  dispatch({
+    types: [DELETE_CUSTOMER_SENDING, DELETE_CUSTOMER_SUCCESS, DELETE_CUSTOMER_FAILURE],
+    promise: instance.delete('/products/' + uid).then((res) => {
+      console.log(res.data)
+      return uid
+    }),
+  })
 
 const reinitializeItem = dispatch => () => {
   dispatch({
@@ -182,21 +194,11 @@ const setFieldValue = (state, action, field) => {
       break
     }
   }
-  // this.props.setItemProps({ [name]: value })
-}
-const fetchClients = dispatch => () => {
-  console.log('fectchClient ')
-  dispatch({
-    type: FETCH_CLIENTS_SUCCESS,
-    payload: {
-      data: clients,
-    },
-  })
 }
 
 const setSelectedClient = (state, search) => {
   console.log(search)
-  var foundClient = state.data.find(o => o.id === search.selectedClient)
+  var foundClient = state.data.find(o => o.uid === search.selectedClient)
   return foundClient
 }
 
@@ -218,7 +220,9 @@ const reinitializeClients = dispatch => () => {
 export const actions = {
   handleChangeClient,
   reinitializeClients,
-  fetchClients,
+  fetchCustomers,
+  createCustomer,
+  deleteCustomer,
   reinitializeItem,
   setItemProps,
   handleClose,
@@ -250,7 +254,7 @@ const ACTION_HANDLERS = {
     ...state,
     sending: false,
     error: undefined,
-    data: clients.map(data => ({ ...data })),
+    data: state.data.map(data => ({ ...data })),
   }),
   [REINITIALIZE_CLIENTS]: (state, action) => action.payload,
   [SELECTED_CLIENTS_PROPS]: (state, action) => ({
@@ -258,10 +262,62 @@ const ACTION_HANDLERS = {
     selectedClient: action.payload.selectedClient || state.selectedClient,
     client: setSelectedClient(state, action.payload),
   }),
+  [FETCH_CUSTOMERS_SENDING]: (state, action) => ({
+    ...state,
+    sending: true,
+    error: undefined,
+  }),
+  [FETCH_CUSTOMERS_SUCCESS]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: undefined,
+    data: action.result.data,
+  }),
+  [FETCH_CUSTOMERS_FAILURE]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: action.error,
+    data: undefined,
+  }),
+  [CREATE_CUSTOMER_SENDING]: (state, action) => ({
+    ...state,
+    sending: true,
+    error: undefined,
+  }),
+  [CREATE_CUSTOMER_SUCCESS]: (state, action) => ({
+    ...state,
+    sending: false,
+    data: [...state.data, action.result.data],
+    done: action.result.data.uid,
+    error: undefined,
+  }),
+  [CREATE_CUSTOMER_FAILURE]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: action.error,
+  }),
+  [DELETE_CUSTOMER_SENDING]: (state, action) => ({
+    ...state,
+    sending: true,
+    error: undefined,
+  }),
+  [DELETE_CUSTOMER_SUCCESS]: (state, action) => ({
+    ...state,
+    sending: false,
+    delete: _.remove(state.data, function (currentObject) { return currentObject.uid === action.result }),
+    error: undefined,
+  }),
+  [DELETE_CUSTOMER_FAILURE]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: action.error,
+  }),
 }
 
 const initialState = {
-  data: [],
+  data: undefined,
+  sending: false,
+  error: undefined,
   name: '',
   description: '',
   firstName: '',
@@ -273,7 +329,6 @@ const initialState = {
   addess2: '',
   zipCode: '',
   city: '',
-  error: false,
   errors: {
     firstNameError: false,
     lastNameError: false,
@@ -289,7 +344,6 @@ const initialState = {
   },
   complete: false,
   modalOpen: false,
-  clients: clients,
   selectedClient: '',
   client: {},
 }

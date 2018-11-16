@@ -10,8 +10,24 @@ export const BreadcrumbUtils = ({ parent, child }) => (
   </Breadcrumb>
 )
 
+export const ProductUnit = [
+  { key: 'mt', text: 'Mètre', value: 'METRE' },
+  { key: 'kl', text: 'Kilo', value: 'KILOGRAM' },
+  { key: 's', text: 'Service', value: 'SERVICE' },
+]
+
+export const ProductQuality = [
+  { key: 'qs', text: 'Qualité supérieure', value: 'FIRST_CHOICE' },
+  { key: 'cc', text: 'choix commercial', value: 'COMMERCIAL_CHOICE' },
+]
+
+export const ProductChange = [
+  { key: 'eu', text: '€uro', value: 'EURO' },
+  { key: 'dn', text: 'Dinars', value: 'DINARS' },
+]
+
 export const TableType = {
-  SHOW_CLIENTS: 'SHOW_CLIENTS',
+  SHOW_CUSTOMERS: 'SHOW_CUSTOMERS',
   SHOW_PRODUCTS: 'SHOW_PRODUCTS',
   SHOW_BORDEREAUX: 'SHOW_BORDEREAUX',
   SHOW_INVOICES: 'SHOW_INVOICES',

@@ -13,7 +13,7 @@ import Watch from './components/pages/watch'
 import HomePage from 'CONTAINERS/HomePage/HomePage'
 import Invoices from './containers/Invoices/Invoices'
 import Bordereaux from './containers/Bordereau/Bordereaux'
-import Companies from './containers/Companies/Companies'
+import Companies from './containers/Customers/Customers'
 import Entreprise from './containers/Entreprise/Entreprise'
 import Products from './containers/Products/Products'
 
@@ -24,7 +24,34 @@ import en from 'react-intl/locale-data/en'
 import fr from 'react-intl/locale-data/fr'
 import './App.less'
 
-document.domain = 'localhost'
+// const http = require('http')
+//
+// const hostname = '127.0.0.1'
+// const port = 3000
+//
+// const server = http.createServer((req, res) => {
+//   res.statusCode = 200
+//   res.setHeader('Content-Type', 'text/plain')
+//   res.end('Hello World\n')
+// })
+//
+// server.listen(port, hostname, () => {
+//   console.log(`Server running at http://${hostname}:${port}/`)
+// })
+// import express from 'express'
+// const app = express()
+// app.use(function (req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*')
+//   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+//   res.header('Access-Control-Allow-Headers: Authorization', 'Lang')
+//   next()
+// })
+// const port = 8081
+// app.listen(port, function () {
+//   console.log('Server Started at port', port)
+// })
+
+// document.domain = 'api.global.dev.local'
 const initialState = window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 const store = createStore(initialState, browserHistory)
 

@@ -14,6 +14,7 @@ export default class DropdownTablet extends React.Component {
   _handleItemClick = (e, titleProps) => {
     console.log(titleProps)
     const { name } = titleProps
+    // to && this.props.dispatch(push(to))
     this.setState({ activeItem: name })
   }
 
@@ -28,9 +29,8 @@ export default class DropdownTablet extends React.Component {
                 as={ Link }
                 name={ item.name }
                 to={ item.route }
-                active={ activeItem === item.name } >
-                {/* onClick={ this._handleItemClick } > */}
-                <Link to={ item.route } replace />
+                active={ activeItem === item.name }
+                onClick={ this._handleItemClick } >
                 <Icon name={ item.icon } size='small' />
               </Menu.Item> }
             { item.submenus &&

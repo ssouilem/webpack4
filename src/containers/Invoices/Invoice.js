@@ -3,7 +3,7 @@ import { Header, Segment, Grid, Image, Table, Form, List, Dropdown, Input, Check
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { actions as clientsActions } from 'ACTIONS/clients'
-import { actions as bordereauActions } from 'ACTIONS/bordereauActions'
+import { actions as bordereauActions } from 'ACTIONS/bordereau'
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
 
 class Invoice extends React.Component {
