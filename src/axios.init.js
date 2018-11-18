@@ -1,11 +1,12 @@
 import axios from 'axios'
 
-axios.defaults.baseURL = 'http://compta.dev.local.ina.fr:8080'
+axios.defaults.baseURL = 'http://ec2-52-15-124-186.us-east-2.compute.amazonaws.com:8080'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS' // for all requests
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*' // for all requests
-// axios.defaults.headers.post['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS' // for POST requests
+axios.defaults.crossdomain = true
+// axios.defaults.headers.get['Access-Control-Allow-Origin'] = '*' // for POST requests
 
-// axios.defaults.withCredentials = true
+axios.defaults.withCredentials = false
 export default function configureAxios (store) {
   console.log(axios.interceptors.request)
   axios.interceptors.request.use((config) => {

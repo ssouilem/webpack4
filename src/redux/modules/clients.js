@@ -22,23 +22,23 @@ const DELETE_CUSTOMER_SENDING = 'DELETE_CUSTOMER_SENDING'
 const DELETE_CUSTOMER_SUCCESS = 'DELETE_CUSTOMER_SUCCESS'
 const DELETE_CUSTOMER_FAILURE = 'DELETE_CUSTOMER_FAILURE'
 
-const instance = axios.create({
-  baseURL: 'http://localhost:8080',
-  responseType: 'json',
-  withCredentials: false,
-  crossdomain: true,
-  mode: 'cors',
-  headers: {
-    'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-    'Access-Control-Allow-Origin': '*',
-    'Content-Type': 'application/json',
-  },
-})
+// const instance = axios.create({
+//   baseURL: 'http://localhost:8080',
+//   responseType: 'json',
+//   withCredentials: false,
+//   crossdomain: true,
+//   mode: 'cors',
+//   headers: {
+//     'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+//     'Access-Control-Allow-Origin': '*',
+//     'Content-Type': 'application/json',
+//   },
+// })
 
 const fetchCustomers = dispatch => () =>
   dispatch({
     types: [FETCH_CUSTOMERS_SENDING, FETCH_CUSTOMERS_SUCCESS, FETCH_CUSTOMERS_FAILURE],
-    promise: instance.get('/customers/').then((res) => {
+    promise: axios.get('/customers/').then((res) => {
       console.log(res.data)
       return res
     }),
@@ -47,7 +47,7 @@ const fetchCustomers = dispatch => () =>
 const createCustomer = dispatch => productProps => {
   return dispatch({
     types: [CREATE_CUSTOMER_SENDING, CREATE_CUSTOMER_SUCCESS, CREATE_CUSTOMER_FAILURE],
-    promise: instance.post('/customers/', {
+    promise: axios.post('/customers/', {
       name: productProps.name,
       mail: productProps.mail,
       address: productProps.address,
@@ -67,7 +67,7 @@ const createCustomer = dispatch => productProps => {
 const deleteCustomer = dispatch => uid =>
   dispatch({
     types: [DELETE_CUSTOMER_SENDING, DELETE_CUSTOMER_SUCCESS, DELETE_CUSTOMER_FAILURE],
-    promise: instance.delete('/products/' + uid).then((res) => {
+    promise: axios.delete('/products/' + uid).then((res) => {
       console.log(res.data)
       return uid
     }),
