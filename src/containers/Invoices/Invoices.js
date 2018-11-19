@@ -23,30 +23,21 @@ class Invoices extends React.Component {
   }
 
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
+  _AddBordereauToInvoice = props => {
+    // @TODO add Bordereau at list
+    this.props.setCheckedItemProps(props)
+  }
   _handleSubmit = () => {
     this.props.createInvoice({
-      // customer: this.props.bordereau.selectedClient,
-      // number: this.props.bordereau.bordereauNumber,
-      // createdAuthor: 'TODO', // @TODO charger la valeur d'auth
-      // treatmentDate: '2018-10-05', // ajouter un champ de saisie de date
-      // type: this.props.bordereau.type,
-      // bordereauDetailList: this.props.bordereau.bordereauDetailList,
+      customer: this.props.bordereau.selectedClient,
+      number: this.props.invoices.invoiceNumber,
+      createdAuthor: 'TODO', // @TODO charger la valeur d'auth
+      issueDate: '2018-10-05', // ajouter un champ de saisie de date
+      amount: this.props.invoices.totalAmountHT,
+      bordereaux: this.props.bordereau.bordereauDetailListmap(bordereau => ({
+        bordereauUid: bordereau.id,
+      })),
     })
-
-    // {
-    //   "amount": 0,
-    //   "bordereaux": [
-    //     {
-    //       "bordereauUid": "string"
-    //     }
-    //   ],
-    //   "createdAuthor": "string",
-    //   "customer": "string",
-    //   "issueDate": "YYYY-MM-dd",
-    //   "issueDateStr": "string",
-    //   "number": "string",
-    //   "payDown": true
-    // }
   }
   render () {
     const { activeIndex } = this.state

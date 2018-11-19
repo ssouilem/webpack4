@@ -226,6 +226,7 @@ const initialState = {
   totalAmountHT: 0,
   totalAmountTTC: 0,
   totalAmountTVA: 0,
+  invoiceNumber: '',
   datedebut: '',
   datefin: '',
   invoices: invoices,
