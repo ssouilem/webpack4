@@ -2,7 +2,9 @@ import axios from 'axios'
 import { applyMiddleware, compose, createStore } from 'redux'
 import createMiddleware from './clientMiddleware'
 // import createSagaMiddleware from 'redux-saga'
-import { multiClientMiddleware } from 'redux-axios-middleware'
+
+// import { multiClientMiddleware } from 'redux-axios-middleware'
+
 // import clients from './clients'
 // import watchMany from './sagas'
 import { routerMiddleware } from 'react-router-redux'
@@ -35,17 +37,17 @@ const getAxiosClient = (baseURL) => {
   })
 }
 
-const clients = {
-  default: {
-    client: getAxiosClient('http://localhost:8080'),
-  },
-  googleMaps: {
-    client: axios.create({
-      baseURL: 'https://maps.googleapis.com/maps/api',
-      responseType: 'json',
-    }),
-  },
-}
+// const clients = {
+//   default: {
+//     client: getAxiosClient('http://localhost:8080'),
+//   },
+//   googleMaps: {
+//     client: axios.create({
+//       baseURL: 'https://maps.googleapis.com/maps/api',
+//       responseType: 'json',
+//     }),
+//   },
+// }
 export default (initialState = {}, history) => {
   // ======================================================
   // Middleware Configuration
@@ -55,8 +57,8 @@ export default (initialState = {}, history) => {
     thunk,
     createMiddleware(),
     // sagaMiddleware,
-    routerMiddleware(history),
-    //multiClientMiddleware(clients),
+    // routerMiddleware(history),
+    // multiClientMiddleware(clients),
   ]
 
   // ======================================================

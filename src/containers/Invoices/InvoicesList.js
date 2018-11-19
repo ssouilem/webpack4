@@ -1,10 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
 import { Grid, Header, Form, Button, Segment, Responsive, Icon, Accordion } from 'semantic-ui-react'
 import TableInternal from 'COMPONENTS/Common/TableInternal'
 import { TableType } from 'COMPONENTS/Utils/Utils'
-import { actions as invoicesActions } from 'ACTIONS/invoices'
 import {
   DateInput,
 } from 'semantic-ui-calendar-react'
@@ -15,12 +13,6 @@ class InvoicesList extends React.Component {
     'datedebut': (new Date()).toLocaleString(),
     'datefin': (new Date()).toLocaleString(),
     activeIndex: false,
-  }
-  componentWillMount () {
-    if (this.props.invoices && (!this.props.invoices.data ||
-      (this.props.invoices.data && this.props.invoices.data.length < 1))) {
-      this.props.fetchInvoices()
-    }
   }
   // les probleme il est au niveau de constructor pour init la liste
   handleChangeDate = (event, {name, value}) => {
@@ -116,7 +108,7 @@ class InvoicesList extends React.Component {
 
           <Grid.Column width={ 16 }>
             <TableInternal
-              items={ this.props.invoices.data }
+              items={ this.props.items }
               onChecked={ this.onChecked }
               state={ this.state }
               onClick={ (action) => console.log('view or edit', action) }
@@ -130,21 +122,6 @@ class InvoicesList extends React.Component {
 
 InvoicesList.propTypes = {
   handleChangeDate: PropTypes.func,
-  fetchInvoices: PropTypes.func,
 }
 
-const mapStateToProps = state => ({
-  datedebut: state.datedebut,
-  datefin: state.datefin,
-  invoices: state.invoices,
-})
-
-const mapDispatchToProps = dispatch => ({
-  handleChangeDate: invoicesActions.handleChange(dispatch),
-  fetchInvoices: invoicesActions.fetchInvoices(dispatch),
-  setCheckedItemProps: invoicesActions.setCheckedItemProps(dispatch),
-  dispatch,
-})
-
-export { InvoicesList }
-export default connect(mapStateToProps, mapDispatchToProps)(InvoicesList)
+export default InvoicesList

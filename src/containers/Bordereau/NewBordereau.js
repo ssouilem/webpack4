@@ -70,7 +70,7 @@ class NewBordereau extends React.Component {
     this.props.setBordereauProps({ [name]: value })
   }
 
-_handleChange = (e, { name, value }) => this.props.setItemProps({ [name]: value })
+  _handleChange = (e, { name, value }) => this.props.setItemProps({ [name]: value })
 
   render = () => (
     <Form id='myform'>

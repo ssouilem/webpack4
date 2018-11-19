@@ -1,20 +1,11 @@
 import React from 'react'
 import { Header, Segment, Grid, Image, Table, Form, List, Dropdown, Input, Checkbox, Icon, Sticky } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
-import { connect } from 'react-redux'
-import { actions as clientsActions } from 'ACTIONS/clients'
-import { actions as bordereauActions } from 'ACTIONS/bordereau'
+
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
 
 class Invoice extends React.Component {
   state = { invoiceNumber: '' }
-  componentWillMount () {
-    this.props.fetchClients()
-    if (this.props.bordereau && (!this.props.bordereau.data ||
-      (this.props.bordereau.data && this.props.bordereau.data.length < 1))) {
-      this.props.fetchSlips()
-    }
-  }
   handleContextRef = contextRef => this.setState({ contextRef })
   _handleInvoiceChange = (e, { name, value }) => this.setState({ [name]: value })
   _handleChangeClient = (e, { name, value }) => this.props.handleChangeClient({ [name]: value })
@@ -58,11 +49,11 @@ render = () => (
                 fluid
                 search
                 selection
-                value={ this.props.selectedClient }
-                options={ this.props.clients && this.props.clients.data.map(client => ({
-                  key: client.id,
-                  value: client.id,
-                  text: client.text,
+                value={ this.props.selectedClient && this.props.selectedClient !== '' && this.props.selectedClient }
+                options={ this.props.clients && this.props.clients.data && this.props.clients.data.map(client => ({
+                  key: client.uid,
+                  value: client.uid,
+                  text: client.name,
                 })) }
                 onChange={ this._handleChangeClient }
               />
@@ -97,9 +88,6 @@ render = () => (
                 clients={ this.props.clients }
                 onClick
                 updateAddress={ { onChange: this._handleChange,
-                  handleOpen: this.props.handleOpen,
-                  modalOpen: this.props.modalOpen,
-                  handleClose: this.props.handleClose,
                   complete: this.props.complete,
                   submitMeetingForm: this.submitMeetingForm } }
               />
@@ -129,7 +117,7 @@ render = () => (
 
                 </Table.Body>
                 <Table.Footer>
-                  {(this.props.bordereau && this.props.bordereau.data && this.props.bordereau.data.length > 0 && this.props.bordereau.data.map(bordereau => (
+                  {(this.props.bordereaux.data && this.props.bordereaux.data.length > 0 && this.props.bordereaux.data.map(bordereau => (
                     <Table.Row key={ bordereau.id } name={ bordereau.id } >
                       <Table.Cell colSpan='8' >
                         <Table >
@@ -172,19 +160,19 @@ render = () => (
               <List divided verticalAlign='middle'>
                 <List.Item>
                   <List.Content floated='right'>
-                    { this.props.bordereau && this.props.bordereau.totalAmountHT ? this.props.bordereau.totalAmountHT.toFixed(3) : 0 }
+                    { this.props.bordereaux && this.props.bordereaux.totalAmountHT ? this.props.bordereaux.totalAmountHT.toFixed(3) : 0 }
                   </List.Content>
                   <List.Content><Header as='h5'>Montant HT</Header></List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Content floated='right'>
-                    { this.props.bordereau && this.props.bordereau.totalAmountTVA ? this.props.bordereau.totalAmountTVA.toFixed(3) : 0 }
+                    { this.props.bordereaux && this.props.bordereaux.totalAmountTVA ? this.props.bordereaux.totalAmountTVA.toFixed(3) : 0 }
                   </List.Content>
                   <List.Content><Header as='h5'>TVA 20%</Header></List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Content floated='right'>
-                    { this.props.bordereau && this.props.bordereau.totalAmountTTC ? this.props.bordereau.totalAmountTTC.toFixed(3) : 0 }
+                    { this.props.bordereaux && this.props.bordereaux.totalAmountTTC ? this.props.bordereaux.totalAmountTTC.toFixed(3) : 0 }
                   </List.Content>
                   <List.Content><Header as='h5'>Montant TTC</Header></List.Content>
                 </List.Item>
@@ -224,9 +212,6 @@ render = () => (
 
 const updateAddressPropType = PropTypes.shape({
   onChange: PropTypes.func.isRequired,
-  handleOpen: PropTypes.func.isRequired,
-  modalOpen: PropTypes.bool.isRequired,
-  handleClose: PropTypes.func.isRequired,
   complete: PropTypes.bool.isRequired,
   submitMeetingForm: PropTypes.func.isRequired,
 })
@@ -234,28 +219,9 @@ const updateAddressPropType = PropTypes.shape({
 SegmentAddress.propTypes = {
   icon: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
-  clients: PropTypes.object.isRequired,
+  customers: PropTypes.object.isRequired,
   onClick: PropTypes.bool,
   updateAddress: updateAddressPropType,
 }
-const mapStateToProps = state => ({
-  clients: state.clients,
-  selectedClient: state.clients.selectedClient,
-  slips: state.bordereau.data,
-  modalOpen: state.modalOpen,
-  complete: state.complete,
-  bordereau: state.bordereau,
-})
 
-const mapDispatchToProps = dispatch => ({
-  fetchClients: clientsActions.fetchClients(dispatch),
-  fetchSlips: bordereauActions.fetchSlips(dispatch),
-  setCheckedItemProps: bordereauActions.setCheckedItemProps(dispatch),
-  handleChangeClient: clientsActions.handleChangeClient(dispatch),
-  setItemProps: clientsActions.setItemProps(dispatch),
-  handleClose: clientsActions.handleClose(dispatch),
-  reinitializeItem: clientsActions.reinitializeItem(dispatch),
-  dispatch,
-})
-export { Invoice }
-export default connect(mapStateToProps, mapDispatchToProps)(Invoice)
+export default Invoice

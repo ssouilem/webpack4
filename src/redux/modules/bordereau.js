@@ -76,48 +76,6 @@ const deleteBordereau = dispatch => uid =>
     }),
   })
 
-const listClips = [
-  {
-    'id': 'ID_9',
-    'company': 1,
-    'createdAuthor': 'souilem',
-    'number': '201801245',
-    'treatmentDate': '2018-10-05',
-    'createdDate': '2018-10-05',
-    'invoice': '',
-    'subTotal': '200.002',
-  },
-  {
-    'id': 'ID_10',
-    'company': 1,
-    'createdAuthor': 'souilem',
-    'number': '201801245',
-    'treatmentDate': '2018-10-05',
-    'createdDate': '2018-10-05',
-    'invoice': '',
-    'subTotal': '200.002',
-  },
-  {
-    'id': 'ID_11',
-    'company': 1,
-    'createdAuthor': 'souilem',
-    'number': '201801245',
-    'treatmentDate': '2018-10-05',
-    'createdDate': '2018-10-05',
-    'invoice': '',
-    'subTotal': '200.002',
-  },
-  {
-    'id': 'ID_12',
-    'company': 2,
-    'createdAuthor': 'souilem',
-    'number': '201801245',
-    'treatmentDate': '2018-10-05',
-    'createdDate': '2018-10-05',
-    'invoice': '',
-    'subTotal': '200.002',
-  }]
-
 const fetchSlips = dispatch => () => {
   console.log('fetchClips ')
   dispatch({
@@ -239,7 +197,7 @@ const ACTION_HANDLERS = {
     ...state,
     sending: false,
     error: undefined,
-    data: listClips.map(data => ({ ...data })),
+    // data: listClips.map(data => ({ ...data })),
   }),
   [FETCH_SLIPS_FAILURE]: (state, action) => ({
     ...state,
