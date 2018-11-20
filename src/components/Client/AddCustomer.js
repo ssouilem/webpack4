@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button, Image } from 'semantic-ui-react'
+import { Modal, Button, Image, Dimmer, Loader, Message, Icon } from 'semantic-ui-react'
 import ItemAddress from 'COMPONENTS/Client/ItemAddress'
 
 class AddCustomer extends React.Component {
@@ -10,7 +10,13 @@ class AddCustomer extends React.Component {
     locationError: false,
     errorMessage: 'Please complete all required fields.',
     complete: false,
+    modalOpen: false,
   }
+
+  // controle Modal open and close button
+  handleOpen = () => this.setState({ modalOpen: true })
+  handleClose = () => this.setState({ modalOpen: false })
+
   successCallback = () => {
     this.setState({
       complete: true,
@@ -59,7 +65,7 @@ class AddCustomer extends React.Component {
       mail: this.state.email,
       address: this.state.address1,
       additionalAddress: this.state.address2,
-      zideCode: this.state.zideCode,
+      postalCode: this.state.zideCode,
       city: this.state.city,
       phoneNumber: this.state.phoneNumber,
       faxNumber: this.state.phoneNumber, // @TODO Add faxNumber to form
@@ -69,32 +75,37 @@ class AddCustomer extends React.Component {
 
   render = ({ children } = this.props) => (
     <Modal
-      trigger={ children !== undefined ? children : <Button fluid icon='add' content='Ajouter un client' floated='right' /> }
+      open={ this.state.modalOpen }
+      onClose={ this.handleClose }
+      trigger={ children !== undefined ? children : <Button fluid icon='add' content='Ajouter un client' floated='right' onClick={ this.handleOpen } /> }
       centered={ false }
       closeIcon
       size='small'
     >
       <Modal.Header content="Modifier l'adresse de client" />
       <Modal.Content scrolling>
-        { !this.state.complete
+        { !(this.props.customer && this.props.customer.done)
           ? <ItemAddress
             onChange={ this._handleInputChange }
             disabled={ false }
           />
           : <div className='modal-complete'>
-            <Image src='/images/check.png' />
-            <p>Thanks for scheduling a meeting,  We've received your information and we'll be in touch shortly.</p>
+            <Image size='small' centered src={ require('STYLES/images/check-form.png') } />
+            <Message info header='Votre client est enregistré' content='Votre client a été ajouté avec succès. Vous pouvez revenir sur la liste de clients.' />
           </div>
         }
+        <Dimmer active={ this.props.customer && this.props.customer.sending } inverted>
+          <Loader inverted>Loading</Loader>
+        </Dimmer>
       </Modal.Content>
-      { !this.state.complete
+      { !(this.props.customer && this.props.customer.done)
         ? <Modal.Actions>
-          <Button color='red'>Close</Button>
+          <Button color='black' onClick={ this.handleClose }>Fermer</Button>
           <Button positive icon='checkmark'
             labelPosition='right' content='Submit'
             onClick={ this._handleSubmit } />
         </Modal.Actions>
-        : null }
+        : <Modal.Actions><Button color='black' onClick={ this.handleClose }>Fermer</Button></Modal.Actions> }
     </Modal>
   )
 }

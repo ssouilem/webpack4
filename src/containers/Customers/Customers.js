@@ -36,7 +36,7 @@ class Campanies extends React.Component {
                 <Breadcrumb divider=' > ' sections={ sections } />
               </Grid.Column>
               <Grid.Column width={ 4 } >
-                <AddCustomer submitForm={ this.props.createCustomer } />
+                <AddCustomer customer={ this.props.clients } submitForm={ this.props.createCustomer } />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>

@@ -52,7 +52,7 @@ const createCustomer = dispatch => productProps => {
       mail: productProps.mail,
       address: productProps.address,
       additionalAddress: productProps.additionalAddress,
-      zideCode: productProps.zideCode,
+      postalCode: productProps.postalCode,
       city: productProps.city,
       phoneNumber: productProps.phoneNumber,
       faxNumber: productProps.faxNumber, // @TODO Add faxNumber to form

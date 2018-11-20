@@ -34,7 +34,7 @@ class Products extends React.Component {
                 <Breadcrumb divider='/' sections={ sections } />
               </Grid.Column>
               <Grid.Column width={ 4 } >
-                <AddProduct submitForm={ this.props.createProduct } />
+                <AddProduct product={ this.props.products } submitForm={ this.props.createProduct } />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>

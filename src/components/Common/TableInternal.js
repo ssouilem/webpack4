@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Header, Grid, Table, Icon, Search, Button, Checkbox } from 'semantic-ui-react'
+import { Header, Grid, Table, Icon, Search, Button, Checkbox, Pagination } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { TableType } from 'COMPONENTS/Utils/Utils'
 import PaymentMethod from 'COMPONENTS/Invoices/PaymentMethod'
@@ -12,6 +12,20 @@ class TableInternal extends React.Component {
   componentWillMount () {
     this.resetComponent()
   }
+
+  // getPaginatedItems= (items, page) => {
+  //   let page = page || 1
+  //   var per_page = 3
+  //   var offset = (page - 1) * per_page, paginatedItems = _.rest(items, offset).slice(0, per_page);
+  //   return {
+  //   	page: page,
+  //   	per_page: per_page,
+  //   	total: items.length,
+  //   	total_pages: Math.ceil(items.length / per_page),
+  //   	data: paginatedItems
+  //   };
+  // }
+
   resetComponent = () => this.setState({ isLoading: false, results: [], value: '', items: this.props.items })
   handleResultSelect = (e, { result }) => this.setState({ value: result.description })
   handleSearchChange = (e, { value }) => {
@@ -317,6 +331,19 @@ render = ({isLoading, results, value} = this.state, { items } = this.props) => (
           </Table.Footer>
           }
         </Table>
+      </Grid.Column>
+    </Grid.Row>
+    <Grid.Row>
+      <Grid.Column textAlign='center'>
+        <Pagination
+          defaultActivePage={ 5 }
+          ellipsisItem={ { content: <Icon name='ellipsis horizontal' />, icon: true } }
+          firstItem={ { content: <Icon name='angle double left' />, icon: true } }
+          lastItem={ { content: <Icon name='angle double right' />, icon: true } }
+          prevItem={ { content: <Icon name='angle left' />, icon: true } }
+          nextItem={ { content: <Icon name='angle right' />, icon: true } }
+          totalPages={ 10 }
+        />
       </Grid.Column>
     </Grid.Row>
   </Grid>
