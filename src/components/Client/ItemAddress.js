@@ -6,12 +6,20 @@ const ItemAddress = ({ address, onChange, disabled }) => (
   <Modal.Description>
     <Form error={ address && address.errors && address.errors.formError }>
       <Form.Field>
-        <Form.Input name='CompanyName'
+        <Form.Input name='companyName'
           disabled={ disabled }
           required onChange={ onChange }
           label='Société' placeholder='Société...'
-          value={ address && address.firstName }
-          error={ address && address.errors && address.errors.firstNameError } />
+          value={ address && address.companyName }
+          error={ address && address.errors && address.errors.companyNameError } />
+      </Form.Field>
+      <Form.Field>
+        <Form.Input name='siret'
+          disabled={ disabled }
+          required onChange={ onChange }
+          label='Numéro de SIRET' placeholder='SIRET...'
+          value={ address && address.siret }
+          error={ address && address.errors && address.errors.siretError } />
       </Form.Field>
       <Form.Field >
         <Form.Input name='email'
@@ -65,8 +73,8 @@ const ItemAddress = ({ address, onChange, disabled }) => (
           disabled={ disabled }
           required onChange={ onChange }
           label='Nom' placeholder='Last Name...'
-          value={ address && address.lastName }
-          error={ address && address.errors && address.errors.lastNameError } />
+          value={ address && address.firsttName }
+          error={ address && address.errors && address.errors.firstNameError } />
       </Form.Field>
       <Form.Field>
         <Form.Input name='contactLastName'

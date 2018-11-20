@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button, Image, Dimmer, Loader, Message, Icon } from 'semantic-ui-react'
+import { Modal, Button, Image, Dimmer, Loader, Message } from 'semantic-ui-react'
 import ItemAddress from 'COMPONENTS/Client/ItemAddress'
 
 class AddCustomer extends React.Component {
@@ -73,11 +73,16 @@ class AddCustomer extends React.Component {
     })
   }
 
-  render = ({ children } = this.props) => (
+  render = ({ children, customer } = this.props) => (
     <Modal
       open={ this.state.modalOpen }
       onClose={ this.handleClose }
-      trigger={ children !== undefined ? children : <Button fluid icon='add' content='Ajouter un client' floated='right' onClick={ this.handleOpen } /> }
+      trigger={ children !== undefined ? <Button
+        icon='pencil'
+        inverted
+        onClick={ this.handleOpen }
+        color='blue'
+        floated='right' /> : <Button fluid icon='add' content='Ajouter un client' floated='right' onClick={ this.handleOpen } /> }
       centered={ false }
       closeIcon
       size='small'
@@ -86,6 +91,7 @@ class AddCustomer extends React.Component {
       <Modal.Content scrolling>
         { !(this.props.customer && this.props.customer.done)
           ? <ItemAddress
+            address={ customer }
             onChange={ this._handleInputChange }
             disabled={ false }
           />

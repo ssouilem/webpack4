@@ -4,7 +4,11 @@ import { ProductQuality, ProductUnit } from 'COMPONENTS/Utils/Utils'
 
 class AddProduct extends React.Component {
   state = { tva: 20, modalOpen: false }
-
+  componentWillMount () {
+    if (this.props.product && !Array.isArray(this.state.product)) {
+      this.setState({ ...this.props.product })
+    }
+  }
   // controle Modal open and close button
   handleOpen = () => this.setState({ modalOpen: true })
   handleClose = () => this.setState({ modalOpen: false })
@@ -39,7 +43,11 @@ class AddProduct extends React.Component {
       open={ this.state.modalOpen }
       onClose={ this.handleClose }
       size='small'
-      trigger={ children !== undefined ? children : <Button fluid icon='add' content='Ajouter un produit' floated='right' onClick={ this.handleOpen } /> } centered={ false } closeIcon >
+      trigger={ children !== undefined ? <Button primary
+        onClick={ this.handleOpen }
+        icon='pencil'
+        inverted
+        floated='right' /> : <Button fluid icon='add' content='Ajouter un produit' floated='right' onClick={ this.handleOpen } /> } centered={ false } closeIcon >
       <Modal.Header>Ajouter un nouveau article</Modal.Header>
       <Modal.Content scrolling>
         <Modal.Description>
@@ -47,16 +55,19 @@ class AddProduct extends React.Component {
             <Form>
               <Form.Input required name='reference'
                 onChange={ this._handleInputChange }
+                value={ this.state.reference && this.state.reference }
                 label='RÉFÉRENCE' placeholder='reference...'
               />
               <Form.Group widths='equal'>
                 <Form.Input required name='name'
                   onChange={ this._handleInputChange }
+                  value={ this.state.name && this.state.name }
                   label='NOM' placeholder='nom...'
                 />
                 <Form.Field>
                   <Form.Dropdown label='UNITÉ'
                     onChange={ this._handleInputChange }
+                    value={ this.state.unit && this.state.unit }
                     required fluid search selection
                     name='unit'
                     options={ ProductUnit } />
@@ -64,10 +75,12 @@ class AddProduct extends React.Component {
               </Form.Group>
               <Form.TextArea required name='description'
                 onChange={ this._handleInputChange }
+                value={ this.state.description && this.state.description }
                 label='DÉSIGNATION' placeholder='Désignation...'
               />
               <Form.Group widths='equal'>
                 <Form.Input name='price'
+                  value={ this.state.price && this.state.price }
                   onChange={ this._handleInputChange }
                   label='P.A HT' placeholder='Prix H.T...'
                 />
@@ -75,6 +88,7 @@ class AddProduct extends React.Component {
                   <label>TVA</label>
                   <Form.Input as={ Input } name='tva'
                     onChange={ this._handleInputChange }
+                    value={ this.state.tva && this.state.tva }
                     label={ { basic: true, content: '%' } }
                     labelPosition='right'
                     placeholder='TVA...'
@@ -85,6 +99,7 @@ class AddProduct extends React.Component {
                   <Form.Dropdown label='QUALITTÉ'
                     onChange={ this._handleInputChange }
                     required fluid search selection
+                    value={ this.state.quality && this.state.quality }
                     name='quality'
                     options={ ProductQuality } />
                 </Form.Field>

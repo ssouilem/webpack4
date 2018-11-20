@@ -46,6 +46,7 @@ const createProduct = dispatch => productProps => {
     types: [CREATE_PRODUCT_SENDING, CREATE_PRODUCT_SUCCESS, CREATE_PRODUCT_FAILURE],
     promise: axios.post('/products/', {
       reference: productProps.reference,
+      name: productProps.name,
       description: productProps.description,
       unit: productProps.unit,
       quality: productProps.quality,
