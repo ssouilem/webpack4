@@ -4,6 +4,7 @@ import axios from 'axios'
 const REINITIALIZE_INVOICES = 'REINITIALIZE_INVOICES'
 const SET_DATE_PROPS = 'SET_DATE_PROPS'
 const SET_INVOICES_CHECKED_PROPS = 'SET_INVOICES_CHECKED_PROPS'
+const SET_INVOICES_PROPS = 'SET_INVOICES_PROPS'
 
 const FETCH_INVOICES_SENDING = 'FETCH_INVOICES_SENDING'
 const FETCH_INVOICES_SUCCESS = 'FETCH_INVOICES_SUCCESS'
@@ -33,19 +34,7 @@ const createInvoice = dispatch => bordereauProps => {
   return dispatch({
     types: [CREATE_INVOICE_SENDING, CREATE_INVOICE_SUCCESS, CREATE_INVOICE_FAILURE],
     promise: axios.post('/invoices/', {
-      customer: bordereauProps.customer,
-      createdAuthor: bordereauProps.description,
-      number: bordereauProps.number,
-      treatmentDate: bordereauProps.treatmentDate,
-      type: bordereauProps.type,
-      bordereauDetailList: bordereauProps.bordereauDetailList.map(bordereaudetail => ({
-        description: bordereaudetail.description,
-        percentage: bordereaudetail.reduction,
-        productUid: bordereaudetail.productUid,
-        qte: bordereaudetail.qte,
-        reference: bordereaudetail.reference,
-        unit: bordereaudetail.unit,
-      })),
+      ...bordereauProps,
     }).then((res) => {
       console.log(res.data)
       return res
@@ -106,6 +95,14 @@ const setCheckedItemProps = dispatch => state => {
   })
 }
 
+const setInvoicesProps = dispatch => state => {
+  console.log('handleChange ', state)
+  dispatch({
+    type: SET_INVOICES_PROPS,
+    payload: state,
+  })
+}
+
 const reinitializeInvoices = dispatch => () => {
   dispatch({
     type: REINITIALIZE_INVOICES,
@@ -115,6 +112,7 @@ const reinitializeInvoices = dispatch => () => {
 
 export const actions = {
   reinitializeInvoices,
+  setInvoicesProps,
   setCheckedItemProps,
   handleChange,
   fetchInvoices,
@@ -216,6 +214,17 @@ const ACTION_HANDLERS = {
     ...state,
     sending: false,
     error: action.error,
+  }),
+  [SET_INVOICES_PROPS]: (state, action) => ({
+    ...state,
+    selectedClient: action.payload.selectedClient || state.selectedClient,
+    customer: action.payload.customer || state.customer,
+    createdAuthor: action.payload.createdAuthor || state.createdAuthor,
+    issueDate: action.payload.issueDate || state.issueDate,
+    invoiceNumber: action.payload.invoiceNumber || state.invoiceNumber,
+    totalAmountHT: action.payload.totalAmountHT || state.totalAmountHT,
+    totalAmountTVA: action.payload.totalAmountTVA || state.totalAmountTVA,
+    totalAmountTTC: action.payload.totalAmountTTC || state.totalAmountTTC,
   }),
 }
 

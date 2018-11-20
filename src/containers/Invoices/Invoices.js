@@ -9,7 +9,7 @@ import { actions as bordereauActions } from 'ACTIONS/bordereau'
 import { actions as clientsActions } from 'ACTIONS/clients'
 
 class Invoices extends React.Component {
-  state = { activeIndex: 1 }
+  state = { activeIndex: 1, bordereaux: [] }
   componentWillMount () {
     if (!this.props.invoices.sending && !this.props.invoices.data) {
       this.props.fetchInvoices()
@@ -23,20 +23,21 @@ class Invoices extends React.Component {
   }
 
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
-  _AddBordereauToInvoice = props => {
-    // @TODO add Bordereau at list
-    this.props.setCheckedItemProps(props)
+  _AddBordereauToInvoice = (invoiceProps) => {
+    console.log('props : ', invoiceProps)
+    // add item to list
+    let bordereau = { bordereauUid: invoiceProps.id }
+    this.setState({ bordereaux: [...this.state.bordereaux, bordereau] })
+    this.props.setCheckedItemProps(invoiceProps)
   }
   _handleSubmit = () => {
     this.props.createInvoice({
-      customer: this.props.bordereau.selectedClient,
+      customer: this.props.clients.selectedClient,
       number: this.props.invoices.invoiceNumber,
       createdAuthor: 'TODO', // @TODO charger la valeur d'auth
       issueDate: '2018-10-05', // ajouter un champ de saisie de date
-      amount: this.props.invoices.totalAmountHT,
-      bordereaux: this.props.bordereau.bordereauDetailListmap(bordereau => ({
-        bordereauUid: bordereau.id,
-      })),
+      amount: this.props.bordereau.totalAmountHT,
+      bordereaux: this.state.bordereaux,
     })
   }
   render () {
@@ -89,8 +90,9 @@ class Invoices extends React.Component {
                     <BreadcrumbUtils parent='Factures' child='Nouvelle facture' />
                     <Segment vertical>
                       <Invoice setItemProps={ this.props.setItemProps }
+                        setInvoicesProps={ this.props.setInvoicesProps }
                         handleChangeClient={ this.props.handleChangeClient }
-                        setCheckedItemProps={ this.props.setCheckedItemProps }
+                        setCheckedInvoice={ this._AddBordereauToInvoice }
                         bordereaux={ this.props.bordereau }
                         clients={ this.props.clients } />
                     </Segment>
@@ -98,7 +100,7 @@ class Invoices extends React.Component {
                       <Button disabled color='twitter'>
                         <Icon name='save outline' /> Enregistrer le brouillon
                       </Button>
-                      <Button color='twitter'>
+                      <Button color='twitter' onClick={ this._handleSubmit }>
                         <Icon name='save' /> Enregistrer
                       </Button>
                       <Button color='google plus'>
@@ -120,12 +122,14 @@ const mapStateToProps = state => ({
   bordereau: state.bordereau,
   datedebut: state.datedebut,
   datefin: state.datefin,
+  selectedClient: state.clients.selectedClient,
 })
 
 const mapDispatchToProps = dispatch => ({
   createInvoice: invoicesActions.createInvoice(dispatch),
   fetchInvoices: invoicesActions.fetchInvoices(dispatch),
   handleChangeDate: invoicesActions.handleChange(dispatch),
+  setInvoicesProps: invoicesActions.setInvoicesProps(dispatch),
   setCheckedItemProps: bordereauActions.setCheckedItemProps(dispatch),
   fetchBordereaux: bordereauActions.fetchBordereaux(dispatch),
   handleChangeClient: clientsActions.handleChangeClient(dispatch),

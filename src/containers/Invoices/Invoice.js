@@ -7,7 +7,10 @@ import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
 class Invoice extends React.Component {
   state = { invoiceNumber: '' }
   handleContextRef = contextRef => this.setState({ contextRef })
-  _handleInvoiceChange = (e, { name, value }) => this.setState({ [name]: value })
+  _handleInvoiceChange = (e, { name, value }) => {
+    this.setState({ [name]: value })
+    this.props.setInvoicesProps({ [name]: value })
+  }
   _handleChangeClient = (e, { name, value }) => this.props.handleChangeClient({ [name]: value })
   _handleChange = (e, { name, value }) => {
     this.setState({ [name]: value })
@@ -15,8 +18,8 @@ class Invoice extends React.Component {
   }
   _handleOver = (e, { name }) => console.log(' mousse ', e)
   _handleChangeCkecked = (event, {name, checked}) => {
-    console.log('_handleChangeCkecked ', document, name)
-    console.log('form ', document.getElementById('myform').elements)
+    // console.log('_handleChangeCkecked ', document, name)
+    // console.log('form ', document.getElementById('myform').elements)
     const node = document.getElementById('myform').elements
     if (name === 'all') {
       for (let i = 0; i < node.length; i++) {
@@ -29,7 +32,7 @@ class Invoice extends React.Component {
       this.setState({ allChecked: !this.state.allChecked })
     } else {
       this.setState({ [name]: !this.state[name] })
-      this.props.setCheckedItemProps({ id: name, value: !this.state[name] })
+      this.props.setCheckedInvoice({ id: name, value: !this.state[name] })
     }
   }
 
@@ -49,7 +52,7 @@ render = () => (
                 fluid
                 search
                 selection
-                value={ this.props.selectedClient && this.props.selectedClient !== '' && this.props.selectedClient }
+                value={ this.props.clients.selectedClient && this.props.clients.selectedClient !== '' && this.props.clients.selectedClient }
                 options={ this.props.clients && this.props.clients.data && this.props.clients.data.map(client => ({
                   key: client.uid,
                   value: client.uid,
@@ -66,8 +69,8 @@ render = () => (
               <Image size='small' src={ require('STYLES/images/logo3.png') } spaced='left' />
             </Grid.Column>
             <Grid.Column verticalAlign='middle' textAlign='right' width={ 13 }>
-              <Input inline label='Facture N ° : ' name='bordereauNumber'
-                onChange={ this._handleInvoiceChange } fluid placeholder='Numero de bordereau'
+              <Input inline label='Facture N ° : ' name='invoiceNumber'
+                onChange={ this._handleInvoiceChange } fluid placeholder='Numéro de facture'
                 value={ this.state.invoiceNumber && this.state.invoiceNumber } />
             </Grid.Column>
           </Grid.Row>
