@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Grid, Header, Form, Button, Segment, Responsive, Icon, Accordion } from 'semantic-ui-react'
+import { Grid, Header, Form, Button, Segment, Responsive, Icon, Accordion, Dimmer, Image } from 'semantic-ui-react'
 import TableInternal from 'COMPONENTS/Common/TableInternal'
 import { TableType } from 'COMPONENTS/Utils/Utils'
 import {
@@ -37,9 +37,9 @@ class InvoicesList extends React.Component {
       this.props.setCheckedItemProps({ id: name, value: !this.state[name] })
     }
   }
-  handleActiveSearch = () => {
-    this.setState({ activeIndex: !this.state.activeIndex })
-  }
+  handleActiveSearch = () => this.setState({ activeIndex: !this.state.activeIndex })
+  setActivePage = (activePage) => this.setState({ activePage: activePage })
+
   render () {
     const { activeIndex } = this.state
     return (
@@ -105,14 +105,27 @@ class InvoicesList extends React.Component {
               </Grid>
             </Accordion.Content>
           </Accordion>
-
           <Grid.Column width={ 16 }>
-            <TableInternal
-              items={ this.props.items }
-              onChecked={ this.onChecked }
-              state={ this.state }
-              onClick={ (action) => console.log('view or edit', action) }
-              tableType={ TableType.SHOW_INVOICES } />
+            { !this.props.invoices.sending && (this.props.invoices && Array.isArray(this.props.invoices.data) && this.props.invoices.data.length === 0) === true
+              ? <Grid textAlign='center'>
+                <Grid.Row>
+                  <Icon size='big' name='pdf file outline' />
+                </Grid.Row>
+                <Grid.Row>Pas d'elements, la liste est vide.</Grid.Row>
+              </Grid>
+              : !this.props.invoices.sending && (this.props.invoices && Array.isArray(this.props.invoices.data) && this.props.invoices.data.length >= 1) === true
+                ? <TableInternal
+                  items={ this.props.items.data }
+                  onChecked={ this.onChecked }
+                  activePage={ this.state.activePage }
+                  setActivePage={ this.setActivePage }
+                  tableType={ TableType.SHOW_INVOICES }
+                  onClick={ (action) => console.log('view or edit', action) }
+                  state={ this.state } />
+                : <Dimmer active inverted>
+                  <Image size='small' centered src={ require('STYLES/images/preload_waiting.gif') } />
+                  Chargement en cours!
+                </Dimmer> }
           </Grid.Column>
         </Grid>
       </Form>

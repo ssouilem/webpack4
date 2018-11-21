@@ -88,7 +88,7 @@ class AddBordereauDetail extends React.Component {
         label={ { basic: true, content: '%' } }
         labelPosition='right' />
       </Table.HeaderCell>
-      <Table.HeaderCell><Form.Input name='unit' disabled onChange={ this._handleInputChange } fluid placeholder='Unit' defaultValue={ this.state && this.state.unit } /></Table.HeaderCell>
+      <Table.HeaderCell><Form.Input name='unit' disabled onChange={ this._handleInputChange } fluid placeholder='unit' defaultValue={ this.state && this.state.unit } /></Table.HeaderCell>
       <Table.HeaderCell><Form.Input name='total' disabled onChange={ this._handleInputChange } fluid placeholder='Total' value={ this.state && this.state.total } /></Table.HeaderCell>
       <Table.HeaderCell><Button
         disabled={ active }

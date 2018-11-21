@@ -1,5 +1,5 @@
 import React from 'react'
-import { Grid, Segment, Breadcrumb, Sticky, Header } from 'semantic-ui-react'
+import { Grid, Segment, Breadcrumb, Sticky, Header, Dimmer, Image } from 'semantic-ui-react'
 import { actions as productsActions } from 'ACTIONS/produits'
 import TableInternal from 'COMPONENTS/Common/TableInternal'
 import AddProduct from 'COMPONENTS/Products/AddProduct'
@@ -22,6 +22,8 @@ class Products extends React.Component {
   // Sticky
   handleContextRef = contextRef => this.setState({ contextRef })
 
+  setActivePage = (activePage) => this.setState({ activePage: activePage })
+
   render = ({ contextRef } = this.state) => (
     <div ref={ this.handleContextRef }>
       <Grid>
@@ -39,12 +41,19 @@ class Products extends React.Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={ 12 }>
-                <TableInternal
-                  items={ this.props.products.data }
-                  onClick={ (action) => console.log('view or edit', action) }
-                  tableType={ TableType.SHOW_PRODUCTS }
-                  updateItem={ this.props.createProduct }
-                  deleteItem={ this.props.deleteProduct } />
+                { !this.props.products.sending && (this.props.products && Array.isArray(this.props.products.data) && this.props.products.data.length >= 1) === true ?
+                  <TableInternal
+                    activePage={ this.state.activePage }
+                    setActivePage={ this.setActivePage }
+                    items={ this.props.products.data }
+                    onClick={ (action) => console.log('view or edit', action) }
+                    tableType={ TableType.SHOW_PRODUCTS }
+                    updateItem={ this.props.createProduct }
+                    deleteItem={ this.props.deleteProduct } />
+                  : <Dimmer active inverted>
+                    <Image size='small' centered src={ require('STYLES/images/preload_waiting.gif') } />
+                    Chargement en cours!
+                  </Dimmer>}
               </Grid.Column>
               <Grid.Column width={ 4 }>
                 <Sticky context={ contextRef } >

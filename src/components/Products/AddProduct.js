@@ -1,6 +1,6 @@
 import React from 'react'
 import { Button, Modal, Form, Input, Dimmer, Loader, Message, Icon } from 'semantic-ui-react'
-import { ProductQuality, ProductUnit } from 'COMPONENTS/Utils/Utils'
+import { ProductCategory, ProductUnit } from 'COMPONENTS/Utils/Utils'
 
 class AddProduct extends React.Component {
   state = { tva: 20, modalOpen: false }
@@ -24,7 +24,7 @@ class AddProduct extends React.Component {
       reference: this.state.reference,
       description: this.state.description,
       unit: this.state.unit,
-      quality: this.state.quality,
+      category: this.state.category,
       price: this.state.price,
       tva: this.state.tva,
     })
@@ -96,12 +96,12 @@ class AddProduct extends React.Component {
                   />
                 </Form.Field>
                 <Form.Field>
-                  <Form.Dropdown label='QUALITTÉ'
+                  <Form.Dropdown label='CATÉGORIE'
                     onChange={ this._handleInputChange }
                     required fluid search selection
-                    value={ this.state.quality && this.state.quality }
-                    name='quality'
-                    options={ ProductQuality } />
+                    value={ this.state.category && this.state.category }
+                    name='category'
+                    options={ ProductCategory } />
                 </Form.Field>
               </Form.Group>
             </Form>

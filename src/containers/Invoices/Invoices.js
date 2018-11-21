@@ -67,7 +67,7 @@ class Invoices extends React.Component {
                     </Segment>
                     <Segment vertical>
                       <InvoicesList
-                        items={ this.props.invoices && this.props.invoices.data }
+                        invoices={ this.props.invoices }
                         handleChangeDate={ this.props.handleChangeDate }
                         setCheckedItemProps={ this.props.setCheckedItemProps } />
                     </Segment>

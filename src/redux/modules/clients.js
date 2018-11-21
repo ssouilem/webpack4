@@ -67,7 +67,7 @@ const createCustomer = dispatch => productProps => {
 const deleteCustomer = dispatch => uid =>
   dispatch({
     types: [DELETE_CUSTOMER_SENDING, DELETE_CUSTOMER_SUCCESS, DELETE_CUSTOMER_FAILURE],
-    promise: axios.delete('/products/' + uid).then((res) => {
+    promise: axios.delete('/customers/' + uid).then((res) => {
       console.log(res.data)
       return uid
     }),

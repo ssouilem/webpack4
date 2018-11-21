@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
-import { Header, Grid, Segment, Breadcrumb, Sticky } from 'semantic-ui-react'
+import { Header, Grid, Segment, Breadcrumb, Sticky, Dimmer, Image } from 'semantic-ui-react'
 // import { FormattedMessage } from 'react-intl'
 import TableInternal from 'COMPONENTS/Common/TableInternal'
 import AddCustomer from 'COMPONENTS/Client/AddCustomer'
@@ -21,6 +21,7 @@ class Campanies extends React.Component {
       this.props.fetchCustomers()
     }
   }
+  setActivePage = (activePage) => this.setState({ activePage: activePage })
   // Sticky
   handleContextRef = contextRef => this.setState({ contextRef })
 
@@ -41,18 +42,25 @@ class Campanies extends React.Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={ 12 }>
-                <TableInternal
-                  items={ this.props.clients.data && this.props.clients.data.map(client => ({
-                    uid: client.uid,
-                    name: client.name,
-                    siret: client.tvaNumber,
-                    contactName: client.phoneNumber,
-                    city: client.city,
-                  })) }
-                  onClick={ (action) => console.log('view or edit', action) }
-                  tableType={ TableType.SHOW_CUSTOMERS }
-                  updateItem={ this.props.createCustomer }
-                  deleteItem={ this.props.deleteCustomer } />
+                { !this.props.clients.sending && (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.data.length >= 1) === true ?
+                  <TableInternal
+                    items={ this.props.clients.data && this.props.clients.data.map(client => ({
+                      uid: client.uid,
+                      name: client.name,
+                      siret: client.tvaNumber,
+                      contactName: client.phoneNumber,
+                      city: client.city,
+                    })) }
+                    activePage={ this.state.activePage }
+                    setActivePage={ this.setActivePage }
+                    onClick={ (action) => console.log('view or edit', action) }
+                    tableType={ TableType.SHOW_CUSTOMERS }
+                    updateItem={ this.props.createCustomer }
+                    deleteItem={ this.props.deleteCustomer } />
+                  : <Dimmer active inverted>
+                    <Image size='small' centered src={ require('STYLES/images/preload_waiting.gif') } />
+                    Chargement en cours!
+                  </Dimmer>}
               </Grid.Column>
               <Grid.Column width={ 4 }>
                 <Sticky context={ contextRef } >

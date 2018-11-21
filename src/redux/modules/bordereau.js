@@ -226,7 +226,7 @@ const ACTION_HANDLERS = {
     language: action.payload.language || state.language,
     activateCD: action.payload.activateCD || state.activateCD,
     // bordereauDetailList: this.bordereau.bordereauDetails,
-    codeQuality: 'codeQuality' in action.payload ? action.payload.codeQuality : state.codeQuality,
+    codecategory: 'codecategory' in action.payload ? action.payload.codecategory : state.codecategory,
     unitTests: 'unitTests' in action.payload ? action.payload.unitTests : state.unitTests,
     fonctionnalTests: 'fonctionnalTests' in action.payload ? action.payload.fonctionnalTests : state.fonctionnalTests,
     useLogs: 'useLogs' in action.payload ? action.payload.useLogs : state.useLogs,

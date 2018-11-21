@@ -16,9 +16,11 @@ export const ProductUnit = [
   { key: 's', text: 'Service', value: 'SERVICE' },
 ]
 
-export const ProductQuality = [
-  { key: 'qs', text: 'Qualité supérieure', value: 'FIRST_CHOICE' },
-  { key: 'cc', text: 'choix commercial', value: 'COMMERCIAL_CHOICE' },
+export const ProductCategory = [
+  { key: 'fp', text: 'Produit fini', value: 'FINAL_PRODUCT' },
+  { key: 'mp', text: 'Matière première', value: 'MATERIAL' },
+  { key: 'ex', text: 'Consommable', value: 'EXPENDABLE' },
+  { key: 's', text: 'Service', value: 'SERVICE' },
 ]
 
 export const ProductChange = [

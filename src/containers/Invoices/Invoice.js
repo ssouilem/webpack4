@@ -125,7 +125,7 @@ render = () => (
                       <Table.Cell colSpan='8' >
                         <Table >
                           <Table.Body>
-                            <Table.Row key={ 'field' + bordereau.id } name={ 'field' + bordereau.id }>
+                            <Table.Row key={ bordereau.uid } name={ bordereau.uid }>
                               <Table.Cell collapsing>
                                 <Checkbox name={ bordereau.id } onChange={ this._handleChangeCkecked } checked={ bordereau.checked ? bordereau.checked : this.state[bordereau.id] } />
                               </Table.Cell>

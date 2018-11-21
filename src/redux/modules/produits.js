@@ -49,7 +49,7 @@ const createProduct = dispatch => productProps => {
       name: productProps.name,
       description: productProps.description,
       unit: productProps.unit,
-      quality: productProps.quality,
+      category: productProps.category,
       price: productProps.price,
       tva: productProps.tva,
     }).then((res) => {

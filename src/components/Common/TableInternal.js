@@ -8,8 +8,11 @@ import AddProduct from 'COMPONENTS/Products/AddProduct'
 import AddCustomer from 'COMPONENTS/Client/AddCustomer'
 import styles from './TableInternal.less'
 
+const DEFAULT_PAGE_SIZE = 8
+const DEFAULT_ACTIVE_PAGE = 1
+
 class TableInternal extends React.Component {
-  state = { pageSize: 5, page: 1, activePage: 1, results: [] }
+  state = { pageSize: DEFAULT_PAGE_SIZE, activePage: DEFAULT_ACTIVE_PAGE, results: [] }
 
   componentWillMount () {
     this.resetComponent()
@@ -17,28 +20,30 @@ class TableInternal extends React.Component {
 
   handlePaginationChange = (e, { activePage }) => {
     console.log(e, activePage)
-    this.getPaginatedItems(activePage, 5)
+    this.getPaginatedItems(activePage, DEFAULT_PAGE_SIZE)
     this.setState({ activePage })
   }
   getPaginatedItems = (page, pageSize) => {
     const items = (Array.isArray(this.state.results) && this.state.results.length >= 1) ? this.state.results : this.props.items
-    let pg = page || this.state.page
+    let pg = page || this.state.activePage
     let pgSize = pageSize || this.state.pageSize
     let offset = (pg - 1) * pgSize
     let pagedItems = _.drop(items, offset).slice(0, pgSize)
-    this.setState({page: pg,
+    this.setState({activePage: pg,
       pageSize: pgSize,
       total: items && items.length,
       total_pages: Math.ceil(items && items.length / pgSize),
       data: pagedItems})
   }
 
-  resetComponent = () => this.setState({ isLoading: false,
-    results: [],
-    data: [],
-    value: '',
-    items: this.props.items,
-    total_pages: Math.ceil(this.props.items && this.props.items.length / this.state.pageSize)})
+  resetComponent = () => {
+    this.setState({ isLoading: false,
+      results: [],
+      data: [],
+      value: '',
+      items: this.props.items})
+    this.getPaginatedItems(this.props.activePage || DEFAULT_ACTIVE_PAGE, DEFAULT_PAGE_SIZE)
+  }
 
   handleResultSelect = (e, { result }) => this.setState({ value: result.description })
   handleSearchChange = (e, { value }) => {
@@ -73,6 +78,11 @@ class TableInternal extends React.Component {
   _handleDeleteItem = (e, { id }) => {
     console.log('Delete Id : ', id)
     this.props.deleteItem(id)
+    this.props.setActivePage(this.state.activePage)
+    if (this.state.activePage >= 1) {
+      console.log('activePage : ', this.state.activePage)
+      this.getPaginatedItems(this.state.activePage, DEFAULT_PAGE_SIZE)
+    }
   }
 
 render = () => {
@@ -150,7 +160,7 @@ render = () => {
                   ? <Table.Row key={ result.uid }>
                     <Table.Cell>{ result.reference }</Table.Cell>
                     <Table.Cell>{ result.description }</Table.Cell>
-                    <Table.Cell>{ result.quality }</Table.Cell>
+                    <Table.Cell>{ result.category }</Table.Cell>
                     <Table.Cell>{ result.price }</Table.Cell>
                     <Table.Cell>{ result.unit }</Table.Cell>
                     <Table.Cell>
@@ -194,9 +204,9 @@ render = () => {
                       </Table.Cell>
                     </Table.Row>
                     : (this.props.tableType === TableType.SHOW_BORDEREAUX)
-                      ? <Table.Row key={ result.id }>
+                      ? <Table.Row key={ result.uid }>
                         <Table.Cell collapsing>
-                          <Checkbox name={ result.id } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
+                          <Checkbox name={ result.uid } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
                         </Table.Cell>
                         <Table.Cell>{ result.number }</Table.Cell>
                         <Table.Cell>{ result.company }</Table.Cell>
@@ -209,20 +219,17 @@ render = () => {
                             icon='delete'
                             id={ result.id }
                             onClick={ this._handleDeleteItem }
-                            // color='red'
                             floated='right' />
-
                           <Button primary
                             icon='sign out'
                             content='Update'
-                            // color='red'
                             floated='right' />
                         </Table.Cell>
                       </Table.Row>
                       : this.props.tableType === TableType.SHOW_INVOICES &&
-                        <Table.Row key={ result.id }>
+                        <Table.Row key={ result.uid }>
                           <Table.Cell collapsing>
-                            <Checkbox name={ result.id } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
+                            <Checkbox name={ result.uid } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
                           </Table.Cell>
                           <Table.Cell>{ result.number }</Table.Cell>
                           <Table.Cell>{ result.company }</Table.Cell>
@@ -237,19 +244,16 @@ render = () => {
                             <PaymentMethod />
                           </Table.Cell>
                         </Table.Row>
-              )) :
-                <Table.Row>
-                  <Table.HeaderCell colSpan='7'>
-                    <Grid textAlign='center'>
-                      <Grid.Row>
-                        <Icon size='big' name='pdf file outline' />
-                      </Grid.Row>
-                      <Grid.Row>
-                          Pas d'elements, la liste est vide.
-                      </Grid.Row>
-                    </Grid>
-                  </Table.HeaderCell>
-                </Table.Row>
+              )) : <Table.Row>
+                <Table.HeaderCell colSpan='7'>
+                  <Grid textAlign='center'>
+                    <Grid.Row>
+                      <Icon size='big' name='pdf file outline' />
+                    </Grid.Row>
+                    <Grid.Row>Pas d'elements, la liste est vide.</Grid.Row>
+                  </Grid>
+                </Table.HeaderCell>
+              </Table.Row>
               }
             </Table.Body>
             { this.props.tableType === TableType.SHOW_BORDEREAUX &&
@@ -268,18 +272,20 @@ render = () => {
           </Table>
         </Grid.Column>
       </Grid.Row>
+      {(Array.isArray(itemTable) && itemTable.length >= DEFAULT_PAGE_SIZE) === true &&
       <Grid.Row>
         <Grid.Column textAlign='center'>
           <Pagination
-            defaultActivePage={ this.state.page || 1 }
+            defaultActivePage={ this.state.activePage || DEFAULT_ACTIVE_PAGE }
             ellipsisItem={ { content: <Icon name='ellipsis horizontal' />, icon: true } }
             onPageChange={ this.handlePaginationChange }
             prevItem={ { content: <Icon name='angle left' />, icon: true } }
             nextItem={ { content: <Icon name='angle right' />, icon: true } }
-            totalPages={ this.state.total_pages || (Math.ceil(items && items.length / 5)) }
+            totalPages={ this.state.total_pages || (Math.ceil(items && items.length / DEFAULT_PAGE_SIZE)) }
           />
         </Grid.Column>
       </Grid.Row>
+      }
     </Grid>
   )
 }
