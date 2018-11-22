@@ -90,6 +90,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   fetchProducts: productsActions.fetchProducts(dispatch),
   createProduct: productsActions.createProduct(dispatch),
+  updateProduct: productsActions.updateProduct(dispatch),
   deleteProduct: productsActions.deleteProduct(dispatch),
   dispatch,
 })

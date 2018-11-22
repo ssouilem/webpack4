@@ -118,12 +118,13 @@ class InvoicesList extends React.Component {
                 </Grid.Row>
                 <Grid.Row>Pas d'elements, la liste est vide.</Grid.Row>
               </Grid>
-              :  <TableInternal
+              : <TableInternal
                   items={ this.props.invoices.data }
                   onChecked={ this.onChecked }
                   activePage={ this.state.activePage }
                   setActivePage={ this.setActivePage }
                   tableType={ TableType.SHOW_INVOICES }
+                  updateItem={ this.props.createProduct }
                   onClick={ (action) => console.log('view or edit', action) }
                   state={ this.state } />
                 }

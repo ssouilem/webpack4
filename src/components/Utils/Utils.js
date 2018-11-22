@@ -35,7 +35,7 @@ export const TableType = {
   SHOW_INVOICES: 'SHOW_INVOICES',
 }
 
-export const DateFormat = 'YYYY/MM/DD'
+export const DateFormat = 'DD/MM/YYYY'
 export const BankOptions = [
   { key: 'BIAT', text: 'BIAT', value: 'BIAT', image: { avatar: true, src: require('STYLES/images/Logo_BIAT_FR.png') } },
   { key: 'ATB', text: 'ATB', value: 'ATB', image: { avatar: true, src: require('STYLES/images/ATB.jpg') } },
@@ -56,7 +56,13 @@ export const BankOptions = [
 ]
 
 export const PaiementMode = [
-  { key: 'ck', text: 'Chèques', value: 'Chèques', image: { avatar: true, src: require('STYLES/images/cheque.jpg') } },
-  { key: 'cv', text: 'Cartes ou Virement', value: 'cartes', image: { avatar: true, src: require('STYLES/images/transac.png') } },
-  { key: 'e', text: 'Espèces', value: 'Espèces', image: { avatar: true, src: require('STYLES/images/especes.png') } },
+  { key: 'ck', text: 'Chèques', value: 'CHECK', image: { avatar: true, src: require('STYLES/images/cheque.jpg') } },
+  { key: 'cv', text: 'Cartes ou Virement', value: 'BANK_CARD', image: { avatar: true, src: require('STYLES/images/transac.png') } },
+  { key: 'e', text: 'Espèces', value: 'CASH', image: { avatar: true, src: require('STYLES/images/especes.png') } },
 ]
+
+export const ConstPaiementMode = {
+  CHECK: 'CHECK',
+  BANK_CARD: 'BANK_CARD',
+  CASH: 'CASH',
+}

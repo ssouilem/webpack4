@@ -17,7 +17,7 @@ class Invoice extends React.Component {
     this.props.setItemProps({ [name]: value })
   }
   _handleOver = (e, { name }) => console.log(' mousse ', e)
-  _handleChangeCkecked = (event, {name, checked}) => {
+  _handleChangeCkecked = (event, {name, checked, amount}) => {
     // console.log('_handleChangeCkecked ', document, name)
     // console.log('form ', document.getElementById('myform').elements)
     const node = document.getElementById('myform').elements
@@ -31,8 +31,10 @@ class Invoice extends React.Component {
       }
       this.setState({ allChecked: !this.state.allChecked })
     } else {
+      console.log(checked, !this.state[name])
       this.setState({ [name]: !this.state[name] })
-      this.props.setCheckedInvoice({ id: name, value: !this.state[name] })
+      var returnAmount = this.props.setCheckedInvoice({ id: name, value: checked, amount })
+      this.setState({...returnAmount})
     }
   }
 
@@ -106,7 +108,7 @@ render = () => (
               <Table >
                 <Table.Header>
                   <Table.Row>
-                    <Table.HeaderCell><Checkbox name='all' onClick={ this._handleChangeCkecked } /></Table.HeaderCell>
+                    <Table.HeaderCell><Checkbox disabled name='all' onClick={ this._handleChangeCkecked } /></Table.HeaderCell>
                     <Table.HeaderCell>BORDEREAU ID</Table.HeaderCell>
                     <Table.HeaderCell>CLIENT</Table.HeaderCell>
                     <Table.HeaderCell>DATE</Table.HeaderCell>
@@ -127,10 +129,10 @@ render = () => (
                           <Table.Body>
                             <Table.Row key={ bordereau.uid } name={ bordereau.uid }>
                               <Table.Cell collapsing>
-                                <Checkbox name={ bordereau.uid } onChange={ this._handleChangeCkecked } checked={ bordereau.checked ? bordereau.checked : this.state[bordereau.uid] } />
+                                <Checkbox name={ bordereau.uid } amount={ bordereau.subTotal } onChange={ this._handleChangeCkecked } checked={ bordereau.checked ? bordereau.checked : this.state[bordereau.uid] } />
                               </Table.Cell>
                               <Table.Cell>{ bordereau.number }</Table.Cell>
-                              <Table.Cell>{ bordereau.company }</Table.Cell>
+                              <Table.Cell>{ bordereau.customer && bordereau.customer }</Table.Cell>
                               <Table.Cell>{ bordereau.createdDate }</Table.Cell>
                               <Table.Cell>{ bordereau.treatmentDate }</Table.Cell>
                               <Table.Cell>{ !bordereau.invoice && bordereau.invoice }</Table.Cell>
@@ -163,19 +165,19 @@ render = () => (
               <List divided verticalAlign='middle'>
                 <List.Item>
                   <List.Content floated='right'>
-                    { this.props.bordereaux && this.props.bordereaux.totalAmountHT ? this.props.bordereaux.totalAmountHT.toFixed(3) : 0 }
+                    { this.state.totalAmountHT ? this.state.totalAmountHT.toFixed(3) : 0 }
                   </List.Content>
                   <List.Content><Header as='h5'>Montant HT</Header></List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Content floated='right'>
-                    { this.props.bordereaux && this.props.bordereaux.totalAmountTVA ? this.props.bordereaux.totalAmountTVA.toFixed(3) : 0 }
+                    { this.state.totalAmountTVA ? this.state.totalAmountTVA.toFixed(3) : 0 }
                   </List.Content>
                   <List.Content><Header as='h5'>TVA 20%</Header></List.Content>
                 </List.Item>
                 <List.Item>
                   <List.Content floated='right'>
-                    { this.props.bordereaux && this.props.bordereaux.totalAmountTTC ? this.props.bordereaux.totalAmountTTC.toFixed(3) : 0 }
+                    { this.state.totalAmountTTC ? this.state.totalAmountTTC.toFixed(3) : 0 }
                   </List.Content>
                   <List.Content><Header as='h5'>Montant TTC</Header></List.Content>
                 </List.Item>

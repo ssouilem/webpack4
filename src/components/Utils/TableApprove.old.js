@@ -24,7 +24,7 @@ const TableApprove = (props) => (
             <Checkbox name={ bordereau.id } onChange={ props.onClick } checked={ props.state[bordereau.id] } />
           </Table.Cell>
           <Table.Cell>{ bordereau.number }</Table.Cell>
-          <Table.Cell>{ bordereau.company }</Table.Cell>
+          <Table.Cell>{ bordereau.customer }</Table.Cell>
           <Table.Cell>{ bordereau.createdDate }</Table.Cell>
           <Table.Cell>{ bordereau.treatmentDate }</Table.Cell>
           <Table.Cell>{ !bordereau.invoice && bordereau.invoice }</Table.Cell>

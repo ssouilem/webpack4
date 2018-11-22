@@ -13,6 +13,10 @@ const CREATE_PRODUCT_SENDING = 'CREATE_PRODUCT_SENDING'
 const CREATE_PRODUCT_SUCCESS = 'CREATE_PRODUCT_SUCCESS'
 const CREATE_PRODUCT_FAILURE = 'CREATE_PRODUCT_FAILURE'
 
+const UPDATE_PRODUCT_SENDING = 'UPDATE_PRODUCT_SENDING'
+const UPDATE_PRODUCT_SUCCESS = 'UPDATE_PRODUCT_SUCCESS'
+const UPDATE_PRODUCT_FAILURE = 'UPDATE_PRODUCT_FAILURE'
+
 const DELETE_PRODUCT_SENDING = 'DELETE_PRODUCT_SENDING'
 const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS'
 const DELETE_PRODUCT_FAILURE = 'DELETE_PRODUCT_FAILURE'
@@ -65,6 +69,24 @@ const createProduct = dispatch => productProps => {
   })
 }
 
+const updateProduct = dispatch => productProps => {
+  return dispatch({
+    types: [UPDATE_PRODUCT_SENDING, UPDATE_PRODUCT_SUCCESS, UPDATE_PRODUCT_FAILURE],
+    promise: axios.put('/products/' + productProps.uid, {
+      reference: productProps.reference,
+      name: productProps.name,
+      description: productProps.description,
+      unit: productProps.unit,
+      category: productProps.category,
+      price: productProps.price,
+      tva: productProps.tva,
+    }).then((res) => {
+      console.log(res.data)
+      return res
+    }),
+  })
+}
+
 const deleteProduct = dispatch => uid =>
   dispatch({
     types: [DELETE_PRODUCT_SENDING, DELETE_PRODUCT_SUCCESS, DELETE_PRODUCT_FAILURE],
@@ -103,6 +125,7 @@ export const actions = {
   handleChange,
   fetchProducts,
   createProduct,
+  updateProduct,
   deleteProduct,
   addTab,
 }
@@ -139,6 +162,24 @@ const ACTION_HANDLERS = {
     error: undefined,
   }),
   [CREATE_PRODUCT_FAILURE]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: action.error,
+  }),
+  [UPDATE_PRODUCT_SENDING]: (state, action) => ({
+    ...state,
+    sending: true,
+    error: undefined,
+  }),
+  [UPDATE_PRODUCT_SUCCESS]: (state, action) => ({
+    ...state,
+    sending: false,
+    delete: _.remove(state.data, function (currentObject) { return currentObject.uid === action.result }),
+    data: [...state.data, action.result.data],
+    done: action.result.data.uid,
+    error: undefined,
+  }),
+  [UPDATE_PRODUCT_FAILURE]: (state, action) => ({
     ...state,
     sending: false,
     error: action.error,

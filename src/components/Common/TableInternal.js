@@ -57,7 +57,7 @@ class TableInternal extends React.Component {
       switch (this.props.tableType) {
         case TableType.SHOW_INVOICES :
           console.log('Search invoices')
-          isMatch = result => re.test(result.company)
+          isMatch = result => re.test(result.customer)
           break
         case TableType.SHOW_CUSTOMERS :
           console.log('Search customer')
@@ -211,7 +211,7 @@ render = () => {
                           <Checkbox name={ result.uid } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
                         </Table.Cell>
                         <Table.Cell>{ result.number }</Table.Cell>
-                        <Table.Cell>{ result.company }</Table.Cell>
+                        <Table.Cell>{ result.customer }</Table.Cell>
                         <Table.Cell>{ result.createdDate }</Table.Cell>
                         <Table.Cell>{ result.treatmentDate }</Table.Cell>
                         <Table.Cell>{ !result.invoice && result.invoice }</Table.Cell>
@@ -234,7 +234,7 @@ render = () => {
                             <Checkbox name={ result.uid } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
                           </Table.Cell>
                           <Table.Cell>{ result.number }</Table.Cell>
-                          <Table.Cell>{ result.company }</Table.Cell>
+                          <Table.Cell>{ result.customer && result.customer.name }</Table.Cell>
                           <Table.Cell>{ result.createdDate }</Table.Cell>
                           <Table.Cell>{ result.issueDate }</Table.Cell>
                           <Table.Cell>{ result.amount }</Table.Cell>

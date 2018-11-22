@@ -1,5 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
+import moment from 'moment'
 import { Tab, Menu, Header, Icon, Segment, Button } from 'semantic-ui-react'
 import InvoicesList from 'CONTAINERS/Invoices/InvoicesList'
 import Invoice from 'CONTAINERS/Invoices/Invoice'
@@ -10,7 +11,7 @@ import { actions as bordereauActions } from 'ACTIONS/bordereau'
 import { actions as clientsActions } from 'ACTIONS/clients'
 
 class Invoices extends React.Component {
-  state = { activeIndex: 1, bordereaux: [] }
+  state = { activeIndex: 0, bordereaux: [], totalAmountHT: 0 }
   componentWillMount () {
     if (!this.props.invoices.sending && !this.props.invoices.data) {
       this.props.fetchInvoices()
@@ -26,22 +27,33 @@ class Invoices extends React.Component {
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
   _AddBordereauToInvoice = (invoiceProps) => {
     console.log('props : ', invoiceProps)
+    let totalAmountHT = 0
+    let totalAmountTVA = 0
+    let totalAmountTTC = 0
+
     if (invoiceProps.value === false) {
+      totalAmountHT = parseFloat(this.state.totalAmountHT) - parseFloat(invoiceProps.amount)
       _.remove(this.state.bordereaux, function (currentObject) { return currentObject.bordereauUid === invoiceProps.id })
     } else {
       // add item to list
+      totalAmountHT = parseFloat(this.state.totalAmountHT) + parseFloat(invoiceProps.amount)
       let bordereau = { bordereauUid: invoiceProps.id }
       this.setState({ bordereaux: [...this.state.bordereaux, bordereau] })
     }
-    this.props.setCheckedItemProps(invoiceProps)
+    // calucule montant HT
+    totalAmountTVA = totalAmountHT * 0.2
+    totalAmountTTC = totalAmountHT + totalAmountTVA
+    this.setState({totalAmountHT, totalAmountTVA, totalAmountTTC})
+    return { totalAmountHT, totalAmountTVA, totalAmountTTC }
+    // this.props.setCheckedItemProps(invoiceProps) // Avons-nous besoins de sauvegarder lalista à un niveau superieure ?
   }
   _handleSubmit = () => {
     this.props.createInvoice({
       customer: this.props.clients.selectedClient,
       number: this.props.invoices.invoiceNumber,
       createdAuthor: 'TODO', // @TODO charger la valeur d'auth
-      issueDate: '2018-10-05', // ajouter un champ de saisie de date
-      amount: this.props.bordereau.totalAmountHT,
+      issueDate: moment().format('YYYY-MM-DD'), // ajouter un champ de saisie de date
+      amount: this.state.totalAmountHT,
       bordereaux: this.state.bordereaux,
     })
   }
