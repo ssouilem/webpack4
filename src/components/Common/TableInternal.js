@@ -243,7 +243,7 @@ render = () => {
                             <Button
                               icon='edit'
                               floated='right' />
-                            <PaymentMethod />
+                            <PaymentMethod amount={ result.amount } />
                           </Table.Cell>
                         </Table.Row>
               )) : <Table.Row>

@@ -9,7 +9,7 @@ class PaymentMethod extends React.Component {
   componentWillMount () {
     this.resetComponent()
   }
-  resetComponent = () => this.setState({ paymentDetails: [], disabled: false, transacDate: (new Date()).toLocaleDateString() })
+  resetComponent = () => this.setState({ amountTotal: this.props.amount, paymentDetails: [], disabled: false, transacDate: (new Date()).toLocaleDateString() })
   _handlePaymentType = (e, { name, value }) => this.setState({ paymentType: value, paymentsMode: [{ key: 1, type: value }], disabled: false })
   _handlebank = (e, { name, value }) => this.setState({ selectedBank: value })
   // _handleChange = (e, { name, value }) => {
@@ -29,7 +29,9 @@ class PaymentMethod extends React.Component {
   _addPaiement = () => {
     // add item to list
     var paymentDetail = { amount: this.state.amount, paymentType: this.state.paymentType, transacNumber: this.state.transacNumber, date: this.state.transacDate }
-    this.setState({ paymentType: '', paymentDetails: [...this.state.paymentDetails, paymentDetail] })
+    this.setState({ paymentType: '',
+      amountTotal: parseFloat(this.state.amountTotal) - parseFloat(this.state.amount),
+      paymentDetails: [...this.state.paymentDetails, paymentDetail] })
 
     // Calcule de montant qui reste à payer
     // let totalHT = parseFloat(this.state.totalAmountHT) - parseFloat(props.total)
@@ -56,12 +58,11 @@ class PaymentMethod extends React.Component {
             <Form.Input disabled={ disabled } label='Titulaire du compte bancaire'
               placeholder='Titulaire du compte bancaire...'
               onChange={ this._handleInputChange }
-              name='CompteName' />
+              name='compteName' />
             <Form.Input name='amountTotal'
               disabled={ disabled }
-              onChange={ this._handleInputChange }
-              label='Montant total de la transaction' placeholder='Montant...'
-              defaultValue={ paymentNumber ? this.state.paymentNumber : '1' }
+              label='Montant reste à payer' placeholder='Montant...'
+              value={ this.state.amountTotal || '1' }
             />
             <Header dividing as='h4'>List de Paiements</Header>
             <Segment.Group key='id' size='tiny'>
@@ -82,7 +83,7 @@ class PaymentMethod extends React.Component {
                         <List.Item>
                           <List.Content>
                             <List.Header>Numéro</List.Header>
-                            { payment.amount ? payment.amount : 'sans numéro'}
+                            { payment.transacNumber ? payment.transacNumber : 'sans numéro'}
                           </List.Content>
                         </List.Item>
                         <List.Item>
@@ -122,7 +123,7 @@ class PaymentMethod extends React.Component {
                       : <Segment>
                         <List key='id' horizontal>
                           <List.Item>
-                            <Image avatar src={ require('STYLES/images/cash.png') } />
+                            <Image avatar src={ require('STYLES/images/bank_card.jpg') } />
                           </List.Item>
                           <List.Item>
                             <List.Content>
@@ -133,7 +134,7 @@ class PaymentMethod extends React.Component {
                           <List.Item>
                             <List.Content>
                               <List.Header>Numéro</List.Header>
-                              { payment.amount ? payment.amount : 'sans numéro'}
+                              { payment.transacNumber ? payment.transacNumber : 'sans numéro'}
                             </List.Content>
                           </List.Item>
                           <List.Item>
@@ -151,7 +152,7 @@ class PaymentMethod extends React.Component {
             </Segment.Group>
             <div>
               <Divider hidden />
-              <Header dividing as='h4'>Premier Paiement</Header>
+              <Header dividing as='h4'>Paiement</Header>
               <Form.Group widths='equal'>
                 <Form.Field>
                   <Form.Dropdown fluid search selection required
@@ -159,7 +160,7 @@ class PaymentMethod extends React.Component {
                     label='Mode de paiement'
                     placeholder='Choisir les modes de paiement'
                     onChange={ this._handlePaymentType }
-                    value={ payment && payment.paymentType }
+                    value={ this.state.paymentType }
                     options={ PaiementMode } />
                 </Form.Field>
               </Form.Group>

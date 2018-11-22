@@ -56,9 +56,9 @@ export const BankOptions = [
 ]
 
 export const PaiementMode = [
-  { key: 'ck', text: 'Chèques', value: 'CHECK', image: { avatar: true, src: require('STYLES/images/cheque.jpg') } },
-  { key: 'cv', text: 'Cartes ou Virement', value: 'BANK_CARD', image: { avatar: true, src: require('STYLES/images/transac.png') } },
-  { key: 'e', text: 'Espèces', value: 'CASH', image: { avatar: true, src: require('STYLES/images/especes.png') } },
+  { key: 'ck', text: 'Chèques', value: 'CHECK', image: { avatar: true, src: require('STYLES/images/check.png') } },
+  { key: 'cv', text: 'Cartes ou Virement', value: 'BANK_CARD', image: { avatar: true, src: require('STYLES/images/bank_card.jpg') } },
+  { key: 'e', text: 'Espèces', value: 'CASH', image: { avatar: true, src: require('STYLES/images/cash.png') } },
 ]
 
 export const ConstPaiementMode = {
