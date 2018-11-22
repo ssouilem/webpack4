@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { Tab, Menu, Header, Icon, Segment, Button } from 'semantic-ui-react'
 import InvoicesList from 'CONTAINERS/Invoices/InvoicesList'
 import Invoice from 'CONTAINERS/Invoices/Invoice'
@@ -25,9 +26,13 @@ class Invoices extends React.Component {
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
   _AddBordereauToInvoice = (invoiceProps) => {
     console.log('props : ', invoiceProps)
-    // add item to list
-    let bordereau = { bordereauUid: invoiceProps.id }
-    this.setState({ bordereaux: [...this.state.bordereaux, bordereau] })
+    if (invoiceProps.value === false) {
+      _.remove(this.state.bordereaux, function (currentObject) { return currentObject.bordereauUid === invoiceProps.id })
+    } else {
+      // add item to list
+      let bordereau = { bordereauUid: invoiceProps.id }
+      this.setState({ bordereaux: [...this.state.bordereaux, bordereau] })
+    }
     this.props.setCheckedItemProps(invoiceProps)
   }
   _handleSubmit = () => {

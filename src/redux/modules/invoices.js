@@ -57,19 +57,6 @@ const deleteInvoice = dispatch => uid =>
     }),
   })
 
-const invoices = [
-  {
-    'id': '12',
-    'number': 'FAC1254897',
-    'issueDate': '2018-10-05',
-    'createdDate': '2018-10-05',
-    'company': 'rs',
-    'amount': 145.700,
-    'payments': [],
-    'bordereaux ': [],
-    'payDown': false,
-  }]
-
 // const fetchInvoices = dispatch => () => {
 //   console.log('fetchInvoices ')
 //   dispatch({
@@ -142,12 +129,6 @@ const setFieldValue = (state, action, field) => {
 }
 
 const ACTION_HANDLERS = {
-  // [FETCH_INVOICES_SUCCESS]: (state, action) => ({
-  //   ...state,
-  //   sending: false,
-  //   error: undefined,
-  //   data: invoices.map(data => ({ ...data })),
-  // }),
   [REINITIALIZE_INVOICES]: (state, action) => action.payload,
   [SET_INVOICES_CHECKED_PROPS]: (state, action) => ({
     ...state,
@@ -162,17 +143,7 @@ const ACTION_HANDLERS = {
     ...state,
     sending: false,
     error: undefined,
-    data: action.result.data.map(bordereau => ({
-      id: bordereau.uid,
-      customer: bordereau.customer,
-      createdAuthor: bordereau.createdAuthor ? bordereau.createdAuthor : 'Empty',
-      number: bordereau.number,
-      treatmentDate: bordereau.treatmentDate,
-      createdDate: bordereau.createdDate ? bordereau.createdDate : bordereau.treatmentDate,
-      invoice: bordereau.invoice ? bordereau.invoice.number : 'En attente',
-      subTotal: bordereau.subTotal ? bordereau.subTotal : 'BUG',
-      bordereauDetails: bordereau.bordereauDetails ? bordereau.bordereauDetails : 'BUG',
-    })),
+    data: action.result.data,
   }),
   [FETCH_INVOICES_FAILURE]: (state, action) => ({
     ...state,
@@ -229,7 +200,7 @@ const ACTION_HANDLERS = {
 }
 
 const initialState = {
-  data: [],
+  data: undefined,
   sending: false,
   error: undefined,
   totalAmountHT: 0,
@@ -238,7 +209,6 @@ const initialState = {
   invoiceNumber: '',
   datedebut: '',
   datefin: '',
-  invoices: invoices,
 }
 
 export default function invoicesReducer (state = initialState, action) {

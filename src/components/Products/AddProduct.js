@@ -4,11 +4,6 @@ import { ProductCategory, ProductUnit } from 'COMPONENTS/Utils/Utils'
 
 class AddProduct extends React.Component {
   state = { tva: 20, modalOpen: false }
-  componentWillMount () {
-    if (this.props.product && !Array.isArray(this.state.product)) {
-      this.setState({ ...this.props.product })
-    }
-  }
   // controle Modal open and close button
   handleOpen = () => this.setState({ modalOpen: true })
   handleClose = () => this.setState({ modalOpen: false })
@@ -30,15 +25,7 @@ class AddProduct extends React.Component {
     })
   }
 
-  _handleChange = (e, { name, value }) => {
-    this.setState({ paymentsMode: [] })
-    for (var index = 0; index < value; index++) {
-      this.setState(prevState => ({
-        paymentsMode: [...prevState.paymentsMode, { key: index, type: this.state.paymentType }],
-      }))
-    }
-  }
-  render = ({ paymentNumber, disabled } = this.state, { children, payment, onChange, validateTransactionMode } = this.props) => (
+  render = ({ disabled } = this.state, { done, sending, children, onChange } = this.props) => (
     <Modal
       open={ this.state.modalOpen }
       onClose={ this.handleClose }
@@ -105,13 +92,13 @@ class AddProduct extends React.Component {
                 </Form.Field>
               </Form.Group>
             </Form>
-            { this.props.product && this.props.product.done &&
+            { done &&
             <Message attached='bottom' warning>
               <Icon name='warning circle' />
-              Attention, votre produit a bien été ajouté à la liste de produits sous la reference "{ this.props.product && this.props.product.done }", voulez vous rajouter d'autres ?
+              Attention, votre produit a bien été ajouté à la liste de produits sous la reference " { done } ", voulez vous rajouter d'autres ?
             </Message>
             }
-            <Dimmer active={ this.props.product && this.props.product.sending } inverted>
+            <Dimmer active={ sending } inverted>
               <Loader inverted>Loading</Loader>
             </Dimmer>
           </div>

@@ -18,6 +18,15 @@ class TableInternal extends React.Component {
     this.resetComponent()
   }
 
+  resetComponent = () => {
+    this.setState({ isLoading: false,
+      results: [],
+      data: [],
+      value: '',
+      items: this.props.items})
+    this.getPaginatedItems(this.props.activePage || DEFAULT_ACTIVE_PAGE, DEFAULT_PAGE_SIZE)
+  }
+
   handlePaginationChange = (e, { activePage }) => {
     console.log(e, activePage)
     this.getPaginatedItems(activePage, DEFAULT_PAGE_SIZE)
@@ -34,15 +43,6 @@ class TableInternal extends React.Component {
       total: items && items.length,
       total_pages: Math.ceil(items && items.length / pgSize),
       data: pagedItems})
-  }
-
-  resetComponent = () => {
-    this.setState({ isLoading: false,
-      results: [],
-      data: [],
-      value: '',
-      items: this.props.items})
-    this.getPaginatedItems(this.props.activePage || DEFAULT_ACTIVE_PAGE, DEFAULT_PAGE_SIZE)
   }
 
   handleResultSelect = (e, { result }) => this.setState({ value: result.description })
@@ -68,10 +68,12 @@ class TableInternal extends React.Component {
           break
       }
       var results = _.filter(this.props.items, isMatch)
+      let offset = (this.state.activePage - 1) * DEFAULT_PAGE_SIZE
       this.setState({
         isLoading: false,
         results: results,
         total_pages: Math.ceil(results && results.length / this.state.pageSize),
+        data: _.drop(results, offset).slice(0, DEFAULT_PAGE_SIZE),
       })
     }, 300)
   }

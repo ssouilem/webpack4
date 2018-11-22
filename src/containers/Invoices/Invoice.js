@@ -121,13 +121,13 @@ render = () => (
                 </Table.Body>
                 <Table.Footer>
                   {(this.props.bordereaux.data && this.props.bordereaux.data.length > 0 && this.props.bordereaux.data.map(bordereau => (
-                    <Table.Row key={ bordereau.id } name={ bordereau.id } >
+                    <Table.Row key={ bordereau.uid } name={ bordereau.uid } >
                       <Table.Cell colSpan='8' >
                         <Table >
                           <Table.Body>
                             <Table.Row key={ bordereau.uid } name={ bordereau.uid }>
                               <Table.Cell collapsing>
-                                <Checkbox name={ bordereau.id } onChange={ this._handleChangeCkecked } checked={ bordereau.checked ? bordereau.checked : this.state[bordereau.id] } />
+                                <Checkbox name={ bordereau.uid } onChange={ this._handleChangeCkecked } checked={ bordereau.checked ? bordereau.checked : this.state[bordereau.uid] } />
                               </Table.Cell>
                               <Table.Cell>{ bordereau.number }</Table.Cell>
                               <Table.Cell>{ bordereau.company }</Table.Cell>

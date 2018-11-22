@@ -61,7 +61,7 @@ class AddCustomer extends React.Component {
   _handleInputChange = (e, { name, value }) => this.setState({ [name]: value })
   _handleSubmit = () => {
     this.props.submitForm({
-      name: this.state.CompanyName,
+      name: this.state.companyName,
       mail: this.state.email,
       address: this.state.address1,
       additionalAddress: this.state.address2,
@@ -69,11 +69,11 @@ class AddCustomer extends React.Component {
       city: this.state.city,
       phoneNumber: this.state.phoneNumber,
       faxNumber: this.state.phoneNumber, // @TODO Add faxNumber to form
-      tvaNumber: this.state.phoneNumber, // @TODO Add tvaNumber to form
+      tvaNumber: this.state.siret,
     })
   }
 
-  render = ({ children, customer } = this.props) => (
+  render = ({ children, customer, done, sending } = this.props) => (
     <Modal
       open={ this.state.modalOpen }
       onClose={ this.handleClose }
@@ -89,7 +89,7 @@ class AddCustomer extends React.Component {
     >
       <Modal.Header content="Modifier l'adresse de client" />
       <Modal.Content scrolling>
-        { !(this.props.customer && this.props.customer.done)
+        { !done
           ? <ItemAddress
             address={ customer }
             onChange={ this._handleInputChange }
@@ -100,11 +100,11 @@ class AddCustomer extends React.Component {
             <Message info header='Votre client est enregistré' content='Votre client a été ajouté avec succès. Vous pouvez revenir sur la liste de clients.' />
           </div>
         }
-        <Dimmer active={ this.props.customer && this.props.customer.sending } inverted>
+        <Dimmer active={ sending } inverted>
           <Loader inverted>Loading</Loader>
         </Dimmer>
       </Modal.Content>
-      { !(this.props.customer && this.props.customer.done)
+      { !done
         ? <Modal.Actions>
           <Button color='black' onClick={ this.handleClose }>Fermer</Button>
           <Button positive icon='checkmark'

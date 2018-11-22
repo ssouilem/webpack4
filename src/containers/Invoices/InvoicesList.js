@@ -106,26 +106,27 @@ class InvoicesList extends React.Component {
             </Accordion.Content>
           </Accordion>
           <Grid.Column width={ 16 }>
-            { !this.props.invoices.sending && (this.props.invoices && Array.isArray(this.props.invoices.data) && this.props.invoices.data.length === 0) === true
-              ? <Grid textAlign='center'>
+            { this.props.invoices && this.props.invoices.sending
+              ? <Dimmer active inverted>
+                <Image size='small' centered src={ require('STYLES/images/preload_waiting.gif') } />
+                Chargement en cours!
+              </Dimmer>
+              : (this.props.invoices && Array.isArray(this.props.invoices.data) && this.props.invoices.data.length === 0) === true
+                ? <Grid textAlign='center'>
                 <Grid.Row>
                   <Icon size='big' name='pdf file outline' />
                 </Grid.Row>
                 <Grid.Row>Pas d'elements, la liste est vide.</Grid.Row>
               </Grid>
-              : !this.props.invoices.sending && (this.props.invoices && Array.isArray(this.props.invoices.data) && this.props.invoices.data.length >= 1) === true
-                ? <TableInternal
-                  items={ this.props.items.data }
+              :  <TableInternal
+                  items={ this.props.invoices.data }
                   onChecked={ this.onChecked }
                   activePage={ this.state.activePage }
                   setActivePage={ this.setActivePage }
                   tableType={ TableType.SHOW_INVOICES }
                   onClick={ (action) => console.log('view or edit', action) }
                   state={ this.state } />
-                : <Dimmer active inverted>
-                  <Image size='small' centered src={ require('STYLES/images/preload_waiting.gif') } />
-                  Chargement en cours!
-                </Dimmer> }
+                }
           </Grid.Column>
         </Grid>
       </Form>

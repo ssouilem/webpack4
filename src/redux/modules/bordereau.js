@@ -261,7 +261,8 @@ const ACTION_HANDLERS = {
     sending: false,
     error: undefined,
     data: action.result.data.map(bordereau => ({
-      id: bordereau.uid,
+      id: bordereau.id,
+      uid: bordereau.uid,
       customer: bordereau.customer,
       createdAuthor: bordereau.createdAuthor ? bordereau.createdAuthor : 'Empty',
       number: bordereau.number,

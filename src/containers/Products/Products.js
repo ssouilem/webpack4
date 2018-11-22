@@ -36,7 +36,10 @@ class Products extends React.Component {
                 <Breadcrumb divider='/' sections={ sections } />
               </Grid.Column>
               <Grid.Column width={ 4 } >
-                <AddProduct product={ this.props.products } submitForm={ this.props.createProduct } />
+                <AddProduct
+                  sending={ (this.props.products && Array.isArray(this.props.products.data) && this.props.products.sending) }
+                  done={ (this.props.products && Array.isArray(this.props.products.data) && this.props.products.done) }
+                  submitForm={ this.props.createProduct } />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
