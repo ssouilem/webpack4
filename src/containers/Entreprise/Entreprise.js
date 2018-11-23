@@ -19,7 +19,7 @@ class Entreprise extends Component {
   }
 
   render () {
-    const { name, email, contactPhone, contactMail, siret, tvaNumber, tva, address1, address2, codePostal, city, submittedName, submittedEmail, firstName, lastName } = this.state
+    const { name, email, contactPhone, contactMail, siret, tva, address1, address2, codePostal, city, submittedName, submittedEmail, firstName, lastName } = this.state
 
     return (
       <div>
@@ -47,8 +47,8 @@ class Entreprise extends Component {
             <Form.Input
               placeholder='Numéro de TVA'
               label='Numéro de TVA'
-              name='tvaNumber'
-              value={ tvaNumber }
+              name='siret'
+              value={ siret }
               onChange={ this.handleChange }
             />
             <Form.Input

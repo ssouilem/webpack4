@@ -2,6 +2,12 @@ import React from 'react'
 import { Modal, Form, Divider, Header } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 
+// @TODO DELETE
+export const ProductContract = [
+  { key: 'fp', text: 'TOTO', value: 'TOTO' },
+  { key: 'mp', text: 'TODO', value: 'TODO' },
+]
+
 const ItemAddress = ({ address, onChange, disabled }) => (
   <Modal.Description>
     <Form error={ address && address.errors && address.errors.formError }>
@@ -20,6 +26,14 @@ const ItemAddress = ({ address, onChange, disabled }) => (
           label='Numéro de SIRET' placeholder='SIRET...'
           value={ address && address.siret }
           error={ address && address.errors && address.errors.siretError } />
+      </Form.Field>
+      <Form.Field>
+        <Form.Dropdown label='Contrat'
+          disabled
+          required fluid search selection
+          name='contract'
+          placeholder='choisir un contrat...'
+          options={ ProductContract } />
       </Form.Field>
       <Form.Field >
         <Form.Input name='email'

@@ -15,7 +15,10 @@ class AddCustomer extends React.Component {
 
   // controle Modal open and close button
   handleOpen = () => this.setState({ modalOpen: true })
-  handleClose = () => this.setState({ modalOpen: false })
+  handleClose = () => {
+    this.setState({ modalOpen: false })
+    this.props.setItemProps({done: ''})
+  }
 
   successCallback = () => {
     this.setState({
@@ -69,7 +72,7 @@ class AddCustomer extends React.Component {
       city: this.state.city,
       phoneNumber: this.state.phoneNumber,
       faxNumber: this.state.phoneNumber, // @TODO Add faxNumber to form
-      tvaNumber: this.state.siret,
+      siret: this.state.siret,
     })
   }
 
@@ -97,7 +100,8 @@ class AddCustomer extends React.Component {
           />
           : <div className='modal-complete'>
             <Image size='small' centered src={ require('STYLES/images/check-form.png') } />
-            <Message info header='Votre client est enregistré' content='Votre client a été ajouté avec succès. Vous pouvez revenir sur la liste de clients.' />
+            { done }
+            <Message info header='Votre client est enregistré' content='Votre client a été ajouté avec succès. Vous pouvez revenir sur la liste de clients. ' />
           </div>
         }
         <Dimmer active={ sending } inverted>

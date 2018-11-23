@@ -1,6 +1,8 @@
 import React from 'react'
 import _ from 'lodash'
-import { Header, Segment, Grid, Image, Table, Form, List, Dropdown, Radio, Input, Sticky } from 'semantic-ui-react'
+import moment from 'moment'
+import { Header, Segment, Grid, Table, Form, List, Dropdown, Radio, Input, Sticky } from 'semantic-ui-react'
+import { DatePicker } from 'antd'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import AddBordereauDetail from 'COMPONENTS/Bordereau/AddBordereauDetail'
@@ -8,6 +10,7 @@ import LineBordereauDetail from 'COMPONENTS/Bordereau/LineBordereauDetail'
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
 import { actions as clientsActions } from 'ACTIONS/clients'
 import { actions as productsActions } from 'ACTIONS/produits'
+import { DateFormat } from 'COMPONENTS/Utils/Utils'
 
 import styles from './NewBordereau.less'
 
@@ -120,11 +123,17 @@ class NewBordereau extends React.Component {
               </Grid.Column>
             </Grid.Row>
             <Grid.Row >
-              <Grid.Column width={ 3 } >
-                <Image size='small' src={ require('STYLES/images/logo3.png') } spaced='left' />
+              <Grid.Column width={ 8 } >
+                <Input inline label='Bordereau N ° : ' name='bordereauNumber' onChange={ this._handleSelectChange } fluid placeholder='Numero de bordereau' value={ this.state.bordereauNumber && this.state.bordereauNumber } />
               </Grid.Column>
-              <Grid.Column verticalAlign='middle' textAlign='right' width={ 13 }>
-                <Input inline label='Facture N ° : ' name='bordereauNumber' onChange={ this._handleSelectChange } fluid placeholder='Numero de bordereau' value={ this.state.bordereauNumber && this.state.bordereauNumber } />
+              <Grid.Column verticalAlign='middle' textAlign='right' width={ 8 }>
+                <Form.Field verticalAlign='middle' inline>
+                  <label>Date de traitement : </label>
+                  <DatePicker
+                    name='transacDate'
+                    onChange={ this.onChangeDate }
+                    defaultValue={ moment((new Date()).toLocaleDateString(), DateFormat) } format={ DateFormat } />
+                </Form.Field>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row columns={ 2 }>

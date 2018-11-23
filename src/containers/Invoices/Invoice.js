@@ -1,6 +1,9 @@
 import React from 'react'
-import { Header, Segment, Grid, Image, Table, Form, List, Dropdown, Input, Checkbox, Icon, Sticky } from 'semantic-ui-react'
+import moment from 'moment'
+import { DatePicker } from 'antd'
+import { Header, Segment, Grid, Table, Form, List, Dropdown, Input, Checkbox, Icon, Sticky } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
+import { DateFormat } from 'COMPONENTS/Utils/Utils'
 
 import SegmentAddress from 'COMPONENTS/Client/SegmentAddress'
 
@@ -67,13 +70,19 @@ render = () => (
             </Grid.Column>
           </Grid.Row>
           <Grid.Row >
-            <Grid.Column width={ 3 } >
-              <Image size='small' src={ require('STYLES/images/logo3.png') } spaced='left' />
-            </Grid.Column>
-            <Grid.Column verticalAlign='middle' textAlign='right' width={ 13 }>
+            <Grid.Column verticalAlign='middle' textAlign='right' width={ 8 }>
               <Input inline label='Facture N ° : ' name='invoiceNumber'
                 onChange={ this._handleInvoiceChange } fluid placeholder='Numéro de facture'
                 value={ this.state.invoiceNumber && this.state.invoiceNumber } />
+            </Grid.Column>
+            <Grid.Column width={ 8 } textAlign='right' verticalAlign='middle'>
+              <Form.Field verticalAlign='middle' inline>
+                <label>Date de traitement : </label>
+                <DatePicker
+                  name='transacDate'
+                  onChange={ this.onChangeDate }
+                  defaultValue={ moment((new Date()).toLocaleDateString(), DateFormat) } format={ DateFormat } />
+              </Form.Field>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={ 2 }>
@@ -132,7 +141,7 @@ render = () => (
                                 <Checkbox name={ bordereau.uid } amount={ bordereau.subTotal } onChange={ this._handleChangeCkecked } checked={ bordereau.checked ? bordereau.checked : this.state[bordereau.uid] } />
                               </Table.Cell>
                               <Table.Cell>{ bordereau.number }</Table.Cell>
-                              <Table.Cell>{ bordereau.customer && bordereau.customer }</Table.Cell>
+                              <Table.Cell>{ bordereau.customer && bordereau.customer.name }</Table.Cell>
                               <Table.Cell>{ bordereau.createdDate }</Table.Cell>
                               <Table.Cell>{ bordereau.treatmentDate }</Table.Cell>
                               <Table.Cell>{ !bordereau.invoice && bordereau.invoice }</Table.Cell>

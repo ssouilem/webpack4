@@ -21,6 +21,7 @@ class Campanies extends React.Component {
       this.props.fetchCustomers()
     }
   }
+
   setActivePage = (activePage) => this.setState({ activePage: activePage })
   // Sticky
   handleContextRef = contextRef => this.setState({ contextRef })
@@ -40,6 +41,7 @@ class Campanies extends React.Component {
                 <AddCustomer
                   sending={ (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.sending) }
                   done={ (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.done) }
+                  setItemProps={ this.props.setItemProps }
                   submitForm={ this.props.createCustomer } />
               </Grid.Column>
             </Grid.Row>
@@ -50,7 +52,7 @@ class Campanies extends React.Component {
                     items={ this.props.clients.data && this.props.clients.data.map(client => ({
                       uid: client.uid,
                       name: client.name,
-                      siret: client.tvaNumber,
+                      siret: client.siret,
                       contactName: client.phoneNumber,
                       city: client.city,
                     })) }
@@ -100,6 +102,7 @@ const mapDispatchToProps = dispatch => ({
   fetchCustomers: customersActions.fetchCustomers(dispatch),
   createCustomer: customersActions.createCustomer(dispatch),
   deleteCustomer: customersActions.deleteCustomer(dispatch),
+  setItemProps: customersActions.setItemProps(dispatch),
   dispatch,
 })
 

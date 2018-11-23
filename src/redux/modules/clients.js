@@ -56,7 +56,7 @@ const createCustomer = dispatch => productProps => {
       city: productProps.city,
       phoneNumber: productProps.phoneNumber,
       faxNumber: productProps.faxNumber, // @TODO Add faxNumber to form
-      tvaNumber: productProps.tvaNumber,
+      siret: productProps.siret,
     }).then((res) => {
       console.log(res.data)
       return res
@@ -81,9 +81,11 @@ const reinitializeItem = dispatch => () => {
 }
 
 const setItemProps = dispatch => state => {
+  console.log(state)
   dispatch({
     type: SET_ITEM_PROPS,
     payload: state,
+
   })
 }
 
@@ -196,6 +198,11 @@ const setFieldValue = (state, action, field) => {
   }
 }
 
+const setDone = (state) => {
+  console.log('ooooops', state)
+  return undefined
+}
+
 const setSelectedClient = (state, search) => {
   console.log(search)
   var foundClient = state.data.find(o => o.uid === search.selectedClient)
@@ -248,7 +255,9 @@ const ACTION_HANDLERS = {
     addess2: setFieldValue(state, action, 'address2') || state.addess2,
     zipCode: setFieldValue(state, action, 'zipeCode') || state.zipCode,
     city: setFieldValue(state, action, 'city') || state.city,
-  }),
+    done: setDone(state),
+  }
+  ),
   [REINITIALIZE_ITEM]: (state, action) => action.payload,
   [FETCH_CLIENTS_SUCCESS]: (state, action) => ({
     ...state,
@@ -316,6 +325,7 @@ const ACTION_HANDLERS = {
 
 const initialState = {
   data: undefined,
+  done: undefined,
   sending: false,
   error: undefined,
   name: '',

@@ -210,8 +210,8 @@ render = () => {
                         <Table.Cell collapsing>
                           <Checkbox name={ result.uid } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
                         </Table.Cell>
-                        <Table.Cell>{ result.number }</Table.Cell>
-                        <Table.Cell>{ result.customer }</Table.Cell>
+                        <Table.Cell>{ result.number && result.number }</Table.Cell>
+                        <Table.Cell>{ result.customer.name }</Table.Cell>
                         <Table.Cell>{ result.createdDate }</Table.Cell>
                         <Table.Cell>{ result.treatmentDate }</Table.Cell>
                         <Table.Cell>{ !result.invoice && result.invoice }</Table.Cell>
