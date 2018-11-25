@@ -1,8 +1,25 @@
 import React from 'react'
+import { Timeline } from 'antd'
 import { connect } from 'react-redux'
+import BoardCards from 'COMPONENTS/BoardCards/BoardCards'
+import CurrentBoardState from 'COMPONENTS/CurrentBoardState/CurrentBoardState'
 import { Grid, Button, Icon, Header, Image, Table, Divider, Label } from 'semantic-ui-react'
 // import { push } from 'react-router-redux'
 import styles from './HomePage.less'
+const getRandomInt = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+const data = [
+  { name: 'Bordereaux', value: getRandomInt(10, 30) },
+  { name: 'Factures', value: getRandomInt(10, 30) },
+  { name: 'Paiements', value: getRandomInt(10, 30) },
+  { name: 'Taches', value: getRandomInt(10, 30) },
+]
+
+const currentstate = {
+  data: data
+}
 
 class HomePage extends React.Component {
   // _handleButtonClick = to => {
@@ -16,35 +33,28 @@ class HomePage extends React.Component {
           <Header size='huge' content='Listes des actions encours' />
         </Grid.Column>
       </Grid.Row>
+      <Grid.Row className={ styles.homePageRowTop }>
+        <Grid.Column>
+          <BoardCards currentstate={ currentstate } />
+        </Grid.Column>
+      </Grid.Row>
       <Grid.Row className={ styles.homePageRow }>
         <Grid.Column>
-          <Label as='a' color='teal' image >
-            Les Bordereaux
-            <Label.Detail>> en attente</Label.Detail>
-          </Label>
-          <Divider />
-          <Table color='red' key='red'>
-            <Table.Header>
-              <Table.Row>
-                <Table.HeaderCell>Food</Table.HeaderCell>
-                <Table.HeaderCell>Calories</Table.HeaderCell>
-                <Table.HeaderCell>Protein</Table.HeaderCell>
-              </Table.Row>
-            </Table.Header>
-
-            <Table.Body>
-              <Table.Row>
-                <Table.Cell>Apples</Table.Cell>
-                <Table.Cell>200</Table.Cell>
-                <Table.Cell>0g</Table.Cell>
-              </Table.Row>
-              <Table.Row>
-                <Table.Cell>Orange</Table.Cell>
-                <Table.Cell>310</Table.Cell>
-                <Table.Cell>0g</Table.Cell>
-              </Table.Row>
-            </Table.Body>
-          </Table>
+        <CurrentBoardState
+            // contextPath={ this.props.context.contextPath }
+            currentstate={ currentstate }
+            //fetchBoardCurrentState={ this.props.fetchBoardCurrentState }
+            />
+        </Grid.Column>
+        <Grid.Column>
+          <Header as='h4' content='Historiques' />
+          <Timeline pending={ <a href='#'>See more</a>} >
+            <Timeline.Item>Create a services site 2015-09-01</Timeline.Item>
+            <Timeline.Item color='green'>Create a services site 2015-09-01</Timeline.Item>
+            <Timeline.Item>Solve initial network problems 2015-09-01</Timeline.Item>
+            <Timeline.Item dot={ <Icon name='at' style={{ fontSize: '16px' }} /> } color='red'>Technical testing 2015-09-01</Timeline.Item>
+            <Timeline.Item>Technical testing 2015-09-01</Timeline.Item>
+          </Timeline>
         </Grid.Column>
       </Grid.Row>
       <Grid.Row className={ styles.homePageRow }>
@@ -107,72 +117,6 @@ class HomePage extends React.Component {
               </Table.Row>
             </Table.Body>
           </Table>
-        </Grid.Column>
-      </Grid.Row>
-      .
-      <Grid.Row centered className={ styles.homePageRow }>
-        <Grid.Column textAlign='center'>
-          <Button
-            circular
-            className={ styles.bigIcons }
-            // onClick={ this._handleButtonClick.bind(this, 'projects') }
-            color='yellow'
-          >
-            <Icon.Group size='big'>
-              <Icon
-                as={ Image }
-                size='big'
-                src={ require('IMAGES/projet.png') }
-                className={ styles.smallIcon }
-                name='users'
-              />
-            </Icon.Group>
-          </Button>
-          <p>Let''s start a new Project</p>
-          <p className={ styles.LabelOrange }>
-            <Image src={ require('IMAGES/pointer.png') } centered />
-            Start here
-          </p>
-        </Grid.Column>
-        <Grid.Column textAlign='center'>
-          <Button
-            circular
-            className={ styles.bigIcons }
-            color='orange'
-            // onClick={ this._handleButtonClick.bind(this, 'members') }
-            inverted
-          >
-            <Icon.Group size='big'>
-              <Icon
-                as={ Image }
-                size='big'
-                src={ require('IMAGES/membres.png') }
-                className={ styles.smallIcon }
-                name='users'
-              />
-            </Icon.Group>
-          </Button>
-          <p>onBoard your team</p>
-        </Grid.Column>
-        <Grid.Column textAlign='center'>
-          <Button
-            circular
-            className={ styles.bigIcons }
-            // onClick={ this._handleButtonClick.bind(this, 'reporting') }
-            color='blue'
-            inverted
-          >
-            <Icon.Group size='big'>
-              <Icon
-                as={ Image }
-                size='big'
-                src={ require('IMAGES/reporting.png') }
-                className={ styles.smallIcon }
-                name='users'
-              />
-            </Icon.Group>
-          </Button>
-          <p>Beyond reporting</p>
         </Grid.Column>
       </Grid.Row>
     </Grid>

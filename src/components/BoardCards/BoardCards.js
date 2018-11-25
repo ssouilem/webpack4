@@ -9,13 +9,13 @@ export class BoardCards extends React.Component {
     return (
       <Card.Group itemsPerRow={ 4 }>
         <Card fluid color='yellow' header={ this.props.currentstate.data && this.props.currentstate.data[0].value }
-          description='To Do' />
+          description='BL en attente' />
         <Card fluid color='orange' header={ this.props.currentstate.data && this.props.currentstate.data[1].value }
-          description='In progress' />
+          description='Facture en attente' />
         <Card fluid color='red' header={ this.props.currentstate.data && this.props.currentstate.data[2].value }
-          description='To validate / To Test' />
+          description='Paiement en attente' />
         <Card fluid color='green' header={ this.props.currentstate.data && this.props.currentstate.data[3].value }
-          description='Closed' />
+          description='Tache planifiée' />
       </Card.Group>
     )
   }

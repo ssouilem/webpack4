@@ -128,11 +128,11 @@ class NewBordereau extends React.Component {
               </Grid.Column>
               <Grid.Column verticalAlign='middle' textAlign='right' width={ 8 }>
                 <Form.Field verticalAlign='middle' inline>
-                  <label>Date de traitement : </label>
                   <DatePicker
+                    placeholder='Date de traitement'
                     name='transacDate'
                     onChange={ this.onChangeDate }
-                    defaultValue={ moment((new Date()).toLocaleDateString(), DateFormat) } format={ DateFormat } />
+                    format={ DateFormat } />
                 </Form.Field>
               </Grid.Column>
             </Grid.Row>
@@ -164,7 +164,13 @@ class NewBordereau extends React.Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column textAlign='left'>
-                <Segment vertical><strong>Remarque : </strong>Liste de remarque liés au bordereau.</Segment>
+                <Segment vertical>
+                  <Form.TextArea required name='remarques'
+                    onChange={ this._handleInputChange }
+                    value={ this.state.remarques && this.state.remarques }
+                    label='Remarques' placeholder='Liste de remarque liés au bordereau...'
+                  />
+                </Segment>
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>

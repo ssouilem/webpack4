@@ -40,11 +40,21 @@ class AddProduct extends React.Component {
         <Modal.Description>
           <div>
             <Form>
-              <Form.Input required name='reference'
-                onChange={ this._handleInputChange }
-                value={ this.state.reference && this.state.reference }
-                label='RÉFÉRENCE' placeholder='reference...'
-              />
+              <Form.Group widths='equal'>
+                <Form.Input required name='reference'
+                  onChange={ this._handleInputChange }
+                  value={ this.state.reference && this.state.reference }
+                  label='RÉFÉRENCE' placeholder='reference...'
+                />
+                <Form.Field>
+                  <Form.Dropdown label='CATÉGORIE'
+                    onChange={ this._handleInputChange }
+                    required fluid search selection
+                    value={ this.state.category && this.state.category }
+                    name='category'
+                    options={ ProductCategory } />
+                </Form.Field>
+              </Form.Group>
               <Form.Group widths='equal'>
                 <Form.Input required name='name'
                   onChange={ this._handleInputChange }
@@ -81,14 +91,6 @@ class AddProduct extends React.Component {
                     placeholder='TVA...'
                     defaultValue={ this.state.tva }
                   />
-                </Form.Field>
-                <Form.Field>
-                  <Form.Dropdown label='CATÉGORIE'
-                    onChange={ this._handleInputChange }
-                    required fluid search selection
-                    value={ this.state.category && this.state.category }
-                    name='category'
-                    options={ ProductCategory } />
                 </Form.Field>
               </Form.Group>
             </Form>

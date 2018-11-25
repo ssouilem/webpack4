@@ -19,38 +19,42 @@ const ItemAddress = ({ address, onChange, disabled }) => (
           value={ address && address.companyName }
           error={ address && address.errors && address.errors.companyNameError } />
       </Form.Field>
-      <Form.Field>
-        <Form.Input name='siret'
-          disabled={ disabled }
-          required onChange={ onChange }
-          label='Numéro de SIRET' placeholder='SIRET...'
-          value={ address && address.siret }
-          error={ address && address.errors && address.errors.siretError } />
-      </Form.Field>
-      <Form.Field>
-        <Form.Dropdown label='Contrat'
-          disabled
-          required fluid search selection
-          name='contract'
-          placeholder='choisir un contrat...'
-          options={ ProductContract } />
-      </Form.Field>
-      <Form.Field >
-        <Form.Input name='email'
-          required onChange={ onChange }
-          label='Email' placeholder='Email...'
-          value={ address && address.email }
-          error={ address && address.errors && address.errors.emailError } />
-      </Form.Field>
-      <Form.Field>
-        <Form.Input required
-          name='phoneNumber'
-          onChange={ onChange }
-          label='Téléphone fixe'
-          placeholder='Téléphone fixe...'
-          value={ address && address.phoneNumber }
-          error={ address && address.errors && address.errors.phoneNumberError } />
-      </Form.Field>
+      <Form.Group widths='equal'>
+        <Form.Field>
+          <Form.Dropdown label='Contrat'
+            disabled
+            required fluid search selection
+            name='contract'
+            placeholder='choisir un contrat...'
+            options={ ProductContract } />
+        </Form.Field>
+        <Form.Field>
+          <Form.Input name='siret'
+            disabled={ disabled }
+            required onChange={ onChange }
+            label='Numéro de SIRET' placeholder='SIRET...'
+            value={ address && address.siret }
+            error={ address && address.errors && address.errors.siretError } />
+        </Form.Field>
+      </Form.Group>
+      <Form.Group widths='equal'>
+        <Form.Field >
+          <Form.Input name='email'
+            required onChange={ onChange }
+            label='Email' placeholder='Email...'
+            value={ address && address.email }
+            error={ address && address.errors && address.errors.emailError } />
+        </Form.Field>
+        <Form.Field>
+          <Form.Input required
+            name='phoneNumber'
+            onChange={ onChange }
+            label='Téléphone fixe'
+            placeholder='Téléphone fixe...'
+            value={ address && address.phoneNumber }
+            error={ address && address.errors && address.errors.phoneNumberError } />
+        </Form.Field>
+      </Form.Group>
       <Form.TextArea label='Adresse'
         placeholder='Adresse'
         required
@@ -65,8 +69,9 @@ const ItemAddress = ({ address, onChange, disabled }) => (
         value={ address && address.address2 }
         onChange={ onChange }
         error={ address && address.errors && address.errors.address2Error } />
-      <Form.Group widths='equal'>
+      <Form.Group>
         <Form.Input label='Code postal'
+          width={ 4 }
           placeholder='Code postal'
           name='zipCode'
           value={ address && address.zipeCode }
@@ -74,6 +79,7 @@ const ItemAddress = ({ address, onChange, disabled }) => (
           error={ address && address.errors && address.errors.zipCodeError } />
         <Form.Input
           placeholder='Ville '
+          width={ 12 }
           label='Ville'
           name='city'
           value={ address && address.city }
@@ -82,38 +88,42 @@ const ItemAddress = ({ address, onChange, disabled }) => (
       </Form.Group>
       <Divider hidden />
       <Header dividing as='h4'>INTERLOCUTEUR</Header>
-      <Form.Field>
-        <Form.Input name='contactFirstName'
-          disabled={ disabled }
-          required onChange={ onChange }
-          label='Nom' placeholder='Last Name...'
-          value={ address && address.firsttName }
-          error={ address && address.errors && address.errors.firstNameError } />
-      </Form.Field>
-      <Form.Field>
-        <Form.Input name='contactLastName'
-          disabled={ disabled }
-          required onChange={ onChange }
-          label='Prénom' placeholder='Last Name...'
-          value={ address && address.lastName }
-          error={ address && address.errors && address.errors.lastNameError } />
-      </Form.Field>
-      <Form.Field >
-        <Form.Input name='contactMail'
-          required onChange={ onChange }
-          label='Email' placeholder='Email...'
-          value={ address && address.email }
-          error={ address && address.errors && address.errors.emailError } />
-      </Form.Field>
-      <Form.Field>
-        <Form.Input required
-          name='contactMobileNumber'
-          onChange={ onChange }
-          label='Téléphone mobile'
-          placeholder='Téléphone mobile...'
-          value={ address && address.phoneNumber }
-          error={ address && address.errors && address.errors.phoneNumberError } />
-      </Form.Field>
+      <Form.Group widths='equal'>
+        <Form.Field>
+          <Form.Input name='contactFirstName'
+            disabled={ disabled }
+            required onChange={ onChange }
+            label='Nom' placeholder='Last Name...'
+            value={ address && address.firsttName }
+            error={ address && address.errors && address.errors.firstNameError } />
+        </Form.Field>
+        <Form.Field>
+          <Form.Input name='contactLastName'
+            disabled={ disabled }
+            required onChange={ onChange }
+            label='Prénom' placeholder='Last Name...'
+            value={ address && address.lastName }
+            error={ address && address.errors && address.errors.lastNameError } />
+        </Form.Field>
+      </Form.Group>
+      <Form.Group widths='equal'>
+        <Form.Field >
+          <Form.Input name='contactMail'
+            required onChange={ onChange }
+            label='Email' placeholder='Email...'
+            value={ address && address.email }
+            error={ address && address.errors && address.errors.emailError } />
+        </Form.Field>
+        <Form.Field>
+          <Form.Input required
+            name='contactMobileNumber'
+            onChange={ onChange }
+            label='Téléphone mobile'
+            placeholder='Téléphone mobile...'
+            value={ address && address.phoneNumber }
+            error={ address && address.errors && address.errors.phoneNumberError } />
+        </Form.Field>
+      </Form.Group>
     </Form>
   </Modal.Description>
 )

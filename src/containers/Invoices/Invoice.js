@@ -76,13 +76,13 @@ render = () => (
                 value={ this.state.invoiceNumber && this.state.invoiceNumber } />
             </Grid.Column>
             <Grid.Column width={ 8 } textAlign='right' verticalAlign='middle'>
-              <Form.Field verticalAlign='middle' inline>
-                <label>Date de traitement : </label>
-                <DatePicker
+              <Input label='Date : ' icon>
+                <DatePicker size='large'
+                  placeholder="Date d'échéance"
                   name='transacDate'
                   onChange={ this.onChangeDate }
-                  defaultValue={ moment((new Date()).toLocaleDateString(), DateFormat) } format={ DateFormat } />
-              </Form.Field>
+                  format={ DateFormat } />
+              </Input>
             </Grid.Column>
           </Grid.Row>
           <Grid.Row columns={ 2 }>
