@@ -186,7 +186,7 @@ render = () => {
                     ? <Table.Row key={ result.uid }>
                       <Table.Cell>{ result.name }</Table.Cell>
                       <Table.Cell>{ result.siret }</Table.Cell>
-                      <Table.Cell>{ result.contactName }</Table.Cell>
+                      <Table.Cell>{ result.phoneNumber }</Table.Cell>
                       <Table.Cell>{ result.city }</Table.Cell>
                       <Table.Cell>
                         <AddCustomer customer={ result } submitForm={ this.props.updateItem }>

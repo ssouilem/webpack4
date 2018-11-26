@@ -93,8 +93,23 @@ class AddCustomer extends React.Component {
       <Modal.Header content="Modifier l'adresse de client" />
       <Modal.Content scrolling>
         { !done
-          ? <ItemAddress
-            address={ customer }
+          ? customer ? <ItemAddress
+            address={ { companyName: customer.name,
+              siret: customer.siret,
+              email: customer.mail,
+              phoneNumber: customer.phoneNumber,
+              address1: customer.address,
+              address2: customer.additionalAddress,
+              zipCode: customer.postalCode,
+              city: customer.postalCode,
+              contrat: '@TODO',
+              contactFirstName: '@TODO',
+              contactLastName: '@TODO',
+              contactMail: '@TODO',
+              contactMobileNumber: '@TODO'} }
+            onChange={ this._handleInputChange }
+            disabled={ false }
+          /> : <ItemAddress
             onChange={ this._handleInputChange }
             disabled={ false }
           />

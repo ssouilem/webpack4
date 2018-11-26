@@ -4,6 +4,7 @@ import { ProductCategory, ProductUnit } from 'COMPONENTS/Utils/Utils'
 
 class AddProduct extends React.Component {
   state = { tva: 20, modalOpen: false }
+
   // controle Modal open and close button
   handleOpen = () => this.setState({ modalOpen: true })
   handleClose = () => this.setState({ modalOpen: false })

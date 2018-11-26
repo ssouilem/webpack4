@@ -49,13 +49,7 @@ class Campanies extends React.Component {
               <Grid.Column width={ 12 }>
                 { !this.props.clients.sending && (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.data.length >= 1) === true ?
                   <TableInternal
-                    items={ this.props.clients.data && this.props.clients.data.map(client => ({
-                      uid: client.uid,
-                      name: client.name,
-                      siret: client.siret,
-                      contactName: client.phoneNumber,
-                      city: client.city,
-                    })) }
+                    items={ this.props.clients.data && this.props.clients.data }
                     activePage={ this.state.activePage }
                     setActivePage={ this.setActivePage }
                     onClick={ (action) => console.log('view or edit', action) }
