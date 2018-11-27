@@ -18,6 +18,10 @@ const CREATE_CUSTOMER_SENDING = 'CREATE_CUSTOMER_SENDING'
 const CREATE_CUSTOMER_SUCCESS = 'CREATE_CUSTOMER_SUCCESS'
 const CREATE_CUSTOMER_FAILURE = 'CREATE_CUSTOMER_FAILURE'
 
+const CREATE_CONTACT_SENDING = 'CREATE_CONTACT_SENDING'
+const CREATE_CONTACT_SUCCESS = 'CREATE_CONTACT_SUCCESS'
+const CREATE_CONTACT_FAILURE = 'CREATE_CONTACT_FAILURE'
+
 const DELETE_CUSTOMER_SENDING = 'DELETE_CUSTOMER_SENDING'
 const DELETE_CUSTOMER_SUCCESS = 'DELETE_CUSTOMER_SUCCESS'
 const DELETE_CUSTOMER_FAILURE = 'DELETE_CUSTOMER_FAILURE'
@@ -58,6 +62,16 @@ const createCustomer = dispatch => productProps => {
       faxNumber: productProps.faxNumber, // @TODO Add faxNumber to form
       siret: productProps.siret,
     }).then((res) => {
+      console.log(res.data)
+      return res
+    }),
+  })
+}
+
+const addContact = dispatch => contactProps => {
+  return dispatch({
+    types: [CREATE_CONTACT_SENDING, CREATE_CONTACT_SUCCESS, CREATE_CONTACT_FAILURE],
+    promise: axios.post('/contacts/', { ...contactProps }).then((res) => {
       console.log(res.data)
       return res
     }),
@@ -229,6 +243,7 @@ export const actions = {
   reinitializeClients,
   fetchCustomers,
   createCustomer,
+  addContact,
   deleteCustomer,
   reinitializeItem,
   setItemProps,
@@ -305,6 +320,23 @@ const ACTION_HANDLERS = {
     sending: false,
     error: action.error,
   }),
+  [CREATE_CONTACT_SENDING]: (state, action) => ({
+    ...state,
+    contactSending: true,
+    contactError: undefined,
+  }),
+  [CREATE_CONTACT_SUCCESS]: (state, action) => ({
+    ...state,
+    contactSending: false,
+    contactData: [...state.data, action.result.data],
+    contactDone: action.result.data.uid,
+    contactError: undefined,
+  }),
+  [CREATE_CONTACT_FAILURE]: (state, action) => ({
+    ...state,
+    contactSending: false,
+    contactError: action.error,
+  }),
   [DELETE_CUSTOMER_SENDING]: (state, action) => ({
     ...state,
     sending: true,
@@ -328,6 +360,10 @@ const initialState = {
   done: undefined,
   sending: false,
   error: undefined,
+  contactSending: false,
+  contactData: undefined,
+  contactDone: undefined,
+  contactError: undefined,
   name: '',
   description: '',
   firstName: '',

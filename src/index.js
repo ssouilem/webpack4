@@ -9,13 +9,14 @@ import configureAxios from './axios.init'
 import NavBar from './components/TabletApp'
 import { browserHistory } from 'react-router'
 import { BrowserRouter, Route } from 'react-router-dom'
-import Watch from './components/pages/watch'
+// import Watch from './components/pages/watch'
 import HomePage from 'CONTAINERS/HomePage/HomePage'
 import Invoices from './containers/Invoices/Invoices'
 import Bordereaux from './containers/Bordereau/Bordereaux'
 import Companies from './containers/Customers/Customers'
 import Entreprise from './containers/Entreprise/Entreprise'
 import Products from './containers/Products/Products'
+import Payments from './containers/Payments/Payments'
 
 // import rootReducer from './rootReducer'
 import frmessages from 'INTL/lang/fr.json'
@@ -85,7 +86,7 @@ class App extends Component {
           <Route path='/produits' component={ Products } />
           <Route path='/bordereaux' component={ Bordereaux } />
           <Route path='/factures' component={ Invoices } />
-          <Route exact path='/paiements' component={ Watch } />
+          <Route exact path='/paiements' component={ Payments } />
           <Route exact path='/entreprise' component={ Entreprise } />
         </NavBar>
       </BrowserRouter>

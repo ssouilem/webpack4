@@ -8,6 +8,7 @@ import produits from './redux/modules/produits'
 import clients from './redux/modules/clients'
 import search from './redux/modules/search'
 import invoices from './redux/modules/invoices'
+import payments from './redux/modules/payments'
 
 export const SIGN_OUT = 'SIGN_OUT'
 
@@ -16,6 +17,7 @@ const appReducer = combineReducers({
   bordereau,
   invoices,
   produits,
+  payments,
   clients,
   search,
   form,

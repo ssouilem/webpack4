@@ -15,7 +15,7 @@ export class CurrentBoardState extends React.Component {
   render = () =>
     <div className={ styles.serviceCardContainer }>
       <PieChart width={ 300 } height={ 300 }>
-        <Pie data={ this.props.currentstate.data || [] } innerRadius={ 40 } outerRadius={ 80 } fill='#82ca9d'
+        <Pie dataKey='value' data={ this.props.currentstate.data || [] } innerRadius={ 40 } outerRadius={ 80 } fill='#82ca9d'
           label>
           { this.props.currentstate.data &&
           this.props.currentstate.data.map((entry, index) =>

@@ -63,17 +63,7 @@ class AddCustomer extends React.Component {
   }
   _handleInputChange = (e, { name, value }) => this.setState({ [name]: value })
   _handleSubmit = () => {
-    this.props.submitForm({
-      name: this.state.companyName,
-      mail: this.state.email,
-      address: this.state.address1,
-      additionalAddress: this.state.address2,
-      postalCode: this.state.zideCode,
-      city: this.state.city,
-      phoneNumber: this.state.phoneNumber,
-      faxNumber: this.state.phoneNumber, // @TODO Add faxNumber to form
-      siret: this.state.siret,
-    })
+    this.props.submitForm({ ...this.state })
   }
 
   render = ({ children, customer, done, sending } = this.props) => (

@@ -8,6 +8,11 @@ export const ProductContract = [
   { key: 'mp', text: 'TODO', value: 'TODO' },
 ]
 
+const options = [
+  { key: 'm', text: 'Monsieur', value: 'MALE' },
+  { key: 'f', text: 'Madame', value: 'FEMALE' },
+]
+
 const ItemAddress = ({ address, onChange, disabled }) => (
   <Modal.Description>
     <Form error={ address && address.errors && address.errors.formError }>
@@ -88,8 +93,9 @@ const ItemAddress = ({ address, onChange, disabled }) => (
       </Form.Group>
       <Divider hidden />
       <Header dividing as='h4'>INTERLOCUTEUR</Header>
-      <Form.Group widths='equal'>
-        <Form.Field>
+      <Form.Group >
+        <Form.Select name='gender' width={ 4 } onChange={ onChange } fluid label='Gender' options={ options } placeholder='Gender' />
+        <Form.Field width={ 6 }>
           <Form.Input name='contactFirstName'
             disabled={ disabled }
             required onChange={ onChange }
@@ -97,7 +103,7 @@ const ItemAddress = ({ address, onChange, disabled }) => (
             value={ address && address.firsttName }
             error={ address && address.errors && address.errors.firstNameError } />
         </Form.Field>
-        <Form.Field>
+        <Form.Field width={ 6 }>
           <Form.Input name='contactLastName'
             disabled={ disabled }
             required onChange={ onChange }

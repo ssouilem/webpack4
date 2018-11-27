@@ -26,6 +26,34 @@ class Campanies extends React.Component {
   // Sticky
   handleContextRef = contextRef => this.setState({ contextRef })
 
+  _handleSubmit = propsState => {
+    // creation customer
+    this.props.createCustomer({
+      name: propsState.companyName,
+      mail: propsState.email,
+      address: propsState.address1,
+      additionalAddress: propsState.address2,
+      postalCode: propsState.zideCode,
+      city: propsState.city,
+      phoneNumber: propsState.phoneNumber,
+      faxNumber: propsState.phoneNumber, // @TODO Add faxNumber to form
+      siret: propsState.siret,
+    })
+    console.log("creation customer")
+    // add contact
+    setTimeout(() => {
+      console.log("add contact")
+      this.props.addContact({
+        customer: this.props.clients.done,
+        email: propsState.contactMail,
+        gender: propsState.gender,
+        firstName: propsState.contactFirstName,
+        lastName: propsState.contactLastName,
+        phoneNumber: propsState.contactMobileNumber,
+      })
+    }, 360)
+  }
+
   render = ({ contextRef } = this.state) => (
     <div ref={ this.handleContextRef }>
       <Grid >
@@ -42,13 +70,13 @@ class Campanies extends React.Component {
                   sending={ (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.sending) }
                   done={ (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.done) }
                   setItemProps={ this.props.setItemProps }
-                  submitForm={ this.props.createCustomer } />
+                  submitForm={ this._handleSubmit } />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={ 12 }>
-                { !this.props.clients.sending && (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.data.length >= 1) === true ?
-                  <TableInternal
+                { !this.props.clients.sending && (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.data.length >= 1) === true
+                  ? <TableInternal
                     items={ this.props.clients.data && this.props.clients.data }
                     activePage={ this.state.activePage }
                     setActivePage={ this.setActivePage }
@@ -95,6 +123,7 @@ const mapDispatchToProps = dispatch => ({
   onClick: () => { console.log('onClick ++++ ') },
   fetchCustomers: customersActions.fetchCustomers(dispatch),
   createCustomer: customersActions.createCustomer(dispatch),
+  addContact: customersActions.addContact(dispatch),
   deleteCustomer: customersActions.deleteCustomer(dispatch),
   setItemProps: customersActions.setItemProps(dispatch),
   dispatch,
