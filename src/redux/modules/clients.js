@@ -73,7 +73,7 @@ const addContact = dispatch => contactProps => {
     types: [CREATE_CONTACT_SENDING, CREATE_CONTACT_SUCCESS, CREATE_CONTACT_FAILURE],
     promise: axios.post('/contacts/', { ...contactProps }).then((res) => {
       console.log(res.data)
-      return res
+      return { ...res, customer: contactProps.customer }
     }),
   })
 }
@@ -216,6 +216,22 @@ const setDone = (state) => {
   console.log('ooooops', state)
   return undefined
 }
+const viewLog = (state, action) => {
+  console.log('state', state)
+  console.log('action', action)
+}
+
+const updateContactToCustomer = (state, contact, customerUid) => {
+  var datatmp = _.find(state.data, function (obj) { return obj.uid === customerUid })
+  datatmp.contact = contact
+  if (datatmp) {
+    _.merge(datatmp, datatmp)
+  } else {
+    state.data.push(datatmp)
+  }
+  return state.data
+}
+
 
 const setSelectedClient = (state, search) => {
   console.log(search)
@@ -268,7 +284,7 @@ const ACTION_HANDLERS = {
     phoneNumber: setFieldValue(state, action, 'phoneNumber') || state.phoneNumber,
     address1: setFieldValue(state, action, 'address1') || state.address1,
     addess2: setFieldValue(state, action, 'address2') || state.addess2,
-    zipCode: setFieldValue(state, action, 'zipeCode') || state.zipCode,
+    zipeCode: setFieldValue(state, action, 'zipeCode') || state.zipeCode,
     city: setFieldValue(state, action, 'city') || state.city,
     done: setDone(state),
   }
@@ -318,7 +334,9 @@ const ACTION_HANDLERS = {
   [CREATE_CUSTOMER_FAILURE]: (state, action) => ({
     ...state,
     sending: false,
-    error: action.error,
+    log: viewLog(state, action),
+    error: action.error.response.data,
+    status: action.error.response.status,
   }),
   [CREATE_CONTACT_SENDING]: (state, action) => ({
     ...state,
@@ -328,7 +346,10 @@ const ACTION_HANDLERS = {
   [CREATE_CONTACT_SUCCESS]: (state, action) => ({
     ...state,
     contactSending: false,
-    contactData: [...state.data, action.result.data],
+    contactData: action.result.data,
+    log: viewLog(state, action),
+    data: updateContactToCustomer(state, action.result.data, action.result.customer),
+    lastCustomer: state.data.find(o => o.uid === action.result.customer),
     contactDone: action.result.data.uid,
     contactError: undefined,
   }),
@@ -360,6 +381,7 @@ const initialState = {
   done: undefined,
   sending: false,
   error: undefined,
+  status: undefined,
   contactSending: false,
   contactData: undefined,
   contactDone: undefined,
@@ -373,7 +395,7 @@ const initialState = {
   phoneNumber: '',
   address1: '',
   addess2: '',
-  zipCode: '',
+  zipeCode: '',
   city: '',
   errors: {
     firstNameError: false,
@@ -384,7 +406,7 @@ const initialState = {
     formError: false,
     address1Error: false,
     addess2Error: false,
-    zipCodeError: false,
+    zipeCodeError: false,
     cityError: false,
     errorMessage: 'Please complete all required fields.',
   },

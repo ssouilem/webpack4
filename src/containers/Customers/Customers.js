@@ -33,25 +33,38 @@ class Campanies extends React.Component {
       mail: propsState.email,
       address: propsState.address1,
       additionalAddress: propsState.address2,
-      postalCode: propsState.zideCode,
+      postalCode: propsState.zipeCode,
       city: propsState.city,
       phoneNumber: propsState.phoneNumber,
       faxNumber: propsState.phoneNumber, // @TODO Add faxNumber to form
       siret: propsState.siret,
     })
-    console.log("creation customer")
+
+    // savec props to Start
+    this.setState({propsState})
     // add contact
-    setTimeout(() => {
-      console.log("add contact")
-      this.props.addContact({
-        customer: this.props.clients.done,
-        email: propsState.contactMail,
-        gender: propsState.gender,
-        firstName: propsState.contactFirstName,
-        lastName: propsState.contactLastName,
-        phoneNumber: propsState.contactMobileNumber,
-      })
-    }, 360)
+    this.verifyInsertCustomer(propsState)
+  }
+
+  verifyInsertCustomer = propsState => {
+    if (!this.props.clients.done && !this.props.clients.error) {
+      console.log('en attente de customer')
+      setTimeout(this.verifyInsertCustomer, 1000)
+    } else {
+      let propsState = this.state.propsState
+      console.log('Go creation contract', propsState.contactMail)
+      if (!this.props.clients.error) {
+        this.props.addContact({
+          customer: this.props.clients.done,
+          email: propsState.contactMail,
+          gender: propsState.gender,
+          firstName: propsState.contactFirstName,
+          lastName: propsState.contactLastName,
+          phoneNumber: propsState.contactMobileNumber,
+        })
+      }
+      clearTimeout()
+    }
   }
 
   render = ({ contextRef } = this.state) => (
@@ -67,6 +80,7 @@ class Campanies extends React.Component {
               </Grid.Column>
               <Grid.Column width={ 4 } >
                 <AddCustomer
+                  error={ this.props.clients && this.props.clients.error }
                   sending={ (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.sending) }
                   done={ (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.done) }
                   setItemProps={ this.props.setItemProps }

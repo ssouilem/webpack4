@@ -78,10 +78,10 @@ const ItemAddress = ({ address, onChange, disabled }) => (
         <Form.Input label='Code postal'
           width={ 4 }
           placeholder='Code postal'
-          name='zipCode'
+          name='zipeCode'
           value={ address && address.zipeCode }
           onChange={ onChange }
-          error={ address && address.errors && address.errors.zipCodeError } />
+          error={ address && address.errors && address.errors.zipeCodeError } />
         <Form.Input
           placeholder='Ville '
           width={ 12 }
@@ -94,13 +94,16 @@ const ItemAddress = ({ address, onChange, disabled }) => (
       <Divider hidden />
       <Header dividing as='h4'>INTERLOCUTEUR</Header>
       <Form.Group >
-        <Form.Select name='gender' width={ 4 } onChange={ onChange } fluid label='Gender' options={ options } placeholder='Gender' />
+        <Form.Select name='gender' width={ 4 }
+          onChange={ onChange } fluid label='Gender'
+          value={ address && address.gender }
+          options={ options } placeholder='Gender' />
         <Form.Field width={ 6 }>
           <Form.Input name='contactFirstName'
             disabled={ disabled }
             required onChange={ onChange }
             label='Nom' placeholder='Last Name...'
-            value={ address && address.firsttName }
+            value={ address && address.contactFirstName }
             error={ address && address.errors && address.errors.firstNameError } />
         </Form.Field>
         <Form.Field width={ 6 }>
@@ -108,7 +111,7 @@ const ItemAddress = ({ address, onChange, disabled }) => (
             disabled={ disabled }
             required onChange={ onChange }
             label='Prénom' placeholder='Last Name...'
-            value={ address && address.lastName }
+            value={ address && address.contactLastName }
             error={ address && address.errors && address.errors.lastNameError } />
         </Form.Field>
       </Form.Group>
@@ -117,7 +120,7 @@ const ItemAddress = ({ address, onChange, disabled }) => (
           <Form.Input name='contactMail'
             required onChange={ onChange }
             label='Email' placeholder='Email...'
-            value={ address && address.email }
+            value={ address && address.contactMail }
             error={ address && address.errors && address.errors.emailError } />
         </Form.Field>
         <Form.Field>
@@ -126,7 +129,7 @@ const ItemAddress = ({ address, onChange, disabled }) => (
             onChange={ onChange }
             label='Téléphone mobile'
             placeholder='Téléphone mobile...'
-            value={ address && address.phoneNumber }
+            value={ address && address.contactMobileNumber }
             error={ address && address.errors && address.errors.phoneNumberError } />
         </Form.Field>
       </Form.Group>
