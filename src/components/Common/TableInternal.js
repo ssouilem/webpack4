@@ -189,7 +189,7 @@ render = () => {
                       <Table.Cell>{ result.phoneNumber }</Table.Cell>
                       <Table.Cell>{ result.city }</Table.Cell>
                       <Table.Cell>
-                        <AddCustomer update customer={ result } submitForm={ this.props.updateItem }>
+                        <AddCustomer update error={ this.props.error } customer={ result } submitForm={ this.props.updateItem }>
                           <Button
                             icon='pencil'
                             inverted

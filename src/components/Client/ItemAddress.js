@@ -45,10 +45,9 @@ const ItemAddress = ({ address, onChange, disabled }) => (
       <Form.Group widths='equal'>
         <Form.Field >
           <Form.Input name='email'
-            required onChange={ onChange }
+            onChange={ onChange }
             label='Email' placeholder='Email...'
-            value={ address && address.email }
-            error={ address && address.errors && address.errors.emailError } />
+            value={ address && address.email } />
         </Form.Field>
         <Form.Field>
           <Form.Input required
@@ -72,8 +71,7 @@ const ItemAddress = ({ address, onChange, disabled }) => (
         label="Complement d'Adresse"
         name='address2'
         value={ address && address.address2 }
-        onChange={ onChange }
-        error={ address && address.errors && address.errors.address2Error } />
+        onChange={ onChange } />
       <Form.Group>
         <Form.Input label='Code postal'
           width={ 4 }
@@ -95,7 +93,7 @@ const ItemAddress = ({ address, onChange, disabled }) => (
       <Header dividing as='h4'>INTERLOCUTEUR</Header>
       <Form.Group >
         <Form.Select name='gender' width={ 4 }
-          onChange={ onChange } fluid label='Gender'
+          required onChange={ onChange } fluid label='Gender'
           value={ address && address.gender }
           options={ options } placeholder='Gender' />
         <Form.Field width={ 6 }>
@@ -118,10 +116,9 @@ const ItemAddress = ({ address, onChange, disabled }) => (
       <Form.Group widths='equal'>
         <Form.Field >
           <Form.Input name='contactMail'
-            required onChange={ onChange }
+            onChange={ onChange }
             label='Email' placeholder='Email...'
-            value={ address && address.contactMail }
-            error={ address && address.errors && address.errors.emailError } />
+            value={ address && address.contactMail } />
         </Form.Field>
         <Form.Field>
           <Form.Input required

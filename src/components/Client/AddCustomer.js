@@ -29,7 +29,26 @@ class AddCustomer extends React.Component {
   }
 
   // controle Modal open and close button
-  handleOpen = () => this.setState({ modalOpen: true })
+  handleOpen = () => {
+    this.setState({ modalOpen: true })
+    var customer = this.props.customer
+    if (customer) {
+      this.setState({ companyName: customer.name,
+        siret: customer.siret,
+        email: customer.mail,
+        phoneNumber: customer.phoneNumber,
+        address1: customer.address,
+        address2: customer.additionalAddress,
+        zipeCode: customer.postalCode,
+        city: customer.city,
+        contrat: '@TODO',
+        contactFirstName: customer.contact && customer.contact.firstName,
+        gender: customer.contact && customer.contact.gender,
+        contactLastName: customer.contact && customer.contact.lastName,
+        contactMail: customer.contact && customer.contact.email,
+        contactMobileNumber: customer.contact && customer.contact.phoneNumber})
+    }
+  }
   handleClose = () => {
     this.setState({ modalOpen: false })
     if (!this.props.update) this.props.setItemProps({done: ''})
@@ -55,12 +74,12 @@ class AddCustomer extends React.Component {
     } else {
       errors.siretError = false
     }
-    if (this.state.email === '') {
-      errors.emailError = true
-      error = true
-    } else {
-      errors.emailError = false
-    }
+    // if (this.state.email === '') {
+    //   errors.emailError = true
+    //   error = true
+    // } else {
+    //   errors.emailError = false
+    // }
     if (this.state.phoneNumber === '') {
       errors.phoneNumberError = true
       error = true
@@ -73,12 +92,12 @@ class AddCustomer extends React.Component {
     } else {
       errors.address1Error = false
     }
-    if (this.state.address2 === '') {
-      errors.address2Error = true
-      error = true
-    } else {
-      errors.address2Error = false
-    }
+    // if (this.state.address2 === '') {
+    //   errors.address2Error = true
+    //   error = true
+    // } else {
+    //   errors.address2Error = false
+    // }
     if (this.state.zipeCode === '') {
       errors.zipeCodeError = true
       error = true
@@ -109,12 +128,12 @@ class AddCustomer extends React.Component {
     } else {
       errors.contactLastNameError = false
     }
-    if (this.state.contactMail === '') {
-      errors.contactMailError = true
-      error = true
-    } else {
-      errors.contactMailError = false
-    }
+    // if (this.state.contactMail === '') {
+    //   errors.contactMailError = true
+    //   error = true
+    // } else {
+    //   errors.contactMailError = false
+    // }
     if (this.state.contactMobileNumber === '') {
       errors.contactMobileNumberError = true
       error = true
@@ -133,6 +152,7 @@ class AddCustomer extends React.Component {
     var error = this.validateForm()
     console.log('return validateForm :', error, this.state.formError)
     if (!error) this.props.submitForm({ ...this.state })
+    console.log('submitForm validateForm :')
   }
 
   render = ({ children, customer, done, sending } = this.props) => (
@@ -152,24 +172,7 @@ class AddCustomer extends React.Component {
       <Modal.Header content="Modifier l'adresse de client" />
       <Modal.Content scrolling>
         { !done
-          ? customer ? <ItemAddress
-            address={ { companyName: customer.name,
-              siret: customer.siret,
-              email: customer.mail,
-              phoneNumber: customer.phoneNumber,
-              address1: customer.address,
-              address2: customer.additionalAddress,
-              zipeCode: customer.postalCode,
-              city: customer.city,
-              contrat: '@TODO',
-              contactFirstName: customer.contact && customer.contact.firstName,
-              gender: customer.contact && customer.contact.gender,
-              contactLastName: customer.contact && customer.contact.lastName,
-              contactMail: customer.contact && customer.contact.email,
-              contactMobileNumber: customer.contact && customer.contact.phoneNumber} }
-            onChange={ this._handleInputChange }
-            disabled={ false }
-          /> : <div>
+          ? <div>
             { this.props.error &&
             <Message info>
               <Message.Header>{ this.props.error.message }</Message.Header>
@@ -198,7 +201,7 @@ class AddCustomer extends React.Component {
         ? <Modal.Actions>
           <Button color='black' onClick={ this.handleClose }>Fermer</Button>
           <Button positive icon='checkmark'
-            labelPosition='right' content='Submit'
+            labelPosition='right' content='Ajouter'
             onClick={ this._handleSubmit } />
         </Modal.Actions>
         : <Modal.Actions><Button color='black' onClick={ this.handleClose }>Fermer</Button></Modal.Actions> }

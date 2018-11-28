@@ -27,6 +27,7 @@ class Campanies extends React.Component {
   handleContextRef = contextRef => this.setState({ contextRef })
 
   _handleSubmit = propsState => {
+    console.log(JSON.stringify({ propsState }))
     // creation customer
     this.props.createCustomer({
       name: propsState.companyName,
@@ -40,8 +41,9 @@ class Campanies extends React.Component {
       siret: propsState.siret,
     })
 
-    // savec props to Start
+    // savec props to State
     this.setState({propsState})
+    console.log("Suite", JSON.stringify({ propsState }))
     // add contact
     this.verifyInsertCustomer(propsState)
   }
@@ -94,9 +96,9 @@ class Campanies extends React.Component {
                     items={ this.props.clients.data && this.props.clients.data }
                     activePage={ this.state.activePage }
                     setActivePage={ this.setActivePage }
-                    onClick={ (action) => console.log('view or edit', action) }
                     tableType={ TableType.SHOW_CUSTOMERS }
-                    updateItem={ this.props.createCustomer }
+                    error={ this.props.clients && this.props.clients.error }
+                    updateItem={ this._handleSubmit }
                     deleteItem={ this.props.deleteCustomer } />
                   : <Dimmer active inverted>
                     <Image size='small' centered src={ require('STYLES/images/preload_waiting.gif') } />
