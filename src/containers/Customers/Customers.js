@@ -32,9 +32,9 @@ class Campanies extends React.Component {
     this.props.createCustomer({
       name: propsState.companyName,
       mail: propsState.email,
-      address: propsState.address1,
-      additionalAddress: propsState.address2,
-      postalCode: propsState.zipeCode,
+      address: propsState.address,
+      additionalAddress: propsState.additionalAddress,
+      postalCode: propsState.postalCode,
       city: propsState.city,
       phoneNumber: propsState.phoneNumber,
       faxNumber: propsState.phoneNumber, // @TODO Add faxNumber to form
@@ -43,7 +43,7 @@ class Campanies extends React.Component {
 
     // savec props to State
     this.setState({propsState})
-    console.log("Suite", JSON.stringify({ propsState }))
+    // console.log("Suite", JSON.stringify({ propsState }))
     // add contact
     this.verifyInsertCustomer(propsState)
   }
@@ -91,7 +91,7 @@ class Campanies extends React.Component {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={ 12 }>
-                { !this.props.clients.sending && (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.data.length >= 1) === true
+                { !this.props.clients.sending || (this.props.clients && Array.isArray(this.props.clients.data) && this.props.clients.data.length >= 1) === true
                   ? <TableInternal
                     items={ this.props.clients.data && this.props.clients.data }
                     activePage={ this.state.activePage }

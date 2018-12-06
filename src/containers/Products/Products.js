@@ -39,17 +39,18 @@ class Products extends React.Component {
                 <AddProduct
                   sending={ (this.props.products && Array.isArray(this.props.products.data) && this.props.products.sending) }
                   done={ (this.props.products && Array.isArray(this.props.products.data) && this.props.products.done) }
+                  setItemProps={ this.props.setItemProps }
                   submitForm={ this.props.createProduct } />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column width={ 12 }>
-                { !this.props.products.sending && (this.props.products && Array.isArray(this.props.products.data) && this.props.products.data.length >= 1) === true ?
+                { !this.props.products.sending || (this.props.products && Array.isArray(this.props.products.data) && this.props.products.data.length >= 1) === true ?
                   <TableInternal
                     activePage={ this.state.activePage }
                     setActivePage={ this.setActivePage }
                     items={ this.props.products.data }
-                    onClick={ (action) => console.log('view or edit', action) }
+                    error={ this.props.products && this.props.products.error }
                     tableType={ TableType.SHOW_PRODUCTS }
                     updateItem={ this.props.createProduct }
                     deleteItem={ this.props.deleteProduct } />
@@ -92,6 +93,7 @@ const mapDispatchToProps = dispatch => ({
   createProduct: productsActions.createProduct(dispatch),
   updateProduct: productsActions.updateProduct(dispatch),
   deleteProduct: productsActions.deleteProduct(dispatch),
+  setItemProps: productsActions.setItemProps(dispatch),
   dispatch,
 })
 export { Products }

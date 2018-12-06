@@ -161,38 +161,38 @@ const setFieldValue = (state, action, field) => {
       }
       return state.phoneNumber
     }
-    case 'address1': {
-      state.address1 = action.payload.address1
-      if (state.address1 === '') {
-        state.errors.address1Error = true
+    case 'address': {
+      state.address = action.payload.address
+      if (state.address === '') {
+        state.errors.addressError = true
         state.error = true
       } else {
-        state.errors.address1Error = false
+        state.errors.addressError = false
         state.error = false
       }
-      return state.address1
+      return state.address
     }
-    case 'address2': {
-      state.address2 = action.payload.address2
-      if (state.address2 === '') {
-        state.errors.address2Error = true
+    case 'additionalAddress': {
+      state.additionalAddress = action.payload.additionalAddress
+      if (state.additionalAddress === '') {
+        state.errors.additionalAddressError = true
         state.error = true
       } else {
-        state.errors.address2Error = false
+        state.errors.additionalAddressError = false
         state.error = false
       }
-      return state.address2
+      return state.additionalAddress
     }
-    case 'zipeCode': {
-      state.zipeCode = action.payload.zipeCode
-      if (state.zipeCode === '') {
-        state.errors.zipeCodeError = true
+    case 'postalCode': {
+      state.postalCode = action.payload.postalCode
+      if (state.postalCode === '') {
+        state.errors.postalCodeError = true
         state.error = true
       } else {
-        state.errors.zipeCodeError = false
+        state.errors.postalCodeError = false
         state.error = false
       }
-      return state.zipeCode
+      return state.postalCode
     }
     case 'city': {
       state.city = action.payload.city
@@ -231,7 +231,6 @@ const updateContactToCustomer = (state, contact, customerUid) => {
   }
   return state.data
 }
-
 
 const setSelectedClient = (state, search) => {
   console.log(search)
@@ -282,9 +281,9 @@ const ACTION_HANDLERS = {
     lastName: setFieldValue(state, action, 'lastName') || state.lastName,
     email: setFieldValue(state, action, 'email') || state.email,
     phoneNumber: setFieldValue(state, action, 'phoneNumber') || state.phoneNumber,
-    address1: setFieldValue(state, action, 'address1') || state.address1,
-    addess2: setFieldValue(state, action, 'address2') || state.addess2,
-    zipeCode: setFieldValue(state, action, 'zipeCode') || state.zipeCode,
+    address: setFieldValue(state, action, 'address') || state.address,
+    addess2: setFieldValue(state, action, 'additionalAddress') || state.addess2,
+    postalCode: setFieldValue(state, action, 'postalCode') || state.postalCode,
     city: setFieldValue(state, action, 'city') || state.city,
     done: setDone(state),
   }
@@ -393,9 +392,9 @@ const initialState = {
   email: '',
   location: '',
   phoneNumber: '',
-  address1: '',
+  address: '',
   addess2: '',
-  zipeCode: '',
+  postalCode: '',
   city: '',
   errors: {
     firstNameError: false,
@@ -404,9 +403,9 @@ const initialState = {
     locationError: false,
     phoneNumber: false,
     formError: false,
-    address1Error: false,
+    addressError: false,
     addess2Error: false,
-    zipeCodeError: false,
+    postalCodeError: false,
     cityError: false,
     errorMessage: 'Please complete all required fields.',
   },

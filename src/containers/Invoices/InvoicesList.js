@@ -22,21 +22,6 @@ class InvoicesList extends React.Component {
     }
     this.props.handleChangeDate({ [name]: value })
   }
-  onChecked = (event, {name, checked}) => {
-    const node = document.getElementById('invoices').elements
-    if (name === 'all') {
-      for (let i = 0; i < node.length; i++) {
-        if (node[i].nodeName === 'INPUT' && node[i].type === 'checkbox') {
-          let nameBox = node[i].name
-          this.setState({ [nameBox]: !this.state.allChecked })
-        }
-      }
-      this.setState({ allChecked: !this.state.allChecked })
-    } else {
-      this.setState({ [name]: !this.state[name] })
-      this.props.setCheckedItemProps({ id: name, value: !this.state[name] })
-    }
-  }
   handleActiveSearch = () => this.setState({ activeIndex: !this.state.activeIndex })
   setActivePage = (activePage) => this.setState({ activePage: activePage })
 
@@ -113,21 +98,19 @@ class InvoicesList extends React.Component {
               </Dimmer>
               : (this.props.invoices && Array.isArray(this.props.invoices.data) && this.props.invoices.data.length === 0) === true
                 ? <Grid textAlign='center'>
-                <Grid.Row>
-                  <Icon size='big' name='pdf file outline' />
-                </Grid.Row>
-                <Grid.Row>Pas d'elements, la liste est vide.</Grid.Row>
-              </Grid>
-              : <TableInternal
+                  <Grid.Row>
+                    <Icon size='big' name='pdf file outline' />
+                  </Grid.Row>
+                  <Grid.Row>Pas d'elements, la liste est vide.</Grid.Row>
+                </Grid>
+                : <TableInternal
                   items={ this.props.invoices.data }
-                  onChecked={ this.onChecked }
                   activePage={ this.state.activePage }
                   setActivePage={ this.setActivePage }
                   tableType={ TableType.SHOW_INVOICES }
                   updateItem={ this.props.createProduct }
-                  onClick={ (action) => console.log('view or edit', action) }
                   state={ this.state } />
-                }
+            }
           </Grid.Column>
         </Grid>
       </Form>

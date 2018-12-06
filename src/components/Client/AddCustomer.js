@@ -8,9 +8,9 @@ class AddCustomer extends React.Component {
     siret: '',
     email: '',
     phoneNumber: '',
-    address1: '',
-    address2: '',
-    zipeCode: '',
+    address: '',
+    additionalAddress: '',
+    postalCode: '',
     city: '',
     contrat: '',
     contactFirstName: '',
@@ -24,7 +24,6 @@ class AddCustomer extends React.Component {
     locationError: false,
     errors: {},
     errorMessage: 'Please complete all required fields.',
-    complete: false,
     modalOpen: false,
   }
 
@@ -37,9 +36,9 @@ class AddCustomer extends React.Component {
         siret: customer.siret,
         email: customer.mail,
         phoneNumber: customer.phoneNumber,
-        address1: customer.address,
-        address2: customer.additionalAddress,
-        zipeCode: customer.postalCode,
+        address: customer.address,
+        additionalAddress: customer.additionalAddress,
+        postalCode: customer.postalCode,
         city: customer.city,
         contrat: '@TODO',
         contactFirstName: customer.contact && customer.contact.firstName,
@@ -54,11 +53,6 @@ class AddCustomer extends React.Component {
     if (!this.props.update) this.props.setItemProps({done: ''})
   }
 
-  successCallback = () => {
-    this.setState({
-      complete: true,
-    })
-  }
   validateForm = () => {
     var error = false
     var errors = {}
@@ -86,23 +80,23 @@ class AddCustomer extends React.Component {
     } else {
       errors.phoneNumberError = false
     }
-    if (this.state.address1 === '') {
-      errors.address1Error = true
+    if (this.state.address === '') {
+      errors.addressError = true
       error = true
     } else {
-      errors.address1Error = false
+      errors.addressError = false
     }
-    // if (this.state.address2 === '') {
-    //   errors.address2Error = true
+    // if (this.state.additionalAddress === '') {
+    //   errors.additionalAddressError = true
     //   error = true
     // } else {
-    //   errors.address2Error = false
+    //   errors.additionalAddressError = false
     // }
-    if (this.state.zipeCode === '') {
-      errors.zipeCodeError = true
+    if (this.state.postalCode === '') {
+      errors.postalCodeError = true
       error = true
     } else {
-      errors.zipeCodeError = false
+      errors.postalCodeError = false
     }
     if (this.state.city === '') {
       errors.cityError = true

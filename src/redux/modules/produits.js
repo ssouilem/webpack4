@@ -4,6 +4,7 @@ import axios from 'axios'
 
 const REINITIALIZE_WIZARD = 'REINITIALIZE_WIZARD'
 const SET_DATE_PROPS = 'SET_DATE_PROPS'
+const SET_ITEM_PROPS = 'SET_ITEM_PROPS'
 
 const FETCH_PRODUCTS_SENDING = 'FETCH_PRODUCTS_SENDING'
 const FETCH_PRODUCTS_SUCCESS = 'FETCH_PRODUCTS_SUCCESS'
@@ -82,9 +83,45 @@ const updateProduct = dispatch => productProps => {
       tva: productProps.tva,
     }).then((res) => {
       console.log(res.data)
-      return res
+      return { ...res, newProduct: productProps }
     }),
   })
+}
+
+const setItemProps = dispatch => state => {
+  console.log(state)
+  dispatch({
+    type: SET_ITEM_PROPS,
+    payload: state,
+
+  })
+}
+
+const setDone = (state) => {
+  console.log('ooooops', state)
+  return undefined
+}
+const viewLog = (state, action) => {
+  console.log('state', state)
+  console.log('action', action)
+}
+
+const updatePropsProduct = (state, productUid, newProduct) => {
+  var datatmp = _.find(state.data, function (obj) { return obj.uid === productUid })
+  datatmp.reference = newProduct.reference
+  datatmp.name = newProduct.name
+  datatmp.description = newProduct.description
+  datatmp.unit = newProduct.unit
+  datatmp.category = newProduct.category
+  datatmp.price = newProduct.price
+  datatmp.tva = newProduct.tva
+
+  if (datatmp) {
+    _.merge(datatmp, newProduct)
+  } else {
+    state.data.push(datatmp)
+  }
+  return state.data
 }
 
 const deleteProduct = dispatch => uid =>
@@ -116,10 +153,6 @@ const reinitializeProduit = dispatch => () => {
   })
 }
 
-const addTab = () => {
-  console.log('add ---> ')
-}
-
 export const actions = {
   reinitializeProduit,
   handleChange,
@@ -127,7 +160,7 @@ export const actions = {
   createProduct,
   updateProduct,
   deleteProduct,
-  addTab,
+  setItemProps,
 }
 
 const ACTION_HANDLERS = {
@@ -164,7 +197,9 @@ const ACTION_HANDLERS = {
   [CREATE_PRODUCT_FAILURE]: (state, action) => ({
     ...state,
     sending: false,
-    error: action.error,
+    log: viewLog(state, action),
+    error: action.error.response.data,
+    status: action.error.response.status,
   }),
   [UPDATE_PRODUCT_SENDING]: (state, action) => ({
     ...state,
@@ -174,8 +209,10 @@ const ACTION_HANDLERS = {
   [UPDATE_PRODUCT_SUCCESS]: (state, action) => ({
     ...state,
     sending: false,
-    delete: _.remove(state.data, function (currentObject) { return currentObject.uid === action.result }),
-    data: [...state.data, action.result.data],
+    log: viewLog(state, action),
+    // delete: _.remove(state.data, function (currentObject) { return currentObject.uid === action.result }),
+    // data: [...state.data, action.result.data],
+    data: updatePropsProduct(state, action.result.data.uid, action.result.newProduct),
     done: action.result.data.uid,
     error: undefined,
   }),
@@ -202,12 +239,17 @@ const ACTION_HANDLERS = {
     sending: false,
     error: action.error,
   }),
+  [SET_ITEM_PROPS]: (state, action) => ({
+    ...state,
+    done: setDone(state),
+  }),
 }
 
 const initialState = {
   data: undefined,
   sending: false,
   error: undefined,
+  status: undefined,
   datedebut: '',
   datefin: '',
   name: '',

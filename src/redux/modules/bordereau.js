@@ -151,7 +151,7 @@ const prev = dispatch => () => {
 
 const setFieldValue = (state, action, field) => {
   console.log(state.data.length, action.payload)
-  var datatmp = _.find(state.data, function (obj) { return obj.id === action.payload.id })
+  var datatmp = _.find(state.data, function (obj) { return obj.uid === action.payload.uid })
   console.log('avant ', state.data.length, datatmp)
   datatmp.checked = action.payload.value
   if (datatmp) {

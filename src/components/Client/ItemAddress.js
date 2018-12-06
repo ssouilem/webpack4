@@ -63,23 +63,23 @@ const ItemAddress = ({ address, onChange, disabled }) => (
         placeholder='Adresse'
         required
         onChange={ onChange }
-        name='address1'
-        value={ address && address.address1 }
-        error={ address && address.errors && address.errors.address1Error } />
+        name='address'
+        value={ address && address.address }
+        error={ address && address.errors && address.errors.addressError } />
       <Form.Input
         placeholder="Complement d'Adresse (Optionnel)"
         label="Complement d'Adresse"
-        name='address2'
-        value={ address && address.address2 }
+        name='additionalAddress'
+        value={ address && address.additionalAddress }
         onChange={ onChange } />
       <Form.Group>
         <Form.Input label='Code postal'
           width={ 4 }
           placeholder='Code postal'
-          name='zipeCode'
-          value={ address && address.zipeCode }
+          name='postalCode'
+          value={ address && address.postalCode }
           onChange={ onChange }
-          error={ address && address.errors && address.errors.zipeCodeError } />
+          error={ address && address.errors && address.errors.postalCodeError } />
         <Form.Input
           placeholder='Ville '
           width={ 12 }

@@ -56,7 +56,7 @@ class BordereauList extends React.Component {
       this.setState({ allChecked: !this.state.allChecked })
     } else {
       this.setState({ [name]: !this.state[name] })
-      this.props.setCheckedItemProps({ id: name, value: !this.state[name] })
+      this.props.setCheckedItemProps({ uid: name, value: !this.state[name] })
     }
   }
   handleActiveSearch = () => {

@@ -166,7 +166,7 @@ render = () => {
                     <Table.Cell>{ result.price }</Table.Cell>
                     <Table.Cell>{ result.unit }</Table.Cell>
                     <Table.Cell>
-                      <AddProduct product={ result } submitForm={ this.props.updateItem } >
+                      <AddProduct update error={ this.props.error } product={ result } submitForm={ this.props.updateItem } >
                         <Button primary
                           onClick={ this.handleOpen }
                           icon='pencil'
@@ -230,9 +230,7 @@ render = () => {
                       </Table.Row>
                       : this.props.tableType === TableType.SHOW_INVOICES &&
                         <Table.Row key={ result.uid }>
-                          <Table.Cell collapsing>
-                            <Checkbox name={ result.uid } onChange={ this.props.onChecked } checked={ this.props.state[result.id] } />
-                          </Table.Cell>
+                          <Table.Cell collapsing></Table.Cell>
                           <Table.Cell>{ result.number }</Table.Cell>
                           <Table.Cell>{ result.customer && result.customer.name }</Table.Cell>
                           <Table.Cell>{ result.createdDate }</Table.Cell>

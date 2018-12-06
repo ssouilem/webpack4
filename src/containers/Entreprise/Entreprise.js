@@ -19,7 +19,7 @@ class Entreprise extends Component {
   }
 
   render () {
-    const { name, email, contactPhone, contactMail, siret, tva, address1, address2, codePostal, city, submittedName, submittedEmail, firstName, lastName } = this.state
+    const { name, email, contactPhone, contactMail, siret, tva, address, additionalAddress, codePostal, city, submittedName, submittedEmail, firstName, lastName } = this.state
 
     return (
       <div>
@@ -64,14 +64,14 @@ class Entreprise extends Component {
           <Form.Group widths='equal'>
             <Form.Input label='Adresse'
               placeholder='Adresse'
-              name='address1'
-              value={ address1 }
+              name='address'
+              value={ address }
               onChange={ this.handleChange } />
             <Form.Input
               placeholder="Complement d'Adresse"
               label="Complement d'Adresse"
-              name='address2'
-              value={ address2 }
+              name='additionalAddress'
+              value={ additionalAddress }
               onChange={ this.handleChange }
             />
           </Form.Group>
