@@ -14,10 +14,12 @@ export default function clientMiddleware () {
       next({ ...rest, type: REQUEST })
 
       const actionPromise = promise
+      // console.log('actionPromise' + JSON.stringify(actionPromise))
       actionPromise.then(
         (result) => next({ ...rest, result, type: SUCCESS }),
         (error) => next({ ...rest, error, type: FAILURE })
       ).catch((error) => {
+        console.log('catch' + error)
         next({ ...rest, error, type: FAILURE })
       })
 

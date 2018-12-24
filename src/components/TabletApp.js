@@ -1,14 +1,31 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import { Sidebar, Segment, Menu, Image, Button, Dropdown, Icon, Input } from 'semantic-ui-react'
+import { Sidebar, Segment, Menu, Image, Button, Dropdown } from 'semantic-ui-react'
 import DropdownTablet from './Tablet/DropdownTablet'
 import AccordionTablet from './Tablet/AccordionTablet'
+import { default as cookies } from 'ACTIONS/../cookieHelper'
+import history from 'SRC/history'
+
 // import { Route, Switch } from 'react-router-dom'
 // import Watch from './pages/watch'
 // import Home from './pages/home'
 
+const trigger = (
+  <span>
+    <Image avatar src={ require('STYLES/images/admin.jpg') } />admin
+  </span>
+)
+const options = [
+  { key: 'user', text: 'Account', icon: 'user' },
+  { key: 'settings', text: 'Settings', icon: 'settings' },
+  { key: 'sign-out', value: 'signout', text: 'Sign Out', icon: 'sign out' },
+]
 class TabletApp extends Component {
   state = { visible: false, width: 'thin' }
+  _handleMyAccount = (event, {name, value}) => {
+    console.log('TabletApp -> name', value)
+    if (value === 'signout') cookies.logout(); window.location.reload()
+  }
 
   toggleVisibility = () => {
     this.setState({ visible: !this.state.visible })
@@ -19,12 +36,14 @@ class TabletApp extends Component {
   }
   handleItemClick = name => this.setState({ activeItem: name })
 
+
   render () {
     const { visible, activeItem, paramsVisibility } = this.state
     const { children } = this.props
+    console.log('children', JSON.stringify(history))
     return (
-      <div className='portal'>
-        <Sidebar.Pushable >
+      history.location.pathname !== '/login' && <div className='portal'>
+        <Sidebar.Pushable>
           <Sidebar
             as={ Menu }
             color='grey'
@@ -40,6 +59,8 @@ class TabletApp extends Component {
               icon='content' />
             { !visible ? <DropdownTablet /> : <AccordionTablet /> }
           </Sidebar>
+          {
+            /* Menu liste
           <Sidebar
             as={ Menu }
             animation='overlay'
@@ -108,6 +129,8 @@ class TabletApp extends Component {
               </Menu.Menu>
             </Menu.Item>
           </Sidebar>
+          */
+        }
           {/* <Sidebar as={ Menu } animation='uncover' width={ width } visible={ !visible } icon='labeled' vertical inverted>
             { visible ? <DropdownTablet /> : <AccordionTablet /> }
           </Sidebar> */}
@@ -118,12 +141,13 @@ class TabletApp extends Component {
                   <Image size='small' className='headerLogo' src={ require('../styles/images/logo3.png') } spaced='left' />
                 </Menu.Item>
                 <Menu.Item key='sidebar' name='sidebar' position='right' >
-                  <Button className='myaccount' onClick={ this.paramsVisibility } icon>
-                    <Icon.Group size='large'>
-                      <Icon color='black' name='grid layout' />
-                      <Icon corner color='blue' name='cog' />
-                    </Icon.Group>
-                  </Button>
+                  <Dropdown
+                    className='myaccount'
+                    trigger={ trigger }
+                    options={ options }
+                    onChange={ this._handleMyAccount }
+                    pointing='top left'/>
+
                 </Menu.Item>
               </Menu>
               <Segment basic >

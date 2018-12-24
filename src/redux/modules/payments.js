@@ -23,7 +23,7 @@ const DELETE_PAYMENT_FAILURE = 'DELETE_PAYMENT_FAILURE'
 const fetchPayments = dispatch => () =>
   dispatch({
     types: [FETCH_PAYMENTS_SENDING, FETCH_PAYMENTS_SUCCESS, FETCH_PAYMENTS_FAILURE],
-    promise: axios.get('/payments/').then((res) => {
+    promise: axios.get('/payment/').then((res) => {
       console.log(res.data)
       return res
     }),
@@ -34,7 +34,7 @@ const fetchPayments = dispatch => () =>
 const createPayment = dispatch => productProps => {
   return dispatch({
     types: [CREATE_PAYMENT_SENDING, CREATE_PAYMENT_SUCCESS, CREATE_PAYMENT_FAILURE],
-    promise: axios.post('/payments/', {
+    promise: axios.post('/payment/', {
       reference: productProps.reference,
       name: productProps.name,
       description: productProps.description,
@@ -58,7 +58,7 @@ const createPayment = dispatch => productProps => {
 const updatePayment = dispatch => productProps => {
   return dispatch({
     types: [UPDATE_PAYMENT_SENDING, UPDATE_PAYMENT_SUCCESS, UPDATE_PAYMENT_FAILURE],
-    promise: axios.put('/payments/' + productProps.uid, {
+    promise: axios.put('/payment/' + productProps.uid, {
       reference: productProps.reference,
       name: productProps.name,
       description: productProps.description,
@@ -76,7 +76,7 @@ const updatePayment = dispatch => productProps => {
 const deletePayment = dispatch => uid =>
   dispatch({
     types: [DELETE_PAYMENT_SENDING, DELETE_PAYMENT_SUCCESS, DELETE_PAYMENT_FAILURE],
-    promise: axios.delete('/payments/' + uid).then((res) => {
+    promise: axios.delete('/payment/' + uid).then((res) => {
       console.log(res.data)
       return uid
     }),

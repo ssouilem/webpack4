@@ -35,7 +35,7 @@ class AddPayment extends React.Component {
         icon='pencil'
         inverted
         floated='right' /> : <Button fluid icon='add' content='Ajouter un produit' floated='right' onClick={ this.handleOpen } /> } centered={ false } closeIcon >
-      <Modal.Header>Ajouter un nouveau article</Modal.Header>
+      <Modal.Header>Ajouter un nouveau paiement</Modal.Header>
       <Modal.Content scrolling>
         <Modal.Description>
           <div>

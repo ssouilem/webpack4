@@ -57,7 +57,7 @@ export default (initialState = {}, history) => {
     thunk,
     createMiddleware(),
     // sagaMiddleware,
-    // routerMiddleware(history),
+    routerMiddleware(history),
     // multiClientMiddleware(clients),
   ]
 

@@ -1,4 +1,5 @@
 import axios from 'axios'
+// import { default as cookies } from './redux/cookieHelper'
 
 axios.defaults.baseURL = 'http://localhost:8080'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS' // for all requests
@@ -8,8 +9,9 @@ axios.defaults.crossdomain = true
 
 axios.defaults.withCredentials = false
 export default function configureAxios (store) {
-  console.log(axios.interceptors.request)
+  console.log('Axios.init : ', axios.interceptors.request)
   axios.interceptors.request.use((config) => {
+    // axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
     return config
   })
   axios.interceptors.response.use((response) => {
