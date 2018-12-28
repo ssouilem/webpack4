@@ -36,7 +36,7 @@ export const TableType = {
   SHOW_PAYMENTS: 'SHOW_PAYMENTS',
 }
 
-export const DateFormat = 'DD/MM/YYYY'
+export const DateFormat = 'YYYY-MM-DD'
 export const BankOptions = [
   { key: 'BIAT', text: 'BIAT', value: 'BIAT', image: { avatar: true, src: require('STYLES/images/Logo_BIAT_FR.png') } },
   { key: 'ATB', text: 'ATB', value: 'ATB', image: { avatar: true, src: require('STYLES/images/ATB.jpg') } },
@@ -57,13 +57,13 @@ export const BankOptions = [
 ]
 
 export const PaiementMode = [
-  { key: 'ck', text: 'Chèques', value: 'CHECK', image: { avatar: true, src: require('STYLES/images/check.png') } },
-  { key: 'cv', text: 'Cartes ou Virement', value: 'BANK_CARD', image: { avatar: true, src: require('STYLES/images/bank_card.jpg') } },
+  { key: 'ck', text: 'Chèques', value: 'CHEQUE', image: { avatar: true, src: require('STYLES/images/check.png') } },
+  { key: 'cv', text: 'Cartes ou Virement', value: 'CB', image: { avatar: true, src: require('STYLES/images/bank_card.jpg') } },
   { key: 'e', text: 'Espèces', value: 'CASH', image: { avatar: true, src: require('STYLES/images/cash.png') } },
 ]
 
 export const ConstPaiementMode = {
-  CHECK: 'CHECK',
-  BANK_CARD: 'BANK_CARD',
+  CHEQUE: 'CHEQUE',
+  CB: 'CB',
   CASH: 'CASH',
 }

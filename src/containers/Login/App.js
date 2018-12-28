@@ -8,7 +8,7 @@ import history from '../../history'
 export default class App extends Component {
   state = { refresh: false }
   handleConfirm = () => {
-    this.props.refreshToken({})
+    this.props.refreshToken()
     this.setState({ refresh: false })
   }
   handleCancel = () => {
@@ -29,7 +29,7 @@ export default class App extends Component {
     // refresh Token
     console.log('App.js : maxAge / ', nextProps.user.maxAge)
     if (nextProps.user.maxAge > 0 && !nextProps.user.sending) {
-      console.log('App.js : Refresh')
+      console.log('App.js : Refresh dans ', nextProps.user.maxAge * 1000 - 30000)
       setTimeout(this.refreshToken, nextProps.user.maxAge * 1000 - 30000)
     }
   }
@@ -58,11 +58,14 @@ export default class App extends Component {
   }
   render () {
     return (
-      <div>
+      <div className='root'>
         { this.state.refresh &&
           <Confirm
             open={ this.state.refresh }
-            header='This is a custom header'
+            content='Vous allez être déconnecté dans quelques instants. Souhaitez-vous prolonger votre session ?'
+            header='INFORMATION'
+            cancelButton='DECONNEXION'
+            confirmButton='OUI'
             onCancel={ this.handleCancel }
             onConfirm={ this.handleConfirm }
           />

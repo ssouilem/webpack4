@@ -9,28 +9,39 @@ class PaymentMethod extends React.Component {
   componentWillMount () {
     this.resetComponent()
   }
-  resetComponent = () => this.setState({ amountTotal: this.props.amount, paymentDetails: [], disabled: false, transacDate: (new Date()).toLocaleDateString() })
-  _handlePaymentType = (e, { name, value }) => this.setState({ paymentType: value, paymentsMode: [{ key: 1, type: value }], disabled: false })
+  resetComponent = () => this.setState({ amountTotal: 0, amountPendingTotal: this.props.amount, paymentDetails: [], disabled: false, transactionDate: (new Date()).toISOString().substring(0, 10) })
+  _handlePaymentType = (e, { name, value }) => this.setState({ type: value, paymentsMode: [{ key: 1, type: value }], disabled: false })
   _handlebank = (e, { name, value }) => this.setState({ selectedBank: value })
-  // _handleChange = (e, { name, value }) => {
-  //   this.setState({ paymentsMode: [] })
-  //   for (var index = 0; index < value; index++) {
-  //     this.setState(prevState => ({
-  //       paymentsMode: [...prevState.paymentsMode, { key: index, type: this.state.paymentType }],
-  //     }))
-  //   }
-  // }
+  _handleChange = (e, { name, value }) => {
+    // this.setState({ paymentsMode: [] })
+    this.props.updateItem({
+      amount: this.state.amountTotal,
+      amountPending: this.state.amountPendingTotal,
+      bank: this.state.selectedBank,
+      holder: this.state.compteName,
+      invoice: this.props.invoiceUid,
+      paymentDetails: this.state.paymentDetails })
+    for (var index = 0; index < value; index++) {
+      this.setState(prevState => ({
+        paymentsMode: [...prevState.paymentsMode, { key: index, type: this.state.type }],
+      }))
+    }
+  }
 
   // handle change form
   _handleInputChange = (e, { name, value }) => this.setState({ [name]: value })
-  onChangeDate = (value, dateString) => this.setSate({transacDate: dateString})
+  onChangeDate = (value, dateString) => {
+    console.log('issueDate', dateString)
+    this.setState({transactionDate: dateString})
+  }
 
   // ADD BORD DEATIL
   _addPaiement = () => {
     // add item to list
-    var paymentDetail = { amount: this.state.amount, paymentType: this.state.paymentType, transacNumber: this.state.transacNumber, date: this.state.transacDate }
-    this.setState({ paymentType: '',
-      amountTotal: parseFloat(this.state.amountTotal) - parseFloat(this.state.amount),
+    var paymentDetail = { amount: this.state.amount, issueDate: this.state.transactionDate, type: this.state.type, transactionNumber: this.state.transactionNumber }
+    this.setState({ type: '',
+      amountPendingTotal: parseFloat(this.state.amountPendingTotal) - parseFloat(this.state.amount),
+      amountTotal: parseFloat(this.state.amountTotal) + parseFloat(this.state.amount),
       paymentDetails: [...this.state.paymentDetails, paymentDetail] })
 
     // Calcule de montant qui reste à payer
@@ -50,7 +61,7 @@ class PaymentMethod extends React.Component {
             </Grid.Column>
             <Grid.Column>
               <Label as='a' basic color='blue'>
-                Montant reste à payer : { this.state.amountTotal } €
+                Montant reste à payer : { this.state.amountPendingTotal } €
               </Label>
             </Grid.Column>
           </Grid.Row>
@@ -79,20 +90,20 @@ class PaymentMethod extends React.Component {
               <Header dividing as='h4'>Paiement</Header>
               <Form.Field width={ 10 }>
                 <label>Choisir un mode de paiement : </label>
-                <Label name='paymentType' value={ ConstPaiementMode.CHECK } as='a' onClick={ this._handlePaymentType } image>
+                <Label name='type' value={ ConstPaiementMode.CHEQUE } as='a' onClick={ this._handlePaymentType } image>
                   <img src={ require('STYLES/images/check.png') } />
                   Par chèque
                 </Label>
-                <Label name='paymentType' value={ ConstPaiementMode.CASH } as='a' onClick={ this._handlePaymentType } image>
+                <Label name='type' value={ ConstPaiementMode.CASH } as='a' onClick={ this._handlePaymentType } image>
                   <img src={ require('STYLES/images/cash.png') } />
                   En especes
                 </Label>
-                <Label name='paymentType' value={ ConstPaiementMode.BANK_CARD } as='a' onClick={ this._handlePaymentType } image>
+                <Label name='type' value={ ConstPaiementMode.CB } as='a' onClick={ this._handlePaymentType } image>
                   <img src={ require('STYLES/images/bank_card.jpg') } />
                   Par virement
                 </Label>
               </Form.Field>
-              { this.state.paymentType === ConstPaiementMode.CHECK
+              { this.state.type === ConstPaiementMode.CHEQUE
                 ? <Form.Group>
                   <Form.Field width={ 5 } disabled={ disabled }>
                     <label>
@@ -102,14 +113,14 @@ class PaymentMethod extends React.Component {
                   <Form.Input width={ 5 }disabled={ disabled } label='Numéro de Chéque'
                     placeholder='Numéro de Chéque'
                     onChange={ this._handleInputChange }
-                    name='transacNumber' />
+                    name='transactionNumber' />
                   <Form.Field width={ 5 } disabled={ disabled }>
                     <label>Date de la transaction : </label>
                     <DatePicker
-                      name='transacDate'
+                      name='transactionDate'
                       onOk={ this.onOk }
                       onChange={ this.onChangeDate }
-                      defaultValue={ moment(this.state.transacDate, DateFormat) } format={ DateFormat } />
+                      defaultValue={ moment(this.state.transactionDate, DateFormat) } format={ DateFormat } />
                   </Form.Field>
                   <Form.Field width={ 1 } disabled={ disabled }>
                     <label>&nbsp;</label>
@@ -118,7 +129,7 @@ class PaymentMethod extends React.Component {
                       onClick={ this._addPaiement } />
                   </Form.Field>
                 </Form.Group>
-                : this.state.paymentType === ConstPaiementMode.CASH
+                : this.state.type === ConstPaiementMode.CASH
                   ? <Form.Group>
                     <Form.Field width={ 5 } disabled={ disabled }>
                       <label>Montant : </label>
@@ -127,10 +138,10 @@ class PaymentMethod extends React.Component {
                     <Form.Field width={ 5 } disabled={ disabled }>
                       <label>Date transaction : </label>
                       <DatePicker
-                        name='transacDate'
+                        name='transactionDate'
                         onOk={ this.onOk }
                         onChange={ this.onChangeDate }
-                        defaultValue={ moment(this.state.transacDate, DateFormat) } format={ DateFormat } />
+                        defaultValue={ moment(this.state.transactionDate, DateFormat) } format={ DateFormat } />
                     </Form.Field>
                     <Form.Field width={ 1 } disabled={ disabled }>
                       <label>&nbsp;</label>
@@ -139,7 +150,7 @@ class PaymentMethod extends React.Component {
                         onClick={ this._addPaiement } />
                     </Form.Field>
                   </Form.Group>
-                  : this.state.paymentType === ConstPaiementMode.BANK_CARD &&
+                  : this.state.type === ConstPaiementMode.CB &&
                   <Form.Group>
                     <Form.Field width={ 5 } disabled={ disabled }>
                       <label>
@@ -149,14 +160,14 @@ class PaymentMethod extends React.Component {
                     <Form.Input width={ 5 } disabled={ disabled } label='Numéro de transaction :'
                       placeholder='Numéro de transaction'
                       onChange={ this._handleInputChange }
-                      name='transacNumber' />
+                      name='transactionNumber' />
                     <Form.Field width={ 5 } disabled={ disabled }>
                       <label>Date : </label>
                       <DatePicker
-                        name='transacDate'
+                        name='transactionDate'
                         onOk={ this.onOk }
                         onChange={ this.onChangeDate }
-                        defaultValue={ moment(this.state.transacDate, DateFormat) } format={ DateFormat } />
+                        defaultValue={ moment(this.state.transactionDate, DateFormat) } format={ DateFormat } />
                     </Form.Field>
                     <Form.Field width={ 1 } disabled={ disabled }>
                       <label>&nbsp;</label>
@@ -171,7 +182,7 @@ class PaymentMethod extends React.Component {
             <Segment.Group key='id' size='tiny'>
               { (this.state.paymentDetails && Array.isArray(this.state.paymentDetails) && this.state.paymentDetails.length >= 1) === true
                 ? this.state.paymentDetails.map(payment => (
-                  payment.paymentType === ConstPaiementMode.CHECK
+                  payment.type === ConstPaiementMode.CHEQUE
                     ? <Segment>
                       <List key='id' horizontal>
                         <List.Item>
@@ -186,18 +197,18 @@ class PaymentMethod extends React.Component {
                         <List.Item>
                           <List.Content>
                             <List.Header>Numéro</List.Header>
-                            { payment.transacNumber ? payment.transacNumber : 'sans numéro'}
+                            { payment.transactionNumber ? payment.transactionNumber : 'sans numéro'}
                           </List.Content>
                         </List.Item>
                         <List.Item>
                           <List.Content>
                             <List.Header>Date de transaction</List.Header>
-                            { payment.date && payment.date }
+                            { payment.issueDate && payment.issueDate }
                           </List.Content>
                         </List.Item>
                       </List>
                     </Segment>
-                    : payment.paymentType === ConstPaiementMode.CASH ?
+                    : payment.type === ConstPaiementMode.CASH ?
                       <Segment>
                         <List key='id' horizontal>
                           <List.Item>
@@ -218,7 +229,7 @@ class PaymentMethod extends React.Component {
                           <List.Item>
                             <List.Content>
                               <List.Header>Date de transaction</List.Header>
-                              { payment.date && payment.date }
+                              { payment.issueDate && payment.issueDate }
                             </List.Content>
                           </List.Item>
                         </List>
@@ -237,13 +248,13 @@ class PaymentMethod extends React.Component {
                           <List.Item>
                             <List.Content>
                               <List.Header>Numéro</List.Header>
-                              { payment.transacNumber ? payment.transacNumber : 'sans numéro'}
+                              { payment.transactionNumber ? payment.transactionNumber : 'sans numéro'}
                             </List.Content>
                           </List.Item>
                           <List.Item>
                             <List.Content>
                               <List.Header>Date de transaction</List.Header>
-                              { payment.date && payment.date }
+                              { payment.issueDate && payment.issueDate }
                             </List.Content>
                           </List.Item>
                         </List>

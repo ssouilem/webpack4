@@ -63,6 +63,9 @@ class TableInternal extends React.Component {
           console.log('Search customer')
           isMatch = result => re.test(result.name)
           break
+        case TableType.SHOW_PAYMENTS :
+          isMatch = result => re.test(result.invoice.number)
+          break
         default:
           isMatch = result => re.test(result.reference)
           break
@@ -86,6 +89,8 @@ class TableInternal extends React.Component {
       this.getPaginatedItems(this.state.activePage, DEFAULT_PAGE_SIZE)
     }
   }
+// Paiement
+handleViewDetail = (e, {name}) => this.setState({ [name]: !this.state[name] })
 
 render = () => {
   const {isLoading, results, value, data} = this.state
@@ -143,19 +148,32 @@ render = () => {
                     <Table.HeaderCell>ACTIONS</Table.HeaderCell>
                   </Table.Row>
                 </Table.Header>
-                  : this.props.tableType === TableType.SHOW_INVOICES &&
-                  <Table.Header>
+                  : this.props.tableType === TableType.SHOW_PAYMENTS ? <Table.Header>
                     <Table.Row>
-                      <Table.HeaderCell />
-                      <Table.HeaderCell>FACTURE N°</Table.HeaderCell>
-                      <Table.HeaderCell>CLIENT</Table.HeaderCell>
-                      <Table.HeaderCell>DATE DE CREATION</Table.HeaderCell>
-                      <Table.HeaderCell>ÉCHÉANCE</Table.HeaderCell>
-                      <Table.HeaderCell>MONTANT</Table.HeaderCell>
-                      <Table.HeaderCell>STATUT</Table.HeaderCell>
-                      <Table.HeaderCell>ACTIONS</Table.HeaderCell>
+                      <Table.HeaderCell width={ 1 }>ID</Table.HeaderCell>
+                      <Table.HeaderCell width={ 2 }>DATE </Table.HeaderCell>
+                      <Table.HeaderCell width={ 2 }>MONTANT P</Table.HeaderCell>
+                      <Table.HeaderCell width={ 2 }>EN ATTENTE</Table.HeaderCell>
+                      <Table.HeaderCell width={ 3 }>CLIENT</Table.HeaderCell>
+                      <Table.HeaderCell width={ 2 }>FACTURE</Table.HeaderCell>
+                      <Table.HeaderCell width={ 2 }>MONTANT FAC</Table.HeaderCell>
+                      <Table.HeaderCell width={ 2 }></Table.HeaderCell>
                     </Table.Row>
-                  </Table.Header> }
+                  </Table.Header>
+                    : this.props.tableType === TableType.SHOW_INVOICES &&
+                    <Table.Header>
+                      <Table.Row>
+                        <Table.HeaderCell />
+                        <Table.HeaderCell>FACTURE N°</Table.HeaderCell>
+                        <Table.HeaderCell>CLIENT</Table.HeaderCell>
+                        <Table.HeaderCell>DATE DE CREATION</Table.HeaderCell>
+                        <Table.HeaderCell>ÉCHÉANCE</Table.HeaderCell>
+                        <Table.HeaderCell>MONTANT</Table.HeaderCell>
+                        <Table.HeaderCell>EN ATTENTE</Table.HeaderCell>
+                        <Table.HeaderCell>STATUT</Table.HeaderCell>
+                        <Table.HeaderCell>ACTIONS</Table.HeaderCell>
+                      </Table.Row>
+                    </Table.Header> }
             <Table.Body>
               { Array.isArray(itemTable) && itemTable.length >= 1 ? itemTable.map(result => (
                 (this.props.tableType === TableType.SHOW_PRODUCTS)
@@ -228,7 +246,40 @@ render = () => {
                             floated='right' />
                         </Table.Cell>
                       </Table.Row>
-                      : this.props.tableType === TableType.SHOW_INVOICES &&
+                      : (this.props.tableType === TableType.SHOW_PAYMENTS)
+                        ? <Table.Row key={ `Row_${result.uid}` } className='RowTable' >
+                          <Table.Cell colSpan='8' >
+                            <Table className='TRTable'>
+                              <Table.Body >
+                                <Table.Row textAlign='center' key={ result.uid } name={ result.uid } >
+                                  <Table.Cell width={ 1 }>{ result.id }</Table.Cell>
+                                  <Table.Cell width={ 2 }>{ result.createdDate ? result.createdDate : 'oops' }</Table.Cell>
+                                  <Table.Cell width={ 2 }>{ result.amount }</Table.Cell>
+                                  <Table.Cell width={ 2 }>{ result.amountPending }</Table.Cell>
+                                  <Table.Cell width={ 3 }>{ result.holder && result.holder }</Table.Cell>
+                                  <Table.Cell width={ 2 }>{ result.invoice && result.invoice.number }</Table.Cell>
+                                  <Table.Cell width={ 2 }>{ result.amount }</Table.Cell>
+                                  <Table.Cell width={ 2 }>
+                                    <Button
+                                      onClick={ this.handleViewDetail }
+                                      name={ result.uid }
+                                      icon='eye'
+                                      content='Detail'
+                                      floated='right' />
+                                  </Table.Cell>
+                                </Table.Row>
+                                <Table.Row key={ `view_${result.uid}` } >
+                                  <Table.Cell colSpan='8' hidden={ !this.state[result.uid] } >
+                                    { Array.isArray(result.paymentDetails) && result.paymentDetails.map(paymentDetail => (
+                                      <div>{ paymentDetail.type }</div>
+                                    )) }
+                                  </Table.Cell>
+                                </Table.Row>
+                              </Table.Body >
+                            </Table >
+                          </Table.Cell>
+                        </Table.Row>
+                        : this.props.tableType === TableType.SHOW_INVOICES &&
                         <Table.Row key={ result.uid }>
                           <Table.Cell collapsing></Table.Cell>
                           <Table.Cell>{ result.number }</Table.Cell>
@@ -236,12 +287,13 @@ render = () => {
                           <Table.Cell>{ result.createdDate }</Table.Cell>
                           <Table.Cell>{ result.issueDate }</Table.Cell>
                           <Table.Cell>{ result.amount }</Table.Cell>
+                          <Table.Cell>{ result.amountPending }</Table.Cell>
                           <Table.Cell>{ result.payDown ? result.payDown : 'En attente'}</Table.Cell>
                           <Table.Cell>
                             <Button
                               icon='edit'
                               floated='right' />
-                            <PaymentMethod amount={ result.amount } />
+                            <PaymentMethod invoiceUid={ result.uid } updateItem={ this.props.updateItem } amount={ result.amountPending } />
                           </Table.Cell>
                         </Table.Row>
               )) : <Table.Row>
@@ -272,7 +324,7 @@ render = () => {
           </Table>
         </Grid.Column>
       </Grid.Row>
-      {(Array.isArray(itemTable) && itemTable.length >= DEFAULT_PAGE_SIZE) === true &&
+      {((Array.isArray(itemTable) && itemTable.length >= DEFAULT_PAGE_SIZE) || this.state.activePage > 1) === true &&
       <Grid.Row>
         <Grid.Column textAlign='center'>
           <Pagination

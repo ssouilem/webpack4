@@ -108,7 +108,7 @@ class InvoicesList extends React.Component {
                   activePage={ this.state.activePage }
                   setActivePage={ this.setActivePage }
                   tableType={ TableType.SHOW_INVOICES }
-                  updateItem={ this.props.createProduct }
+                  updateItem={ this.props.createPayment }
                   state={ this.state } />
             }
           </Grid.Column>
@@ -120,6 +120,7 @@ class InvoicesList extends React.Component {
 
 InvoicesList.propTypes = {
   handleChangeDate: PropTypes.func,
+  createPayment: PropTypes.func,
 }
 
 export default InvoicesList

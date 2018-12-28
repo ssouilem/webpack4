@@ -9,6 +9,7 @@ import { connect } from 'react-redux'
 import { actions as invoicesActions } from 'ACTIONS/invoices'
 import { actions as bordereauActions } from 'ACTIONS/bordereau'
 import { actions as clientsActions } from 'ACTIONS/clients'
+import { actions as paymentsActions } from 'ACTIONS/payments'
 
 class Invoices extends React.Component {
   state = { activeIndex: 0, bordereaux: [], totalAmountHT: 0 }
@@ -57,6 +58,11 @@ class Invoices extends React.Component {
       bordereaux: this.state.bordereaux,
     })
   }
+  _handleAddPayment = payment => {
+    this.props.createPayment({ ...payment })
+    this.props.setInvoicesProps({ amountPending: payment.amountPending })
+  }
+
   render () {
     const { activeIndex } = this.state
 
@@ -85,6 +91,7 @@ class Invoices extends React.Component {
                     <Segment vertical>
                       <InvoicesList
                         invoices={ this.props.invoices }
+                        createPayment={ this._handleAddPayment }
                         handleChangeDate={ this.props.handleChangeDate }
                         setCheckedItemProps={ this.props.setCheckedItemProps } />
                     </Segment>
@@ -152,6 +159,7 @@ const mapDispatchToProps = dispatch => ({
   handleChangeClient: clientsActions.handleChangeClient(dispatch),
   setItemProps: clientsActions.setItemProps(dispatch),
   fetchCustomers: clientsActions.fetchCustomers(dispatch),
+  createPayment: paymentsActions.createPayment(dispatch),
   // setWizardProps: invoicesActions.setWizardProps(dispatch),
   // setWizardVarsProps: invoicesActions.setWizardVarsProps(dispatch),
   dispatch,

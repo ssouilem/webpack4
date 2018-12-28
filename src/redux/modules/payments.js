@@ -31,17 +31,16 @@ const fetchPayments = dispatch => () =>
 
 // const wait = ms => new Promise((resolve, reject) => setTimeout(resolve, ms))
 
-const createPayment = dispatch => productProps => {
+const createPayment = dispatch => paymentProps => {
   return dispatch({
     types: [CREATE_PAYMENT_SENDING, CREATE_PAYMENT_SUCCESS, CREATE_PAYMENT_FAILURE],
     promise: axios.post('/payment/', {
-      reference: productProps.reference,
-      name: productProps.name,
-      description: productProps.description,
-      unit: productProps.unit,
-      category: productProps.category,
-      price: productProps.price,
-      tva: productProps.tva,
+      amount: paymentProps.amount,
+      amountPending: paymentProps.amountPending,
+      bank: paymentProps.bank,
+      holder: paymentProps.holder,
+      invoice: paymentProps.invoice,
+      paymentDetails: paymentProps.paymentDetails,
     }).then((res) => {
       console.log(res.data)
       return res
@@ -55,17 +54,32 @@ const createPayment = dispatch => productProps => {
   })
 }
 
-const updatePayment = dispatch => productProps => {
+/*
+{
+  "amount": 200.7,
+  "amountPending": 0,
+  "bank": "BIAT",
+  "holder": "samir",
+  "invoice": "d6e96e30-b9d7-4cc5-a4bc-0d274d06f0b0",
+  "paymentDetails": [
+    {
+      "amount": 100.0,
+      "issueDate": "2018-12-01",
+      "transactionNumber": "FFFFF",
+      "type": "CHEQUE"
+    }
+  ]
+} */
+const updatePayment = dispatch => paymentProps => {
   return dispatch({
     types: [UPDATE_PAYMENT_SENDING, UPDATE_PAYMENT_SUCCESS, UPDATE_PAYMENT_FAILURE],
-    promise: axios.put('/payment/' + productProps.uid, {
-      reference: productProps.reference,
-      name: productProps.name,
-      description: productProps.description,
-      unit: productProps.unit,
-      category: productProps.category,
-      price: productProps.price,
-      tva: productProps.tva,
+    promise: axios.put('/payment/' + paymentProps.uid, {
+      amount: paymentProps.amount,
+      amountPending: paymentProps.amountPending,
+      bank: paymentProps.bank,
+      holder: paymentProps.holder,
+      invoice: paymentProps.invoiceNumber,
+      paymentDetails: paymentProps.paymentDetails,
     }).then((res) => {
       console.log(res.data)
       return res
@@ -124,7 +138,7 @@ const ACTION_HANDLERS = {
   [CREATE_PAYMENT_SUCCESS]: (state, action) => ({
     ...state,
     sending: false,
-    data: [...state.data, action.result.data],
+    data: action.result.data,
     done: action.result.data.uid,
     error: undefined,
   }),
@@ -175,8 +189,6 @@ const initialState = {
   data: undefined,
   sending: false,
   error: undefined,
-  datedebut: '',
-  datefin: '',
   name: '',
 }
 
