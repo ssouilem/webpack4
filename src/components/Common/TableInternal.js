@@ -1,6 +1,6 @@
 import React from 'react'
 import _ from 'lodash'
-import { Header, Grid, Table, Icon, Search, Button, Checkbox, Pagination } from 'semantic-ui-react'
+import { Header, Grid, Table, Icon, Search, Button, Checkbox, Pagination, Confirm } from 'semantic-ui-react'
 import { Link } from 'react-router-dom'
 import { TableType } from 'COMPONENTS/Utils/Utils'
 import PaymentMethod from 'COMPONENTS/Invoices/PaymentMethod'
@@ -80,8 +80,12 @@ class TableInternal extends React.Component {
       })
     }, 300)
   }
-  _handleDeleteItem = (e, { id }) => {
+
+  _showPopDelete = () => this.setState({ open: true })
+  _handleCancel = () => this.setState({ open: false })
+  _handleConfirmDeleteItem = (e, { id }) => {
     console.log('Delete Id : ', id)
+    this.setState({ open: false })
     this.props.deleteItem(id)
     this.props.setActivePage(this.state.activePage)
     if (this.state.activePage >= 1) {
@@ -116,6 +120,12 @@ render = () => {
       </Grid.Row>
       <Grid.Row>
         <Grid.Column textAlign='center'>
+          <Confirm
+            open={ this.state.open }
+            content='Voulez-vous vraiment supprimer cet element ?'
+            onCancel={ this._handleCancel }
+            onConfirm={ this._handleConfirmDeleteItem }
+          />
           <Table compact selectable stackable >
             { this.props.tableType === TableType.SHOW_PRODUCTS ? <Table.Header>
               <Table.Row>
@@ -193,7 +203,7 @@ render = () => {
                       </AddProduct>
                       <Button
                         id={ result.uid }
-                        onClick={ this._handleDeleteItem }
+                        onClick={ this._showPopDelete }
                         icon='delete'
                         color='red'
                         inverted
@@ -216,7 +226,7 @@ render = () => {
                         </AddCustomer>
                         <Button
                           id={ result.uid }
-                          onClick={ this._handleDeleteItem }
+                          onClick={ this._showPopDelete }
                           icon='delete'
                           color='red'
                           inverted
@@ -238,7 +248,7 @@ render = () => {
                           <Button
                             icon='delete'
                             id={ result.id }
-                            onClick={ this._handleDeleteItem }
+                            onClick={ this._showPopDelete }
                             floated='right' />
                           <Button primary
                             icon='sign out'

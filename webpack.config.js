@@ -1,5 +1,6 @@
 const HtmlWebPackPlugin = require('html-webpack-plugin')
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 const path = require('path')
 
 const PATHS = {
@@ -44,6 +45,7 @@ module.exports = {
   output: {
     path: PATHS.build,
     filename: 'bundle.js',
+    chunkFilename: '[name].bundle.js',
     publicPath: '/',
   },
   module: {
@@ -159,6 +161,11 @@ module.exports = {
     new HtmlWebPackPlugin({
       template: './src/index.html',
       filename: './index.html',
+    }),
+    new BundleAnalyzerPlugin({
+      openAnalyzer: false,
+      defaultSizes: 'gzip',
+      analyzerMode: 'static',
     }),
   ],
   resolve: {

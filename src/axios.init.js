@@ -1,8 +1,8 @@
 import axios from 'axios'
 // import { default as cookies } from './redux/cookieHelper'
 
-axios.defaults.baseURL = 'http://localhost:8080'
-// axios.defaults.baseURL = 'http://ec2-52-15-124-186.us-east-2.compute.amazonaws.com:8080'
+// axios.defaults.baseURL = 'http://localhost:8080'
+axios.defaults.baseURL = 'http://ec2-52-15-124-186.us-east-2.compute.amazonaws.com:8080'
 axios.defaults.headers.common['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS' // for all requests
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = '*' // for all requests
 axios.defaults.crossdomain = true
