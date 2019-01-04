@@ -70,15 +70,30 @@ class AddProduct extends React.Component {
     var error = this.validateForm()
     console.log('return validateForm :', error, this.state.formError)
     if (!error) {
-      this.props.submitForm({
-        name: this.state.name,
-        reference: this.state.reference,
-        description: this.state.description,
-        unit: this.state.unit,
-        category: this.state.category,
-        price: this.state.price,
-        tva: this.state.tva,
-      })
+      // update
+      if (this.props.update) {
+        this.props.submitForm({
+          uid: this.state.uid,
+          name: this.state.name,
+          reference: this.state.reference,
+          description: this.state.description,
+          unit: this.state.unit,
+          category: this.state.category,
+          price: this.state.price,
+          tva: this.state.tva,
+        })
+        // insert new element
+      } else {
+        this.props.submitForm({
+          name: this.state.name,
+          reference: this.state.reference,
+          description: this.state.description,
+          unit: this.state.unit,
+          category: this.state.category,
+          price: this.state.price,
+          tva: this.state.tva,
+        })
+      }
     }
   }
 
@@ -88,6 +103,7 @@ class AddProduct extends React.Component {
     var productProps = this.props.product
     if (productProps) {
       this.setState({
+        uid: productProps.uid,
         reference: productProps.reference,
         name: productProps.name,
         description: productProps.description,

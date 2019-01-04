@@ -32,7 +32,9 @@ class AddCustomer extends React.Component {
     this.setState({ modalOpen: true })
     var customer = this.props.customer
     if (customer) {
-      this.setState({ companyName: customer.name,
+      this.setState({
+        uid: customer.uid,
+        companyName: customer.name,
         siret: customer.siret,
         email: customer.mail,
         phoneNumber: customer.phoneNumber,

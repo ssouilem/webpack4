@@ -48,6 +48,26 @@ class Campanies extends React.Component {
     this.verifyInsertCustomer(propsState)
   }
 
+  _updateCustomer = propsState => {
+    // creation customer
+    this.props.updateCustomer({
+      uid: propsState.uid,
+      name: propsState.companyName,
+      mail: propsState.email,
+      address: propsState.address,
+      additionalAddress: propsState.additionalAddress,
+      postalCode: propsState.postalCode,
+      city: propsState.city,
+      phoneNumber: propsState.phoneNumber,
+      faxNumber: propsState.phoneNumber, // @TODO Add faxNumber to form
+      siret: propsState.siret,
+    })
+
+    // savec props to State
+    this.setState({propsState})
+    // console.log("Suite", JSON.stringify({ propsState }))
+  }
+
   verifyInsertCustomer = propsState => {
     if (!this.props.clients.done && !this.props.clients.error) {
       console.log('en attente de customer')
@@ -98,7 +118,7 @@ class Campanies extends React.Component {
                     setActivePage={ this.setActivePage }
                     tableType={ TableType.SHOW_CUSTOMERS }
                     error={ this.props.clients && this.props.clients.error }
-                    updateItem={ this._handleSubmit }
+                    updateItem={ this._updateCustomer }
                     deleteItem={ this.props.deleteCustomer } />
                   : <Dimmer active inverted>
                     <Image size='small' centered src={ require('STYLES/images/preload_waiting.gif') } />
@@ -139,6 +159,7 @@ const mapDispatchToProps = dispatch => ({
   onClick: () => { console.log('onClick ++++ ') },
   fetchCustomers: customersActions.fetchCustomers(dispatch),
   createCustomer: customersActions.createCustomer(dispatch),
+  updateCustomer: customersActions.updateCustomer(dispatch),
   addContact: customersActions.addContact(dispatch),
   deleteCustomer: customersActions.deleteCustomer(dispatch),
   setItemProps: customersActions.setItemProps(dispatch),

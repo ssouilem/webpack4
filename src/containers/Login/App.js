@@ -19,10 +19,10 @@ export default class App extends Component {
 
   componentWillUpdate () {
     console.log('App --------------------- ComponentWillUpdate ', history.location.pathname)
-    // if (!cookies.getToken() && history.location.pathname !== '/') {
-    //   console.log('Redirect / ', history)
-    //   history.push('/')
-    // }
+    if (!cookies.getToken() && history.location.pathname !== '/login') {
+      console.log('Redirect / ', history)
+      history.push('/login')
+    }
   }
   componentWillReceiveProps (nextProps) {
     console.log('App.js : componentWillReceiveProps / ', nextProps)//, this.props.user.maxAge)

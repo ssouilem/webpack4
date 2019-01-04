@@ -92,6 +92,7 @@ class Invoices extends React.Component {
                       <InvoicesList
                         invoices={ this.props.invoices }
                         createPayment={ this._handleAddPayment }
+                        generatePdfInvoice={ this.props.generatePdfInvoice }
                         handleChangeDate={ this.props.handleChangeDate }
                         setCheckedItemProps={ this.props.setCheckedItemProps } />
                     </Segment>
@@ -151,6 +152,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   createInvoice: invoicesActions.createInvoice(dispatch),
+  generatePdfInvoice: invoicesActions.generatePdfInvoice(dispatch),
   fetchInvoices: invoicesActions.fetchInvoices(dispatch),
   handleChangeDate: invoicesActions.handleChange(dispatch),
   setInvoicesProps: invoicesActions.setInvoicesProps(dispatch),

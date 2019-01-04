@@ -109,6 +109,7 @@ class InvoicesList extends React.Component {
                   setActivePage={ this.setActivePage }
                   tableType={ TableType.SHOW_INVOICES }
                   updateItem={ this.props.createPayment }
+                  generatePdfInvoice={ this.props.generatePdfInvoice }
                   state={ this.state } />
             }
           </Grid.Column>

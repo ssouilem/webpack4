@@ -31,8 +31,8 @@ axios.defaults.headers.common['Access-Control-Expose-Headers'] = 'Access-Control
 axios.defaults.crossdomain = true
 
 const instance = axios.create({
-  baseURL: 'http://ec2-52-15-124-186.us-east-2.compute.amazonaws.com:8080',
-  // baseURL: 'http://localhost:8080',
+  // baseURL: 'http://ec2-52-15-124-186.us-east-2.compute.amazonaws.com:8080',
+  baseURL: 'http://localhost:8080',
   responseType: 'json',
   withCredentials: true,
   crossdomain: true,

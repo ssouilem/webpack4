@@ -4,6 +4,7 @@ import { Header, Grid, Table, Icon, Search, Button, Checkbox, Pagination, Confir
 import { Link } from 'react-router-dom'
 import { TableType } from 'COMPONENTS/Utils/Utils'
 import PaymentMethod from 'COMPONENTS/Invoices/PaymentMethod'
+import ShowInvoice from 'COMPONENTS/Invoices/ShowInvoice'
 import AddProduct from 'COMPONENTS/Products/AddProduct'
 import AddCustomer from 'COMPONENTS/Client/AddCustomer'
 import styles from './TableInternal.less'
@@ -81,20 +82,28 @@ class TableInternal extends React.Component {
     }, 300)
   }
 
-  _showPopDelete = () => this.setState({ open: true })
-  _handleCancel = () => this.setState({ open: false })
-  _handleConfirmDeleteItem = (e, { id }) => {
-    console.log('Delete Id : ', id)
+  _showPopDelete = (e, { id }) => this.setState({ open: true, deleteUid: id })
+  _handleCancel = () => this.setState({ open: false, deleteUid: undefined })
+  _handleConfirmDeleteItem = () => {
+    console.log('Delete Id : ', this.state.deleteUid)
     this.setState({ open: false })
-    this.props.deleteItem(id)
+    this.props.deleteItem(this.state.deleteUid)
     this.props.setActivePage(this.state.activePage)
     if (this.state.activePage >= 1) {
       console.log('activePage : ', this.state.activePage)
       this.getPaginatedItems(this.state.activePage, DEFAULT_PAGE_SIZE)
     }
+    this.setState({ deleteUid: undefined })
   }
 // Paiement
 handleViewDetail = (e, {name}) => this.setState({ [name]: !this.state[name] })
+componentWillReceiveProps (nextProps) {
+  console.log('TableInternal.js : updateItems / ', nextProps)//, this.props.user.maxAge)
+
+  if (Array.isArray(nextProps.items) && nextProps.items.length >= 1) {
+    this.setState({data: nextProps.items})
+  }
+}
 
 render = () => {
   const {isLoading, results, value, data} = this.state
@@ -300,6 +309,7 @@ render = () => {
                           <Table.Cell>{ result.amountPending }</Table.Cell>
                           <Table.Cell>{ result.payDown ? result.payDown : 'En attente'}</Table.Cell>
                           <Table.Cell>
+                            <ShowInvoice invoiceUid={ result.uid } generatePdfInvoice={ this.props.generatePdfInvoice } />
                             <Button
                               icon='edit'
                               floated='right' />

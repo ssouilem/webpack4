@@ -52,7 +52,7 @@ class Products extends React.Component {
                     items={ this.props.products.data }
                     error={ this.props.products && this.props.products.error }
                     tableType={ TableType.SHOW_PRODUCTS }
-                    updateItem={ this.props.createProduct }
+                    updateItem={ this.props.updateProduct }
                     deleteItem={ this.props.deleteProduct } />
                   : <Dimmer active inverted>
                     <Image size='small' centered src={ require('STYLES/images/preload_waiting.gif') } />

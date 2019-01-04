@@ -38,6 +38,8 @@ module.exports = {
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization',
     },
+    contentBase: path.resolve('public'),
+    publicPath: '/',
   },
   entry: {
     app: PATHS.src + '/index.js',
@@ -106,6 +108,14 @@ module.exports = {
       {
         test: /\.otf(\?.*)?$/,
         use: 'file-loader?name=/fonts/[name].[ext]&mimetype=application/font-otf',
+      },
+      {
+        test: /\.pdf$/,
+        loader: 'file-loader',
+        options: {
+          name: '[path][name].[ext]',
+          publicPath: 'public',
+        },
       },
       {
         test: /\.css$/,

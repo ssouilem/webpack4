@@ -18,6 +18,10 @@ const CREATE_CUSTOMER_SENDING = 'CREATE_CUSTOMER_SENDING'
 const CREATE_CUSTOMER_SUCCESS = 'CREATE_CUSTOMER_SUCCESS'
 const CREATE_CUSTOMER_FAILURE = 'CREATE_CUSTOMER_FAILURE'
 
+const UPDATE_CUSTOMER_SENDING = 'UPDATE_CUSTOMER_SENDING'
+const UPDATE_CUSTOMER_SUCCESS = 'UPDATE_CUSTOMER_SUCCESS'
+const UPDATE_CUSTOMER_FAILURE = 'UPDATE_CUSTOMER_FAILURE'
+
 const CREATE_CONTACT_SENDING = 'CREATE_CONTACT_SENDING'
 const CREATE_CONTACT_SUCCESS = 'CREATE_CONTACT_SUCCESS'
 const CREATE_CONTACT_FAILURE = 'CREATE_CONTACT_FAILURE'
@@ -48,22 +52,42 @@ const fetchCustomers = dispatch => () =>
     }),
   })
 
-const createCustomer = dispatch => productProps => {
+const createCustomer = dispatch => customerProps => {
   return dispatch({
     types: [CREATE_CUSTOMER_SENDING, CREATE_CUSTOMER_SUCCESS, CREATE_CUSTOMER_FAILURE],
     promise: axios.post('/customers/', {
-      name: productProps.name,
-      mail: productProps.mail,
-      address: productProps.address,
-      additionalAddress: productProps.additionalAddress,
-      postalCode: productProps.postalCode,
-      city: productProps.city,
-      phoneNumber: productProps.phoneNumber,
-      faxNumber: productProps.faxNumber, // @TODO Add faxNumber to form
-      siret: productProps.siret,
+      name: customerProps.name,
+      mail: customerProps.mail,
+      address: customerProps.address,
+      additionalAddress: customerProps.additionalAddress,
+      postalCode: customerProps.postalCode,
+      city: customerProps.city,
+      phoneNumber: customerProps.phoneNumber,
+      faxNumber: customerProps.faxNumber, // @TODO Add faxNumber to form
+      siret: customerProps.siret,
     }).then((res) => {
       console.log(res.data)
       return res
+    }),
+  })
+}
+
+const updateCustomer = dispatch => customerProps => {
+  return dispatch({
+    types: [UPDATE_CUSTOMER_SENDING, UPDATE_CUSTOMER_SUCCESS, UPDATE_CUSTOMER_FAILURE],
+    promise: axios.put('/customers/' + customerProps.uid, {
+      name: customerProps.name,
+      mail: customerProps.mail,
+      address: customerProps.address,
+      additionalAddress: customerProps.additionalAddress,
+      postalCode: customerProps.postalCode,
+      city: customerProps.city,
+      phoneNumber: customerProps.phoneNumber,
+      faxNumber: customerProps.faxNumber,
+      siret: customerProps.siret,
+    }).then((res) => {
+      console.log(res.data)
+      return { ...res, newCustomer: customerProps }
     }),
   })
 }
@@ -232,6 +256,27 @@ const updateContactToCustomer = (state, contact, customerUid) => {
   return state.data
 }
 
+const updatePropsCustomer = (state, customerUid, newCustomer) => {
+  var datatmp = _.find(state.data, function (obj) { return obj.uid === customerUid })
+
+  datatmp.name = newCustomer.name
+  datatmp.mail = newCustomer.mail
+  datatmp.address = newCustomer.address
+  datatmp.additionalAddress = newCustomer.additionalAddress
+  datatmp.postalCode = newCustomer.postalCode
+  datatmp.city = newCustomer.city
+  datatmp.phoneNumber = newCustomer.phoneNumber
+  datatmp.faxNumber = newCustomer.faxNumber
+  datatmp.siret = newCustomer.siret
+
+  if (datatmp) {
+    _.merge(datatmp, newCustomer)
+  } else {
+    state.data.push(datatmp)
+  }
+  return state.data
+}
+
 const setSelectedClient = (state, search) => {
   console.log(search)
   var foundClient = state.data.find(o => o.uid === search.selectedClient)
@@ -258,6 +303,7 @@ export const actions = {
   reinitializeClients,
   fetchCustomers,
   createCustomer,
+  updateCustomer,
   addContact,
   deleteCustomer,
   reinitializeItem,
@@ -336,6 +382,26 @@ const ACTION_HANDLERS = {
     log: viewLog(state, action),
     error: action.error.response.data,
     status: action.error.response.status,
+  }),
+  [UPDATE_CUSTOMER_SENDING]: (state, action) => ({
+    ...state,
+    sending: true,
+    error: undefined,
+  }),
+  [UPDATE_CUSTOMER_SUCCESS]: (state, action) => ({
+    ...state,
+    sending: false,
+    log: viewLog(state, action),
+    // delete: _.remove(state.data, function (currentObject) { return currentObject.uid === action.result }),
+    // data: [...state.data, action.result.data],
+    data: updatePropsCustomer(state, action.result.data.uid, action.result.newCustomer),
+    done: action.result.data.uid,
+    error: undefined,
+  }),
+  [UPDATE_CUSTOMER_FAILURE]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: action.error,
   }),
   [CREATE_CONTACT_SENDING]: (state, action) => ({
     ...state,

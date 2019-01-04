@@ -18,11 +18,24 @@ const DELETE_INVOICE_SENDING = 'DELETE_INVOICE_SENDING'
 const DELETE_INVOICE_SUCCESS = 'DELETE_INVOICE_SUCCESS'
 const DELETE_INVOICE_FAILURE = 'DELETE_INVOICE_FAILURE'
 
+const GENERATE_INVOICE_SENDING = 'GENERATE_INVOICE_SENDING'
+const GENERATE_INVOICE_SUCCESS = 'GENERATE_INVOICE_SUCCESS'
+const GENERATE_INVOICE_FAILURE = 'GENERATE_INVOICE_FAILURE'
+
 const fetchInvoices = dispatch => () =>
   dispatch({
     types: [FETCH_INVOICES_SENDING, FETCH_INVOICES_SUCCESS, FETCH_INVOICES_FAILURE],
     promise: axios.get('/invoices/').then((res) => {
       console.log(res.data)
+      return res
+    }),
+  })
+
+const generatePdfInvoice = dispatch => invoiceProps =>
+  dispatch({
+    types: [GENERATE_INVOICE_SENDING, GENERATE_INVOICE_SUCCESS, GENERATE_INVOICE_FAILURE],
+    promise: axios.get('/invoice/' + invoiceProps.uid + '/pdfreport').then((res) => {
+      // console.log(res.data)
       return res
     }),
   })
@@ -104,6 +117,7 @@ export const actions = {
   handleChange,
   fetchInvoices,
   createInvoice,
+  generatePdfInvoice,
   deleteInvoice,
 }
 
@@ -168,6 +182,22 @@ const ACTION_HANDLERS = {
     sending: false,
     error: action.error,
   }),
+  [GENERATE_INVOICE_SENDING]: (state, action) => ({
+    ...state,
+    sending: true,
+    error: undefined,
+  }),
+  [GENERATE_INVOICE_SUCCESS]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: undefined,
+    generatePDF: true,
+  }),
+  [GENERATE_INVOICE_FAILURE]: (state, action) => ({
+    ...state,
+    sending: false,
+    error: action.error,
+  }),
   [DELETE_INVOICE_SENDING]: (state, action) => ({
     ...state,
     sending: true,
@@ -202,6 +232,7 @@ const ACTION_HANDLERS = {
 const initialState = {
   data: undefined,
   sending: false,
+  generatePDF: false,
   error: undefined,
   totalAmountHT: 0,
   totalAmountTTC: 0,
