@@ -1,7 +1,7 @@
 import React from 'react'
 import _ from 'lodash'
 import moment from 'moment'
-import { Tab, Menu, Header, Icon, Segment, Button } from 'semantic-ui-react'
+import { Tab, Menu, Header, Icon, Segment, Button, Grid } from 'semantic-ui-react'
 import InvoicesList from 'CONTAINERS/Invoices/InvoicesList'
 import Invoice from 'CONTAINERS/Invoices/Invoice'
 import { BreadcrumbUtils } from 'COMPONENTS/Utils/Utils'
@@ -65,7 +65,7 @@ class Invoices extends React.Component {
 
   render () {
     const { activeIndex } = this.state
-
+    const { currentStep } = this.props
     return (
       <Tab
         activeIndex={ activeIndex }
@@ -113,25 +113,69 @@ class Invoices extends React.Component {
                 <Tab.Pane>
                   <div>
                     <BreadcrumbUtils parent='Factures' child='Nouvelle facture' />
-                    <Segment vertical>
-                      <Invoice setItemProps={ this.props.setItemProps }
-                        setInvoicesProps={ this.props.setInvoicesProps }
-                        handleChangeClient={ this.props.handleChangeClient }
-                        setCheckedInvoice={ this._AddBordereauToInvoice }
-                        bordereaux={ this.props.bordereau }
-                        clients={ this.props.clients } />
-                    </Segment>
-                    <Segment textAlign='right' >
-                      <Button disabled color='twitter'>
-                        <Icon name='save outline' /> Enregistrer le brouillon
-                      </Button>
-                      <Button color='twitter' onClick={ this._handleSubmit }>
-                        <Icon name='save' /> Enregistrer
-                      </Button>
-                      <Button color='google plus'>
-                        <Icon name='cancel' /> Annuler
-                      </Button>
-                    </Segment>
+                    <Grid divided>
+                      <Grid.Row width={ 16 }>
+                        <Invoice currentStep={ this.props.currentStep }
+                          next={ this.props.next }
+                          prev={ this.props.prev }
+                          generatePdfInvoice={ this.props.generatePdfInvoice }
+                          pdfPreviewInvoice={ this.props.pdfPreviewInvoice }
+                          setItemProps={ this.props.setItemProps }
+                          setCheckedItemProps={ this.props.setCheckedItemProps }
+                          setInvoicesProps={ this.props.setInvoicesProps }
+                          handleChangeClient={ this.props.handleChangeClient }
+                          setCheckedInvoice={ this._AddBordereauToInvoice }
+                          bordereaux={ this.props.bordereau }
+                          invoices={ this.props.invoices }
+                          done={ this.props.done }
+                          clients={ this.props.clients } />
+                      </Grid.Row>
+                      <Grid.Row width={ 16 }textAlign='center'>
+                        {!this.props.done &&
+                          currentStep > 0 && (
+                          <Grid.Column width={ 8 }textAlign='left'>
+                            <Button
+                              className='step-button-left'
+                              content='Previous'
+                              color='blue'
+                              size='small'
+                              icon='chevron left'
+                              labelPosition='left'
+                              floated='left'
+                              onClick={ () => this.props.prev() }
+                            />
+                          </Grid.Column>
+                        )}
+                        {!this.props.done &&
+                          currentStep < 2 && (
+                          <Grid.Column width={ currentStep === 0 ? 16 : 8 } textAlign='right' >
+                            <Button
+                              className='step-button-right'
+                              content='Next'
+                              color='blue'
+                              icon='chevron right'
+                              size='small'
+                              labelPosition='right'
+                              onClick={ () => this.props.next() }
+                            />
+                          </Grid.Column>
+                        )}
+                        {!this.props.done &&
+                          currentStep === 3 - 1 && (
+                          <Grid.Column width={ 8 } textAlign='right'>
+                            <Button
+                              content='Enregistrer'
+                              icon='save'
+                              className='step-button-right'
+                              color='teal'
+                              size='small'
+                              floated='right'
+                              onClick={ this._handleSubmit }
+                            />
+                          </Grid.Column>
+                        )}
+                      </Grid.Row>
+                    </Grid>
                   </div>
                 </Tab.Pane>),
             },
@@ -147,12 +191,15 @@ const mapStateToProps = state => ({
   bordereau: state.bordereau,
   datedebut: state.datedebut,
   datefin: state.datefin,
+  done: state.invoices.done,
   selectedClient: state.clients.selectedClient,
+  currentStep: state.invoices.currentStep,
 })
 
 const mapDispatchToProps = dispatch => ({
   createInvoice: invoicesActions.createInvoice(dispatch),
   generatePdfInvoice: invoicesActions.generatePdfInvoice(dispatch),
+  pdfPreviewInvoice: invoicesActions.pdfPreviewInvoice(dispatch),
   fetchInvoices: invoicesActions.fetchInvoices(dispatch),
   handleChangeDate: invoicesActions.handleChange(dispatch),
   setInvoicesProps: invoicesActions.setInvoicesProps(dispatch),
@@ -162,6 +209,8 @@ const mapDispatchToProps = dispatch => ({
   setItemProps: clientsActions.setItemProps(dispatch),
   fetchCustomers: clientsActions.fetchCustomers(dispatch),
   createPayment: paymentsActions.createPayment(dispatch),
+  next: invoicesActions.next(dispatch),
+  prev: invoicesActions.prev(dispatch),
   // setWizardProps: invoicesActions.setWizardProps(dispatch),
   // setWizardVarsProps: invoicesActions.setWizardVarsProps(dispatch),
   dispatch,

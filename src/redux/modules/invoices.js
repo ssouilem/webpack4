@@ -1,6 +1,8 @@
 import _ from 'lodash'
 import axios from 'axios'
 
+const INCREMENT_STEP = 'INCREMENT_STEP'
+const DECREMENT_STEP = 'DECREMENT_STEP'
 const REINITIALIZE_INVOICES = 'REINITIALIZE_INVOICES'
 const SET_DATE_PROPS = 'SET_DATE_PROPS'
 const SET_INVOICES_CHECKED_PROPS = 'SET_INVOICES_CHECKED_PROPS'
@@ -22,6 +24,10 @@ const GENERATE_INVOICE_SENDING = 'GENERATE_INVOICE_SENDING'
 const GENERATE_INVOICE_SUCCESS = 'GENERATE_INVOICE_SUCCESS'
 const GENERATE_INVOICE_FAILURE = 'GENERATE_INVOICE_FAILURE'
 
+const GENERATE_PDFPREVIEW_SENDING = 'GENERATE_PDFPREVIEW_SENDING'
+const GENERATE_PDFPREVIEW_SUCCESS = 'GENERATE_PDFPREVIEW_SUCCESS'
+const GENERATE_PDFPREVIEW_FAILURE = 'GENERATE_PDFPREVIEW_FAILURE'
+
 const fetchInvoices = dispatch => () =>
   dispatch({
     types: [FETCH_INVOICES_SENDING, FETCH_INVOICES_SUCCESS, FETCH_INVOICES_FAILURE],
@@ -35,6 +41,17 @@ const generatePdfInvoice = dispatch => invoiceProps =>
   dispatch({
     types: [GENERATE_INVOICE_SENDING, GENERATE_INVOICE_SUCCESS, GENERATE_INVOICE_FAILURE],
     promise: axios.get('/invoice/' + invoiceProps.uid + '/pdfreport').then((res) => {
+      // console.log(res.data)
+      return res
+    }),
+  })
+
+const pdfPreviewInvoice = dispatch => invoiceProps =>
+  dispatch({
+    types: [GENERATE_PDFPREVIEW_SENDING, GENERATE_PDFPREVIEW_SUCCESS, GENERATE_PDFPREVIEW_FAILURE],
+    promise: axios.post('/invoice/preview', {
+      ...invoiceProps,
+    }).then((res) => {
       // console.log(res.data)
       return res
     }),
@@ -110,6 +127,18 @@ const reinitializeInvoices = dispatch => () => {
   })
 }
 
+const next = dispatch => () => {
+  console.log('NEXT FUNCTION IN WIZARD REDUCER ')
+  return dispatch({
+    type: INCREMENT_STEP,
+  })
+}
+const prev = dispatch => () => {
+  dispatch({
+    type: DECREMENT_STEP,
+  })
+}
+
 export const actions = {
   reinitializeInvoices,
   setInvoicesProps,
@@ -118,7 +147,10 @@ export const actions = {
   fetchInvoices,
   createInvoice,
   generatePdfInvoice,
+  pdfPreviewInvoice,
   deleteInvoice,
+  next,
+  prev,
 }
 
 const setFieldValue = (state, action, field) => {
@@ -198,10 +230,22 @@ const ACTION_HANDLERS = {
     sending: false,
     error: action.error,
   }),
-  [DELETE_INVOICE_SENDING]: (state, action) => ({
+  [GENERATE_PDFPREVIEW_SENDING]: (state, action) => ({
     ...state,
     sending: true,
     error: undefined,
+  }),
+  [GENERATE_PDFPREVIEW_SUCCESS]: (state, action) => ({
+    ...state,
+    preview: { sending: false, error: undefined, data: action.result.data },
+  }),
+  [GENERATE_PDFPREVIEW_FAILURE]: (state, action) => ({
+    ...state,
+    preview: { sending: false, error: action.error, data: undefined },
+  }),
+  [DELETE_INVOICE_SENDING]: (state, action) => ({
+    ...state,
+    preview: { sending: true, error: undefined, data: undefined },
   }),
   [DELETE_INVOICE_SUCCESS]: (state, action) => ({
     ...state,
@@ -216,6 +260,14 @@ const ACTION_HANDLERS = {
     sending: false,
     error: action.error,
   }),
+  [INCREMENT_STEP]: (state, action) => ({
+    ...state,
+    currentStep: ++state.currentStep,
+  }),
+  [DECREMENT_STEP]: (state, action) => ({
+    ...state,
+    currentStep: --state.currentStep,
+  }),
   [SET_INVOICES_PROPS]: (state, action) => ({
     ...state,
     selectedClient: action.payload.selectedClient || state.selectedClient,
@@ -226,10 +278,20 @@ const ACTION_HANDLERS = {
     totalAmountHT: action.payload.totalAmountHT || state.totalAmountHT,
     totalAmountTVA: action.payload.totalAmountTVA || state.totalAmountTVA,
     totalAmountTTC: action.payload.totalAmountTTC || state.totalAmountTTC,
+    checkedComment: 'checkedComment' in action.payload ? action.payload.checkedComment : state.checkedComment,
+    comment: action.payload.comment || state.comment,
+    amountInWords: 'amountInWords' in action.payload ? action.payload.amountInWords : state.amountInWords,
+    paymentCondition: 'paymentCondition' in action.payload ? action.payload.paymentCondition : state.paymentCondition,
   }),
 }
 
 const initialState = {
+  currentStep: 0,
+  preview: { data: undefined, sending: false, error: undefined },
+  checkedComment: false,
+  amountInWords: false,
+  paymentCondition: false,
+  done: false,
   data: undefined,
   sending: false,
   generatePDF: false,

@@ -25,7 +25,7 @@ class ShowInvoice extends React.Component {
       </Modal.Header>
       <Modal.Content scrolling>
         <Modal.Description >
-          <embed src='http://localhost:8080/invoice/getpdf/d6e96e30-b9d7-4cc5-a4bc-0d274d06f0b0.pdf' width="680px" height="800px" />
+          <embed src='http://localhost:8080/invoice/getpdf/d6e96e30-b9d7-4cc5-a4bc-0d274d06f0b0.pdf?zoom=50' width="680px" height="800px" />
           {/* 'http://localhost:8080/invoice/d6e96e30-b9d7-4cc5-a4bc-0d274d06f0b0/pdfreport'  */ }
         </Modal.Description>
       </Modal.Content>
