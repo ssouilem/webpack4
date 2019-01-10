@@ -39,9 +39,8 @@ class Invoice extends React.Component {
   }
 
   _createPreviewFile = () => {
-    console.log('ShowInvoice >> ', this.props.selectedClient)
+    console.log('_createPreviewFile >> ', this.props.selectedClient)
     if (!this.props.invoices.preview.sending && !this.props.invoices.preview.data) {
-      console.log('API pdfPreviewInvoice >> ')
       this.props.pdfPreviewInvoice({
         customer: this.props.clients.selectedClient,
         number: this.props.invoices.invoiceNumber,
@@ -49,8 +48,11 @@ class Invoice extends React.Component {
         issueDate: this.props.invoices.issueDate, // ajouter un champ de saisie de date
         amount: this.props.bordereaux.totalAmountHT,
         bordereaux: this.state.bordereaux,
+        otherExpenses: this.props.invoices.otherExpenses,
+        remarks: this.props.invoices.comment,
+        sumInLetter: this.props.invoices.amountInWords,
+        // playPaymentCondition: this.props.invoices.playPaymentCondition,
       })
-      console.log('APRES API pdfPreviewInvoice >> ')
     }
   }
 

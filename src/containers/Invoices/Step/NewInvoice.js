@@ -46,7 +46,7 @@ class NewInvoice extends React.Component {
   }
 
 render = () => {
-  const { checkedComment, amountInWords, paymentCondition } = this.props.invoices
+  const { checkedComment, checkedOtherExpenses, amountInWords, paymentCondition } = this.props.invoices
   return (
     <Form id='myform'>
       <Grid className='newBordereau' >
@@ -131,6 +131,17 @@ render = () => {
                   onChange={ this._handleInvoiceChange }
                   value={ this.props.invoices && this.props.invoices.comment }
                   placeholder='Liste de remarque liés au votre facture....' />
+                }
+              </Grid.Column>
+            </Grid.Row>
+            <Grid.Row>
+              <Grid.Column verticalAlign='middle' width={ 3 } textAlign='left' >
+                <Checkbox toggle label='Ajouter un timbre :' name='checkedOtherExpenses' onClick={ this._handleChangeCheckBox } checked={ checkedOtherExpenses || false } />
+              </Grid.Column>
+              <Grid.Column textAlign='left' width={ 8 }>
+                { checkedOtherExpenses && <Input width={ 16 } fluid name='otherExpenses' onChange={ this._handleInvoiceChange }
+                  placeholder='Prix de timbre'
+                  value={ this.props.invoices.otherExpenses && this.state.otherExpenses } />
                 }
               </Grid.Column>
             </Grid.Row>
