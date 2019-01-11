@@ -5,7 +5,15 @@ import { Header, Segment, Grid, Table, Form, List, Checkbox, Icon } from 'semant
 class InvoiceContents extends React.Component {
   state = { invoiceNumber: '' }
   componentWillMount () {
-    console.log('<< InvoiceContents >> ')
+    if (this.props.bordereaux.data && !!this.props.clients.selectedClient) {
+      var selectedClient = this.props.clients.selectedClient
+      console.log('<< selectedClient >> ', selectedClient)
+      var results = _.filter(this.props.bordereaux.data, function (obj) {
+        console.log('<< LIST >> ', obj.customer.uid, selectedClient)
+        return obj.customer.uid === selectedClient
+      })
+      this.setState({ results: results })
+    }
   }
 
   // componentDidMount () {
@@ -35,7 +43,7 @@ class InvoiceContents extends React.Component {
   }
 
 render = ({ totalAmountHT, totalAmountTVA, totalAmountTTC } = this.props ) => {
-  const items = (Array.isArray(this.state.results) && this.state.results.length >= 0) ? this.state.results : this.props.bordereaux.data
+  const items = (Array.isArray(this.state.results) && this.state.results.length >= 0) ? this.state.results : []
   return (
     <Form id='myform'>
       <Grid className='newBordereau' ref={ this.handleContextRef } >

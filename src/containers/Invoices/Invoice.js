@@ -53,6 +53,7 @@ class Invoice extends React.Component {
         sumInLetter: this.props.invoices.amountInWords,
         // playPaymentCondition: this.props.invoices.playPaymentCondition,
       })
+      this.props.setStateProps({ bordereaux: this.state.bordereaux })
     }
   }
 

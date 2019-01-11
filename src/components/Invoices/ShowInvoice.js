@@ -19,7 +19,7 @@ class ShowInvoice extends React.Component {
     <Modal
       open={ this.state.modalOpen }
       onClose={ this.handleClose }
-      trigger={ <Button onClick={ this.handleOpen } icon='dollar sign' floated='right' /> } size='small' centered={ false } closeIcon >
+      trigger={ <Button onClick={ this.handleOpen } icon='file pdf' floated='right' /> } size='small' centered={ false } closeIcon >
       <Modal.Header>
 
       </Modal.Header>

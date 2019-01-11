@@ -25,6 +25,7 @@ class Invoices extends React.Component {
     }
   }
 
+  setStateProps = valueProps => this.setState({ valueProps })
   handleTabChange = (e, { activeIndex }) => this.setState({ activeIndex })
   _AddBordereauToInvoice = (invoiceProps) => {
     console.log('props : ', invoiceProps)
@@ -53,9 +54,12 @@ class Invoices extends React.Component {
       customer: this.props.clients.selectedClient,
       number: this.props.invoices.invoiceNumber,
       createdAuthor: 'TODO', // @TODO charger la valeur d'auth
-      issueDate: moment().format('YYYY-MM-DD'), // ajouter un champ de saisie de date
-      amount: this.state.totalAmountHT,
+      issueDate: this.props.invoices.issueDate, // ajouter un champ de saisie de date
+      amount: this.props.bordereaux.totalAmountHT,
       bordereaux: this.state.bordereaux,
+      otherExpenses: this.props.invoices.otherExpenses,
+      remarks: this.props.invoices.comment,
+      sumInLetter: this.props.invoices.amountInWords,
     })
   }
   _handleAddPayment = payment => {
@@ -128,6 +132,7 @@ class Invoices extends React.Component {
                           bordereaux={ this.props.bordereau }
                           invoices={ this.props.invoices }
                           done={ this.props.done }
+                          setStateProps={ this.setStateProps }
                           clients={ this.props.clients } />
                       </Grid.Row>
                       <Grid.Row width={ 16 }textAlign='center'>

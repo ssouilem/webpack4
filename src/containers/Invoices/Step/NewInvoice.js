@@ -2,7 +2,7 @@ import React from 'react'
 import moment from 'moment'
 import _ from 'lodash'
 import { DatePicker } from 'antd'
-import { Grid, Form, Dropdown, Input, Checkbox } from 'semantic-ui-react'
+import { Grid, Form, Header, Input, Checkbox, Radio, TextArea } from 'semantic-ui-react'
 import PropTypes from 'prop-types'
 import { DateFormat } from 'COMPONENTS/Utils/Utils'
 
@@ -52,21 +52,35 @@ render = () => {
       <Grid className='newBordereau' >
         <Grid.Column width={ 16 }>
           <Grid textAlign='left' >
-            <Grid.Row>
-              <Grid.Column verticalAlign='middle' width={ 3 } textAlign='left' >
-                <label>Facture N ° : </label>
-              </Grid.Column>
-              <Grid.Column verticalAlign='middle' width={ 8 } textAlign='left' >
-                <Input width={ 16 } fluid name='invoiceNumber' onChange={ this._handleInvoiceChange } placeholder='Numéro de facture' value={ this.props.invoices.invoiceNumber && this.state.invoiceNumber } />
-              </Grid.Column>
+            <Grid.Row width={ 13 }>
+              <Header as='h3'>CLIENT ET OPTIONS</Header>
             </Grid.Row>
             <Grid.Row>
-              <Grid.Column verticalAlign='middle' width={ 3 } textAlign='left' >
-                <label>Nom du client : </label>
+              <Grid.Column verticalAlign='middle' width={ 8 } textAlign='left' >
+                <Form.Field
+                  control={ Input }
+                  label='FACTURE N ° '
+                  placeholder='Numéro de facture...'
+                  name='invoiceNumber'
+                  onChange={ this._handleInvoiceChange }
+                  value={ this.props.invoices.invoiceNumber && this.state.invoiceNumber }
+                />
               </Grid.Column>
-              <Grid.Column verticalAlign='middle' width={ 8 } textAlign='left'>
+              <Grid.Column verticalAlign='middle' width={ 8 } textAlign='left' >
+                <Form.Select fluid search label='NOM DU CLIENT :'
+                  options={ this.props.clients && this.props.clients.data && this.props.clients.data.map(client => ({
+                    key: client.uid,
+                    value: client.uid,
+                    text: client.name,
+                  })) }
+                  value={ this.props.clients.selectedClient && this.props.clients.selectedClient !== '' && this.props.clients.selectedClient }
+                  name='selectedClient'
+                  onChange={ this._handleChangeClient }
+                  placeholder='Gender' />
+                  {/*
                 <Dropdown
                   placeholder='Choisir un client'
+                  label='NOM DU CLIENT :'
                   name='selectedClient'
                   selectOnNavigation={ false }
                   clearable
@@ -81,10 +95,41 @@ render = () => {
                   })) }
                   onChange={ this._handleChangeClient }
                 />
+                */}
               </Grid.Column>
             </Grid.Row>
-            <Grid.Row >
             {/*
+            <Grid.Row>
+              <Grid.Column width={ 8 } >
+                <Form.Field
+                  control={ TextArea }
+                  rows={ 5 }
+                  label='PROJECT DESCRIPTION '
+                  placeholder='Description format'
+                  name='description'
+                  defaultValue='Description .....'
+                  onBlur={ this._handleChangeInput }
+                />
+              </Grid.Column>
+              <Grid.Column width={ 8 }>
+                <Form.Field
+                  control={ Input }
+                  label='APPLICATION DOMAIN (URL)'
+                  placeholder='example.org'
+                  name='APPDOMAIN'
+                  onChange={ this._handleChangeVarsInput }
+                />
+                <Form.Field
+                  control={ Input }
+                  label='APPLICATION NAME'
+                  placeholder='my-app'
+                  name='APP'
+                  onChange={ this._handleChangeVarsInput }
+                />
+              </Grid.Column>
+            </Grid.Row>
+
+
               <Grid.Column textAlign='left'>
                 <SegmentAddress
                   icon='building'
@@ -95,7 +140,8 @@ render = () => {
                 />
               </Grid.Column>
               */}
-              <Grid.Column textAlign='left' width={ 8 }>
+            <Grid.Row >
+              <Grid.Column textAlign='left' width={ 16 }>
                 { !!this.props.clients.selectedClient &&
                   <SegmentAddress
                     icon='sign-in'
@@ -110,33 +156,80 @@ render = () => {
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              <Grid.Column verticalAlign='middle' width={ 3 } textAlign='left' >
-                <label>Date d'échéance : </label>
-              </Grid.Column>
-              <Grid.Column verticalAlign='middle' width={ 8 } textAlign='left'>
-                <DatePicker size='large'
-                  placeholder="Date d'échéance"
+              <Grid.Column verticalAlign='middle' width={ 8 } textAlign='left' >
+                <Form.Field
+                  fluid
+                  control={ DatePicker }
+                  label="DATE D'ECHEANCE"
                   name='issueDate'
+                  format={ DateFormat }
                   onChange={ this.onChangeDate }
-                  format={ DateFormat } />
-
+                />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              <Grid.Column verticalAlign='middle' width={ 3 } textAlign='left' >
+              <Grid.Column width={ 8 } textAlign='left' >
+                <Form.Group grouped>
+                  <p className='wizard-description'>Voulez-vous rajouter des remarques à votre facture ?</p>
+                </Form.Group>
+                <Form.Group inline>
+                  <Form.Field
+                    label='Non'
+                    control={ Radio }
+                    name='checkedComment'
+                    value='yes'
+                    onChange={ this._handleChangeCheckBox }
+                    checked={ checkedComment === false }
+                  />
+                  <Form.Field
+                    label='Oui'
+                    control={ Radio }
+                    name='checkedComment'
+                    value='no'
+                    onChange={ this._handleChangeCheckBox }
+                    checked={ checkedComment === true }
+                  />
+                </Form.Group>
+                {/*
                 <Checkbox toggle label='Remarque :' name='checkedComment' onClick={ this._handleChangeCheckBox } checked={ checkedComment || false } />
+                */}
               </Grid.Column>
               <Grid.Column textAlign='left' width={ 8 }>
-                { checkedComment && <Form.TextArea name='comment'
-                  onChange={ this._handleInvoiceChange }
+                { checkedComment && <Form.Field
+                  control={ TextArea }
+                  rows={ 5 }
+                  label='REMARQUES '
+                  placeholder='Mes remarques ...'
+                  name='comment'
                   value={ this.props.invoices && this.props.invoices.comment }
-                  placeholder='Liste de remarque liés au votre facture....' />
+                  onBlur={ this._handleInvoiceChange }
+                />
                 }
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
-              <Grid.Column verticalAlign='middle' width={ 3 } textAlign='left' >
-                <Checkbox toggle label='Ajouter un timbre :' name='checkedOtherExpenses' onClick={ this._handleChangeCheckBox } checked={ checkedOtherExpenses || false } />
+              <Grid.Column width={ 8 } textAlign='left' >
+                <Form.Group grouped>
+                  <p className='wizard-description'>Voulez-vous rajouter des remarques à votre facture ?</p>
+                </Form.Group>
+                <Form.Group inline>
+                  <Form.Field
+                    label='Non'
+                    control={ Radio }
+                    name='checkedOtherExpenses'
+                    value='yes'
+                    onChange={ this._handleChangeCheckBox }
+                    checked={ checkedOtherExpenses === false }
+                  />
+                  <Form.Field
+                    label='Oui'
+                    control={ Radio }
+                    name='checkedOtherExpenses'
+                    value='no'
+                    onChange={ this._handleChangeCheckBox }
+                    checked={ checkedOtherExpenses === true }
+                  />
+                </Form.Group>
               </Grid.Column>
               <Grid.Column textAlign='left' width={ 8 }>
                 { checkedOtherExpenses && <Input width={ 16 } fluid name='otherExpenses' onChange={ this._handleInvoiceChange }
@@ -147,12 +240,12 @@ render = () => {
             </Grid.Row>
             <Grid.Row>
               <Grid.Column textAlign='left'>
-                <Checkbox toggle label='Somme en toutes lettres' name='amountInWords' onClick={ this._handleChangeCheckBox } checked={ amountInWords || false } />
+                <Checkbox label='Cocher cette case si voulez-vous rajouter la somme en toutes lettres dans votre facture' name='amountInWords' onClick={ this._handleChangeCheckBox } checked={ amountInWords || false } />
               </Grid.Column>
             </Grid.Row>
             <Grid.Row>
               <Grid.Column textAlign='left'>
-                <Checkbox toggle label='Les conditions de paiements' name='paymentCondition' onClick={ this._handleChangeCheckBox } checked={ paymentCondition || false } />
+                <Checkbox label='Cocher cette case si voulez-vous rajouter les conditions de paiements' name='paymentCondition' onClick={ this._handleChangeCheckBox } checked={ paymentCondition || false } />
               </Grid.Column>
             </Grid.Row>
           </Grid>
