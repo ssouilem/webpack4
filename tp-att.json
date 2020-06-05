@@ -4,27 +4,27 @@
       "value":""
    },
    {
-      "label":1,
+      "label":"ATTCLI-Administratif",
       "value":"ATTCLI-Administratif"
    },
    {
-      "label":2,
+      "label":"ATTCLI-Contact",
       "value":"ATTCLI-Contact"
    },
    {
-      "label":3,
+      "label":"ATTCLI-COV",
       "value":"ATTCLI-COV"
    },
    {
-      "label":4,
+      "label":"ATTCLI-COVExtraOk",
       "value":"ATTCLI-COVExtraOk"
    },
    {
-      "label":5,
+      "label":"ATTCLI-RDV",
       "value":"ATTCLI-RDV"
    },
    {
-      "label":6,
+      "label":"ATTCLI-Travaux",
       "value":"ATTCLI-Travaux"
    }
 ]
