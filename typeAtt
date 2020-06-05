@@ -1,2 +1,30 @@
-[{label: 1, value :'ATTCLI-Administratif'}, {label: 2, value: 'ATTCLI-Contact'}, {label: 3, value: 'ATTCLI-COV'}, 
-{label: 4, value:'ATTCLI-COVExtraOk'}, {label: 5, value:'ATTCLI-RDV'}, {label: 6, value:'ATTCLI-Travaux'}]
+[
+   {
+      "label":0,
+      "value":""
+   },
+   {
+      "label":1,
+      "value":"ATTCLI-Administratif"
+   },
+   {
+      "label":2,
+      "value":"ATTCLI-Contact"
+   },
+   {
+      "label":3,
+      "value":"ATTCLI-COV"
+   },
+   {
+      "label":4,
+      "value":"ATTCLI-COVExtraOk"
+   },
+   {
+      "label":5,
+      "value":"ATTCLI-RDV"
+   },
+   {
+      "label":6,
+      "value":"ATTCLI-Travaux"
+   }
+]
