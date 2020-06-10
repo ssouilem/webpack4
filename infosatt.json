@@ -1,0 +1,20 @@
+[
+   {
+      "ATTENTE_ID":"4",
+      "TYPE_ID":"14",
+      "TYPE_LABEL":"TEST",
+      "CATEGORIE":"CATEGORIE_SFR",
+      "COMMENTAIRE":"new commentaire",
+      "DATE_RAPPEL":"08/06/2020",
+      "DATE_SORTIE":"08/06/2020"
+   },
+   {
+      "ATTENTE_ID":"4",
+      "TYPE_ID":"14",
+      "TYPE_LABEL":"TEST",
+      "CATEGORIE":"CATEGORIE_CLI",
+      "COMMENTAIRE":"new commentaire",
+      "DATE_RAPPEL":"08/06/2020",
+      "DATE_SORTIE":"08/06/2020"
+   }
+]
