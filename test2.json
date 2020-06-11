@@ -1,8 +1,8 @@
 [
    {
       "ATTENTE_ID":"4",
-      "TYPE_ID":"14",
-      "TYPE_LABEL":"TEST",
+      "TYPE_ID":"3",
+      "TYPE_LABEL":"ATTCLI-Administratif",
       "CATEGORIE":"CATEGORIE_SFR",
       "COMMENTAIRE":"new commentaire",
       "DATE_RAPPEL":"08/06/2020",
@@ -10,8 +10,8 @@
    },
    {
       "ATTENTE_ID":"4",
-      "TYPE_ID":"14",
-      "TYPE_LABEL":"TEST",
+      "TYPE_ID":"3",
+      "TYPE_LABEL":"ATTCLI-Administratif",
       "CATEGORIE":"CATEGORIE_CLI",
       "COMMENTAIRE":"new commentaire",
       "DATE_RAPPEL":"08/06/2020",
